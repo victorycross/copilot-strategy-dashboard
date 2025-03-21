@@ -21,6 +21,11 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
+  const toggleExpand = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsExpanded(!isExpanded);
+  };
+
   return (
     <div className={cn(
       "border rounded-lg p-4 transition-all duration-300",
@@ -28,16 +33,18 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
       !isExpanded && "bg-muted/5"
     )}>
       <div 
-        className="cursor-pointer flex items-center justify-between"
-        onClick={() => setIsExpanded(!isExpanded)}
+        className="flex items-center justify-between"
+        onClick={toggleExpand}
       >
-        <h3 className={`font-semibold flex items-center gap-2 ${colorClass}`}>
+        <h3 className={`font-semibold flex items-center gap-2 ${colorClass} cursor-pointer`}>
           {icon}
           {title}
         </h3>
         <button 
+          type="button"
           aria-label={isExpanded ? "Collapse section" : "Expand section"}
           className="text-muted-foreground hover:text-foreground"
+          onClick={toggleExpand}
         >
           {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>

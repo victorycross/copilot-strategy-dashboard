@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { ReactNode, useState } from "react";
 import TechnologySection from "./TechnologySection";
 import PlanActionFooter from "./PlanActionFooter";
@@ -20,6 +21,7 @@ import {
   PowerBIIcon
 } from "./icons/TechnologyIcons";
 import { toast } from "sonner";
+import { X } from "lucide-react";
 
 interface ImplementationPlanProps {
   useCase: UseCase;
@@ -57,21 +59,28 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
     }
     toast.success(`Updated ${field} implementation details`);
   };
+
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
   
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        {children ? (
-          <div onClick={() => setIsOpen(true)}>
-            {children}
-          </div>
-        ) : (
-          <button className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none"
-                  onClick={() => setIsOpen(true)}>
-            View Implementation Plan
-          </button>
-        )}
-      </DialogTrigger>
+      {children ? (
+        <div onClick={handleOpen} className="cursor-pointer">
+          {children}
+        </div>
+      ) : (
+        <button 
+          className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none"
+          onClick={handleOpen}
+        >
+          {localUseCase.implementationPlan && 
+           Object.values(localUseCase.implementationPlan).some(value => value) 
+            ? "View Implementation Plan" 
+            : "Create Implementation Plan"}
+        </button>
+      )}
+
       {isOpen && (
         <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -80,6 +89,14 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
               How to implement this use case using Microsoft technologies
             </DialogDescription>
           </DialogHeader>
+          <button
+            onClick={handleClose}
+            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
+            aria-label="Close"
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </button>
           <div className="space-y-6 py-4">
             {/* Microsoft Copilot section */}
             <TechnologySection
@@ -130,7 +147,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
             <PlanActionFooter 
               useCase={localUseCase} 
               onUseCaseUpdate={onUseCaseUpdate}
-              onClose={() => setIsOpen(false)}
+              onClose={handleClose}
             />
           </DialogFooter>
         </DialogContent>
