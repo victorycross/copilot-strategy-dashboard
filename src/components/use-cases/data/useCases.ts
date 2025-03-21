@@ -3,109 +3,21 @@ import {
   FileText,
   PieChart,
   ShieldCheck,
-  Zap,
   Users,
   DollarSign,
-  Calendar,
-  Search,
-  Filter,
-  Shield,
-  CheckCircle,
-  File,
-  Folder,
+  GraduationCap,
+  Globe,
   MessageSquare,
   AlertTriangle,
   Headset,
   TrendingUp,
-  Globe,
-  GraduationCap,
   Book,
-  BarChart2,
-  UserCheck,
-  PackageCheck,
-  ThumbsUp,
-  EyeOff,
-  Package,
-  Clock,
-  CheckSquare,
-  UserPlus,
   BarChart,
   Settings,
-  Workflow,
-  AreaChart,
-  Pencil,
-  Briefcase,
-  Timer,
+  File,
   Share2,
-  GitMerge,
   Database
 } from "lucide-react";
-
-export const categories = [
-  {
-    id: "data-management",
-    name: "Data Management",
-    description: "Solutions for managing, analyzing, and extracting insights from data",
-    icon: Database,
-    color: "blue"
-  },
-  {
-    id: "compliance",
-    name: "Compliance & Risk",
-    description: "Tools to ensure regulatory compliance and manage risk",
-    icon: ShieldCheck,
-    color: "red"
-  },
-  {
-    id: "client-interaction",
-    name: "Client Interaction",
-    description: "Improve and automate client communications and services",
-    icon: Users,
-    color: "green"
-  },
-  {
-    id: "financial",
-    name: "Financial Management",
-    description: "Solutions for financial analysis, reporting, and optimization",
-    icon: DollarSign,
-    color: "yellow"
-  },
-  {
-    id: "automation",
-    name: "Workflow Automation",
-    description: "Automate repetitive tasks and streamline business processes",
-    icon: Settings,
-    color: "purple"
-  },
-  {
-    id: "project-management",
-    name: "Project Management",
-    description: "Tools for team collaboration and project coordination",
-    icon: CheckSquare,
-    color: "orange"
-  }
-];
-
-export const priorities = [
-  {
-    id: "high",
-    name: "High Priority",
-    description: "Critical use cases with immediate impact",
-    color: "red"
-  },
-  {
-    id: "medium",
-    name: "Medium Priority",
-    description: "Important use cases with moderate timeline",
-    color: "yellow"
-  },
-  {
-    id: "strategic",
-    name: "Strategic",
-    description: "Long-term strategic value with extended timeline",
-    color: "blue"
-  }
-];
 
 export const useCases = [
   {
@@ -154,7 +66,7 @@ export const useCases = [
     description: "Streamlines client intake process and data collection",
     category: "client-interaction",
     serviceLines: ["DEALS", "IFS"],
-    icon: UserPlus,
+    icon: Users,
     priority: "high",
     phase: "Phase 1",
     complexity: "Low",
@@ -454,7 +366,7 @@ export const useCases = [
     description: "Monitors industry-specific regulatory changes",
     category: "compliance",
     serviceLines: ["TAX", "ASR", "IFS"],
-    icon: Shield,
+    icon: ShieldCheck,
     priority: "medium",
     phase: "Phase 2",
     complexity: "Medium",
@@ -509,32 +421,3 @@ export const useCases = [
     }
   }
 ];
-
-// Helper functions
-export const getCategoryCounts = () => {
-  const counts = {};
-  
-  categories.forEach(category => {
-    counts[category.id] = useCases.filter(uc => uc.category === category.id).length;
-  });
-  
-  return counts;
-};
-
-export const getCategoryColor = (categoryId) => {
-  const category = categories.find(c => c.id === categoryId);
-  return category ? category.color : "gray";
-};
-
-export const getPriorityBadgeClass = (priority) => {
-  switch (priority) {
-    case "high":
-      return "bg-red-100 text-red-800";
-    case "medium":
-      return "bg-yellow-100 text-yellow-800";
-    case "strategic":
-      return "bg-blue-100 text-blue-800";
-    default:
-      return "bg-gray-100 text-gray-800";
-  }
-};
