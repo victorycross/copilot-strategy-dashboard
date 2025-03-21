@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
@@ -91,7 +90,7 @@ const Dashboard = () => {
             borderColor: 'rgba(0, 0, 0, 0.05)',
             borderWidth: 1,
             padding: 12,
-            boxPadding: ,
+            boxPadding: 6,
             usePointStyle: true,
             callbacks: {
               label: function(context) {
@@ -262,7 +261,6 @@ const Dashboard = () => {
     });
   };
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -302,7 +300,6 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
-        {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -321,7 +318,6 @@ const Dashboard = () => {
           </div>
         </motion.div>
 
-        {/* Key Metrics */}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
@@ -353,11 +349,8 @@ const Dashboard = () => {
           </motion.div>
         </motion.div>
 
-        {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-          {/* Left Column */}
           <div className="lg:col-span-1">
-            {/* Agent Categories */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -434,7 +427,6 @@ const Dashboard = () => {
               </div>
             </motion.div>
 
-            {/* Implementation Phases */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -506,9 +498,7 @@ const Dashboard = () => {
             </motion.div>
           </div>
 
-          {/* Right Column (spans 2 cols) */}
           <div className="lg:col-span-2">
-            {/* Service Line Impact */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -541,7 +531,6 @@ const Dashboard = () => {
               </div>
             </motion.div>
 
-            {/* Implementation Matrix */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -615,7 +604,6 @@ const Dashboard = () => {
               </div>
             </motion.div>
 
-            {/* Impact Radar Chart */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
