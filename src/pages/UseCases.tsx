@@ -53,6 +53,13 @@ const UseCasesPage = () => {
     }
   };
 
+  // Transform priorities to match the expected format in Filters component
+  const formattedPriorities = priorities.map(priority => ({
+    value: priority.id,
+    label: priority.name,
+    color: priority.color
+  }));
+
   // Render use case card
   const renderUseCase = (useCase) => {
     return (
@@ -79,7 +86,7 @@ const UseCasesPage = () => {
           setActivePriority={setActivePriority}
           categories={categories}
           categoryCounts={categoryCounts}
-          priorities={priorities}
+          priorities={formattedPriorities}
           filteredUseCases={filteredUseCases}
         />
 
