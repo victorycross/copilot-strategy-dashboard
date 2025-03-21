@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import EditableField from "./EditableField";
 import { cn } from "@/lib/utils";
 import { ChevronUp, ChevronDown } from "lucide-react";
@@ -21,12 +21,10 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  // Use useCallback to memoize the function to prevent unnecessary re-renders
-  const toggleExpand = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
+  const toggleExpand = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsExpanded(prev => !prev);
-  }, []);
+    setIsExpanded(!isExpanded);
+  };
 
   return (
     <div className={cn(
@@ -36,8 +34,7 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
     )}>
       <div className="flex items-center justify-between">
         <h3 
-          className={`font-semibold flex items-center gap-2 ${colorClass} cursor-pointer`}
-          onClick={toggleExpand}
+          className={`font-semibold flex items-center gap-2 ${colorClass}`}
         >
           {icon}
           {title}
@@ -53,7 +50,7 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
       </div>
       
       {isExpanded && (
-        <div className="mt-3" onClick={(e) => e.stopPropagation()}>
+        <div className="mt-3">
           <EditableField 
             label="Implementation Steps"
             value={value || ""}

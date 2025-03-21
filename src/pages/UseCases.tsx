@@ -2,6 +2,17 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger 
+} from "@/components/ui/dialog";
 import UseCaseCard from "@/components/use-cases/UseCaseCard";
 import CategoryCard from "@/components/use-cases/CategoryCard";
 import PhaseCard from "@/components/use-cases/PhaseCard";
@@ -22,6 +33,17 @@ const UseCasesPage = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [activePriority, setActivePriority] = useState("all");
   const [useCases, setUseCases] = useState(initialUseCases);
+  const [newUseCase, setNewUseCase] = useState({
+    name: "",
+    description: "",
+    category: "productive-knowledge-work",
+    phase: "Phase 1",
+    complexity: "Medium",
+    crossServiceValue: "Medium",
+    priority: "medium",
+    serviceLines: ["Digital & App Innovation"],
+    keyBenefit: "",
+  });
   
   const categoryCounts = getCategoryCounts();
   
@@ -81,6 +103,30 @@ const UseCasesPage = () => {
     }
   };
 
+  // Handle creating a new use case
+  const handleCreateUseCase = () => {
+    const useCaseToCreate = {
+      ...newUseCase,
+      id: Date.now(), // Generate a unique ID based on timestamp
+      icon: categories.find(c => c.id === newUseCase.category)?.icon || categories[0].icon
+    };
+
+    handleUseCaseUpdate({...useCaseToCreate, isNew: true});
+    
+    // Reset the form fields
+    setNewUseCase({
+      name: "",
+      description: "",
+      category: "productive-knowledge-work",
+      phase: "Phase 1",
+      complexity: "Medium",
+      crossServiceValue: "Medium",
+      priority: "medium",
+      serviceLines: ["Digital & App Innovation"],
+      keyBenefit: "",
+    });
+  };
+
   // Render use case card
   const renderUseCase = (useCase) => {
     return (
@@ -100,17 +146,95 @@ const UseCasesPage = () => {
         {/* Header */}
         <Header />
 
-        {/* Filters */}
-        <Filters 
-          activeCategory={activeCategory}
-          setActiveCategory={setActiveCategory}
-          activePriority={activePriority}
-          setActivePriority={setActivePriority}
-          categories={categories}
-          categoryCounts={categoryCounts}
-          priorities={formattedPriorities}
-          filteredUseCases={filteredUseCases}
-        />
+        <div className="flex justify-between items-center mb-6">
+          {/* Filters */}
+          <Filters 
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            activePriority={activePriority}
+            setActivePriority={setActivePriority}
+            categories={categories}
+            categoryCounts={categoryCounts}
+            priorities={formattedPriorities}
+            filteredUseCases={filteredUseCases}
+          />
+
+          {/* Create New Use Case Button */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="ml-auto">
+                <Plus className="mr-2 h-4 w-4" />
+                Create Use Case
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <DialogHeader>
+                <DialogTitle>Create New Use Case</DialogTitle>
+                <DialogDescription>
+                  Enter the details for the new use case.
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <label htmlFor="name" className="text-sm font-medium">Name</label>
+                  <input
+                    id="name"
+                    className="p-2 border rounded-md"
+                    value={newUseCase.name}
+                    onChange={(e) => setNewUseCase({...newUseCase, name: e.target.value})}
+                    placeholder="Enter use case name"
+                  />
+                </div>
+                
+                <div className="grid gap-2">
+                  <label htmlFor="description" className="text-sm font-medium">Description</label>
+                  <textarea
+                    id="description"
+                    className="p-2 border rounded-md min-h-[80px]"
+                    value={newUseCase.description}
+                    onChange={(e) => setNewUseCase({...newUseCase, description: e.target.value})}
+                    placeholder="Enter use case description"
+                  />
+                </div>
+                
+                <div className="grid gap-2">
+                  <label htmlFor="category" className="text-sm font-medium">Category</label>
+                  <select
+                    id="category"
+                    className="p-2 border rounded-md"
+                    value={newUseCase.category}
+                    onChange={(e) => setNewUseCase({...newUseCase, category: e.target.value})}
+                  >
+                    {categories.map(category => (
+                      <option key={category.id} value={category.id}>{category.name}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="grid gap-2">
+                  <label htmlFor="keyBenefit" className="text-sm font-medium">Key Benefit</label>
+                  <input
+                    id="keyBenefit"
+                    className="p-2 border rounded-md"
+                    value={newUseCase.keyBenefit}
+                    onChange={(e) => setNewUseCase({...newUseCase, keyBenefit: e.target.value})}
+                    placeholder="Enter key benefit"
+                  />
+                </div>
+              </div>
+              
+              <DialogFooter>
+                <Button variant="outline" onClick={() => document.querySelector('button[type="button"][data-state="open"]')?.click()}>
+                  Cancel
+                </Button>
+                <Button onClick={handleCreateUseCase} disabled={!newUseCase.name || !newUseCase.description}>
+                  Create
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
 
         {/* Main content */}
         <Tabs defaultValue="category" className="w-full">
