@@ -53,7 +53,14 @@ export const useCases = [
     phase: "Phase 1",
     complexity: "Medium",
     crossServiceValue: "High",
-    keyBenefit: "60% reduction in document processing time"
+    keyBenefit: "60% reduction in document processing time",
+    implementationPlan: {
+      msCopilot: "Extract and summarize key information from documents",
+      powerAutomate: "Create workflows to route documents and trigger analysis",
+      powerApps: "Build a custom interface for document submission and review",
+      copilotStudio: "Design custom prompt flows for document analysis",
+      powerBI: "Visualize document processing metrics and extracted insights"
+    }
   },
   {
     id: 2,
@@ -66,7 +73,14 @@ export const useCases = [
     phase: "Phase 1",
     complexity: "High",
     crossServiceValue: "High",
-    keyBenefit: "90% decrease in compliance violations"
+    keyBenefit: "90% decrease in compliance violations",
+    implementationPlan: {
+      msCopilot: "Stay updated on regulatory changes and requirements",
+      powerAutomate: "Automate deadline reminders and compliance checks",
+      powerApps: "Develop a compliance dashboard with alert management",
+      copilotStudio: "Create a compliance assistant to answer regulatory questions",
+      powerBI: "Monitor compliance metrics across service lines"
+    }
   },
   {
     id: 3,
@@ -79,7 +93,14 @@ export const useCases = [
     phase: "Phase 1",
     complexity: "Low",
     crossServiceValue: "Medium",
-    keyBenefit: "45% faster client onboarding"
+    keyBenefit: "45% faster client onboarding",
+    implementationPlan: {
+      msCopilot: "Generate personalized onboarding materials",
+      powerAutomate: "Coordinate sequential onboarding steps and approvals",
+      powerApps: "Create a client-facing onboarding portal",
+      copilotStudio: "Build a conversational onboarding assistant",
+      powerBI: "Track onboarding efficiency and bottlenecks"
+    }
   },
   {
     id: 4,
@@ -92,7 +113,14 @@ export const useCases = [
     phase: "Phase 2",
     complexity: "High",
     crossServiceValue: "Medium",
-    keyBenefit: "30% improvement in financial insight accuracy"
+    keyBenefit: "30% improvement in financial insight accuracy",
+    implementationPlan: {
+      msCopilot: "Analyze financial statements and generate insights",
+      powerAutomate: "Process and standardize financial data inputs",
+      powerApps: "Build interactive financial analysis tools",
+      copilotStudio: "Design a financial advisor bot for quick insights",
+      powerBI: "Create financial dashboards with anomaly detection"
+    }
   },
   {
     id: 5,
@@ -105,7 +133,14 @@ export const useCases = [
     phase: "Phase 2",
     complexity: "Medium",
     crossServiceValue: "High",
-    keyBenefit: "75% reduction in manual processing time"
+    keyBenefit: "75% reduction in manual processing time",
+    implementationPlan: {
+      msCopilot: "Suggest process improvements and documentation",
+      powerAutomate: "Build flexible approval workflows and notifications",
+      powerApps: "Create process management and monitoring interfaces",
+      copilotStudio: "Develop a process assistant to guide users",
+      powerBI: "Visualize process efficiency and automation impact"
+    }
   },
   {
     id: 6,
@@ -118,7 +153,14 @@ export const useCases = [
     phase: "Phase 3",
     complexity: "Medium",
     crossServiceValue: "High",
-    keyBenefit: "40% increase in knowledge retention"
+    keyBenefit: "40% increase in knowledge retention",
+    implementationPlan: {
+      msCopilot: "Generate tailored training content and exercises",
+      powerAutomate: "Schedule training delivery and track completion",
+      powerApps: "Build a learning management platform",
+      copilotStudio: "Create an interactive training assistant",
+      powerBI: "Analyze training effectiveness and skill development"
+    }
   },
   {
     id: 7,
@@ -131,7 +173,14 @@ export const useCases = [
     phase: "Phase 2",
     complexity: "Medium",
     crossServiceValue: "Medium",
-    keyBenefit: "25% improved market intelligence"
+    keyBenefit: "25% improved market intelligence",
+    implementationPlan: {
+      msCopilot: "Analyze and summarize market research reports",
+      powerAutomate: "Schedule regular market data collection",
+      powerApps: "Create a market intelligence hub",
+      copilotStudio: "Build a market trends Q&A bot",
+      powerBI: "Visualize market trends and competitive positioning"
+    }
   },
   {
     id: 8,
@@ -144,7 +193,14 @@ export const useCases = [
     phase: "Phase 2",
     complexity: "Low",
     crossServiceValue: "High",
-    keyBenefit: "35% increase in client satisfaction scores"
+    keyBenefit: "35% increase in client satisfaction scores",
+    implementationPlan: {
+      msCopilot: "Analyze feedback sentiment and recommend actions",
+      powerAutomate: "Trigger alerts for negative feedback",
+      powerApps: "Build a feedback collection and response system",
+      copilotStudio: "Create a conversational feedback collection bot",
+      powerBI: "Track satisfaction trends and improvement initiatives"
+    }
   },
   {
     id: 9,
@@ -157,7 +213,14 @@ export const useCases = [
     phase: "Phase 1",
     complexity: "High",
     crossServiceValue: "Medium",
-    keyBenefit: "50% reduction in unforeseen project risks"
+    keyBenefit: "50% reduction in unforeseen project risks",
+    implementationPlan: {
+      msCopilot: "Identify potential risks and mitigation strategies",
+      powerAutomate: "Create risk assessment workflows and escalations",
+      powerApps: "Develop a risk management dashboard",
+      copilotStudio: "Build a risk assessment assistant",
+      powerBI: "Visualize risk profiles and mitigation effectiveness"
+    }
   },
   {
     id: 10,
@@ -170,7 +233,14 @@ export const useCases = [
     phase: "Phase 2",
     complexity: "Medium",
     crossServiceValue: "Low",
-    keyBenefit: "80% of basic inquiries resolved without staff"
+    keyBenefit: "80% of basic inquiries resolved without staff",
+    implementationPlan: {
+      msCopilot: "Generate responses to complex client questions",
+      powerAutomate: "Route inquiries based on complexity and type",
+      powerApps: "Create a client support portal",
+      copilotStudio: "Build a comprehensive client support bot",
+      powerBI: "Track support metrics and knowledge gaps"
+    }
   },
   {
     id: 11,
@@ -183,7 +253,14 @@ export const useCases = [
     phase: "Phase 3",
     complexity: "High",
     crossServiceValue: "Medium",
-    keyBenefit: "20% improvement in forecast accuracy"
+    keyBenefit: "20% improvement in forecast accuracy",
+    implementationPlan: {
+      msCopilot: "Generate forecast narratives and recommendations",
+      powerAutomate: "Schedule regular forecast updates",
+      powerApps: "Build forecast adjustment and scenario tools",
+      copilotStudio: "Create a forecasting assistant for what-if scenarios",
+      powerBI: "Develop interactive forecast dashboards with trends"
+    }
   },
   {
     id: 12,
@@ -196,7 +273,14 @@ export const useCases = [
     phase: "Phase 1",
     complexity: "Medium",
     crossServiceValue: "High",
-    keyBenefit: "65% reduction in time spent searching for information"
+    keyBenefit: "65% reduction in time spent searching for information",
+    implementationPlan: {
+      msCopilot: "Generate answers from organizational knowledge",
+      powerAutomate: "Update knowledge base with new information",
+      powerApps: "Create a knowledge portal with powerful search",
+      copilotStudio: "Build a knowledge base bot with multimedia support",
+      powerBI: "Track knowledge usage and information gaps"
+    }
   },
   {
     id: 13,
@@ -209,7 +293,14 @@ export const useCases = [
     phase: "Phase 1",
     complexity: "High",
     crossServiceValue: "Medium",
-    keyBenefit: "15% average tax savings identified"
+    keyBenefit: "15% average tax savings identified",
+    implementationPlan: {
+      msCopilot: "Generate tax planning strategies and explanations",
+      powerAutomate: "Automate tax scenario comparisons",
+      powerApps: "Build a tax planning scenario tool",
+      copilotStudio: "Create a tax strategy advisor bot",
+      powerBI: "Visualize tax savings opportunities"
+    }
   },
   {
     id: 14,
@@ -222,7 +313,14 @@ export const useCases = [
     phase: "Phase 2",
     complexity: "Medium",
     crossServiceValue: "High",
-    keyBenefit: "85% reduction in data quality issues"
+    keyBenefit: "85% reduction in data quality issues",
+    implementationPlan: {
+      msCopilot: "Analyze data patterns and quality issues",
+      powerAutomate: "Create automated data quality checks",
+      powerApps: "Build a data quality management dashboard",
+      copilotStudio: "Develop a data quality assistant",
+      powerBI: "Track data quality metrics and improvement trends"
+    }
   },
   {
     id: 15,
@@ -235,7 +333,14 @@ export const useCases = [
     phase: "Phase 2",
     complexity: "Low",
     crossServiceValue: "High",
-    keyBenefit: "70% reduction in note-taking time"
+    keyBenefit: "70% reduction in note-taking time",
+    implementationPlan: {
+      msCopilot: "Generate meeting summaries and action items",
+      powerAutomate: "Distribute summaries and track action items",
+      powerApps: "Build a meeting notes repository and search tool",
+      copilotStudio: "Create a meeting assistant for real-time notes",
+      powerBI: "Analyze meeting trends and action item completion"
+    }
   },
   {
     id: 16,
@@ -248,7 +353,14 @@ export const useCases = [
     phase: "Phase 1",
     complexity: "High",
     crossServiceValue: "Medium",
-    keyBenefit: "55% faster contract review process"
+    keyBenefit: "55% faster contract review process",
+    implementationPlan: {
+      msCopilot: "Analyze contract language and identify issues",
+      powerAutomate: "Route contracts for review based on findings",
+      powerApps: "Build a contract management and review platform",
+      copilotStudio: "Create a contract analysis assistant",
+      powerBI: "Track contract review metrics and risk profiles"
+    }
   },
   {
     id: 17,
@@ -261,7 +373,14 @@ export const useCases = [
     phase: "Phase 3",
     complexity: "High",
     crossServiceValue: "High",
-    keyBenefit: "25% improvement in resource utilization"
+    keyBenefit: "25% improvement in resource utilization",
+    implementationPlan: {
+      msCopilot: "Generate staffing recommendations and optimizations",
+      powerAutomate: "Coordinate resource allocation approvals",
+      powerApps: "Create a resource management and planning tool",
+      copilotStudio: "Build a resource planning assistant",
+      powerBI: "Visualize resource utilization and availability"
+    }
   },
   {
     id: 18,
@@ -274,7 +393,14 @@ export const useCases = [
     phase: "Phase 2",
     complexity: "Medium",
     crossServiceValue: "Medium",
-    keyBenefit: "100% compliance with regulatory updates"
+    keyBenefit: "100% compliance with regulatory updates",
+    implementationPlan: {
+      msCopilot: "Track and summarize regulatory changes",
+      powerAutomate: "Send alerts for relevant regulatory updates",
+      powerApps: "Build a compliance management dashboard",
+      copilotStudio: "Create a regulatory change assistant",
+      powerBI: "Monitor compliance status across regulations"
+    }
   },
   {
     id: 19,
@@ -287,7 +413,14 @@ export const useCases = [
     phase: "Phase 3",
     complexity: "High",
     crossServiceValue: "Medium",
-    keyBenefit: "30% increase in cross-selling opportunities identified"
+    keyBenefit: "30% increase in cross-selling opportunities identified",
+    implementationPlan: {
+      msCopilot: "Identify cross-selling opportunities and insights",
+      powerAutomate: "Schedule portfolio reviews and opportunity alerts",
+      powerApps: "Build a client portfolio management platform",
+      copilotStudio: "Create a portfolio advisor bot",
+      powerBI: "Develop portfolio visualization and opportunity dashboards"
+    }
   },
   {
     id: 20,
@@ -300,6 +433,13 @@ export const useCases = [
     phase: "Phase 3",
     complexity: "Medium",
     crossServiceValue: "High",
-    keyBenefit: "40% increase in internal knowledge sharing"
+    keyBenefit: "40% increase in internal knowledge sharing",
+    implementationPlan: {
+      msCopilot: "Generate knowledge summaries and recommendations",
+      powerAutomate: "Facilitate knowledge sharing workflows",
+      powerApps: "Build a collaborative knowledge platform",
+      copilotStudio: "Create a knowledge discovery assistant",
+      powerBI: "Track knowledge sharing metrics and impact"
+    }
   }
 ];
