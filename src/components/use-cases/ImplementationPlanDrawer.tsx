@@ -5,10 +5,8 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { ReactNode, useState } from "react";
 import TechnologySection from "./TechnologySection";
 import PlanActionFooter from "./PlanActionFooter";
@@ -60,13 +58,21 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
     toast.success(`Updated ${field} implementation details`);
   };
 
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+  
+  const handleClose = () => {
+    setIsOpen(false);
+  };
   
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <>
       {children ? (
-        <div onClick={handleOpen} className="cursor-pointer">
+        <div 
+          onClick={handleOpen}
+          className="cursor-pointer"
+        >
           {children}
         </div>
       ) : (
@@ -81,7 +87,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
         </button>
       )}
 
-      {isOpen && (
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Implementation Plan: {localUseCase.name}</DialogTitle>
@@ -151,8 +157,8 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
             />
           </DialogFooter>
         </DialogContent>
-      )}
-    </Dialog>
+      </Dialog>
+    </>
   );
 };
 

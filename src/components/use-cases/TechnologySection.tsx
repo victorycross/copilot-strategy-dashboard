@@ -22,6 +22,7 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
   const [isExpanded, setIsExpanded] = useState(true);
 
   const toggleExpand = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setIsExpanded(!isExpanded);
   };
@@ -32,11 +33,11 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
       "hover:border-muted-foreground/20",
       !isExpanded && "bg-muted/5"
     )}>
-      <div 
-        className="flex items-center justify-between"
-        onClick={toggleExpand}
-      >
-        <h3 className={`font-semibold flex items-center gap-2 ${colorClass} cursor-pointer`}>
+      <div className="flex items-center justify-between">
+        <h3 
+          className={`font-semibold flex items-center gap-2 ${colorClass} cursor-pointer`}
+          onClick={toggleExpand}
+        >
           {icon}
           {title}
         </h3>
