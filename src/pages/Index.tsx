@@ -1,6 +1,7 @@
 
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -31,25 +32,29 @@ const Index = () => {
           Explore our comprehensive AI implementation strategy designed to maximize efficiency and value across service lines.
         </motion.p>
         
-        <motion.button
+        <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
-            delay: 0.7, 
-            duration: 0.6,
-            type: "spring",
-            stiffness: 200
-          }}
-          whileHover={{ 
-            scale: 1.03,
-            boxShadow: "0px 8px 30px rgba(0, 0, 0, 0.12)"
-          }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => navigate('/dashboard')}
-          className="bg-gradient-to-r from-blue-dark to-primary text-white py-3 px-8 rounded-full font-medium transition-all"
+          transition={{ delay: 0.7, duration: 0.6 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          View Dashboard
-        </motion.button>
+          <Button
+            onClick={() => navigate('/dashboard')}
+            className="bg-gradient-to-r from-blue-dark to-primary text-white py-3 px-8 rounded-full font-medium transition-all"
+            size="lg"
+          >
+            View Dashboard
+          </Button>
+          
+          <Button
+            onClick={() => navigate('/use-cases')}
+            variant="outline"
+            size="lg"
+            className="rounded-full px-8"
+          >
+            Explore Use Cases
+          </Button>
+        </motion.div>
       </motion.div>
     </div>
   );
