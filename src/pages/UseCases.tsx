@@ -11,8 +11,10 @@ import {
   DialogFooter, 
   DialogHeader, 
   DialogTitle, 
-  DialogTrigger 
+  DialogTrigger,
+  DialogClose
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import UseCaseCard from "@/components/use-cases/UseCaseCard";
 import CategoryCard from "@/components/use-cases/CategoryCard";
 import PhaseCard from "@/components/use-cases/PhaseCard";
@@ -105,6 +107,12 @@ const UseCasesPage = () => {
 
   // Handle creating a new use case
   const handleCreateUseCase = () => {
+    // Validate required fields
+    if (!newUseCase.name || !newUseCase.description) {
+      toast.error("Name and description are required");
+      return;
+    }
+    
     const useCaseToCreate = {
       ...newUseCase,
       id: Date.now(), // Generate a unique ID based on timestamp
@@ -178,9 +186,8 @@ const UseCasesPage = () => {
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
                   <label htmlFor="name" className="text-sm font-medium">Name</label>
-                  <input
+                  <Input
                     id="name"
-                    className="p-2 border rounded-md"
                     value={newUseCase.name}
                     onChange={(e) => setNewUseCase({...newUseCase, name: e.target.value})}
                     placeholder="Enter use case name"
@@ -214,9 +221,8 @@ const UseCasesPage = () => {
                 
                 <div className="grid gap-2">
                   <label htmlFor="keyBenefit" className="text-sm font-medium">Key Benefit</label>
-                  <input
+                  <Input
                     id="keyBenefit"
-                    className="p-2 border rounded-md"
                     value={newUseCase.keyBenefit}
                     onChange={(e) => setNewUseCase({...newUseCase, keyBenefit: e.target.value})}
                     placeholder="Enter key benefit"
@@ -225,9 +231,9 @@ const UseCasesPage = () => {
               </div>
               
               <DialogFooter>
-                <Button variant="outline" onClick={() => document.querySelector('button[type="button"][data-state="open"]')?.click()}>
-                  Cancel
-                </Button>
+                <DialogClose asChild>
+                  <Button variant="outline">Cancel</Button>
+                </DialogClose>
                 <Button onClick={handleCreateUseCase} disabled={!newUseCase.name || !newUseCase.description}>
                   Create
                 </Button>
