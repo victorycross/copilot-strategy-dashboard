@@ -10,6 +10,7 @@ import {
   DrawerTrigger
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 
 interface ImplementationPlanProps {
   useCase: {
@@ -26,6 +27,42 @@ interface ImplementationPlanProps {
 
 const ImplementationPlanDrawer = ({ useCase }: ImplementationPlanProps) => {
   if (!useCase.implementationPlan) return null;
+  
+  const handleDownload = () => {
+    // Create content for the text file
+    let content = `Implementation Plan: ${useCase.name}\n\n`;
+    
+    if (useCase.implementationPlan.msCopilot) {
+      content += `Microsoft Copilot:\n${useCase.implementationPlan.msCopilot}\n\n`;
+    }
+    
+    if (useCase.implementationPlan.powerAutomate) {
+      content += `Power Automate:\n${useCase.implementationPlan.powerAutomate}\n\n`;
+    }
+    
+    if (useCase.implementationPlan.powerApps) {
+      content += `Power Apps:\n${useCase.implementationPlan.powerApps}\n\n`;
+    }
+    
+    if (useCase.implementationPlan.copilotStudio) {
+      content += `Copilot Studio:\n${useCase.implementationPlan.copilotStudio}\n\n`;
+    }
+    
+    if (useCase.implementationPlan.powerBI) {
+      content += `Power BI:\n${useCase.implementationPlan.powerBI}\n\n`;
+    }
+    
+    // Create a blob and download it
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${useCase.name.replace(/\s+/g, '-').toLowerCase()}-implementation-plan.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
   
   return (
     <Drawer>
@@ -90,7 +127,11 @@ const ImplementationPlanDrawer = ({ useCase }: ImplementationPlanProps) => {
               )}
             </div>
           </div>
-          <DrawerFooter>
+          <DrawerFooter className="flex-row gap-3 justify-between sm:justify-end">
+            <Button onClick={handleDownload} variant="outline" className="flex items-center gap-2">
+              <Download className="h-4 w-4" />
+              Download Plan
+            </Button>
             <DrawerClose asChild>
               <Button variant="outline">Close</Button>
             </DrawerClose>
