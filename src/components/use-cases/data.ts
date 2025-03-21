@@ -41,6 +41,7 @@ import {
   GitMerge,
 } from "lucide-react";
 
+// Import use cases at the top of the file to avoid reference errors
 import { useCases } from './useCasesData';
 
 // Define our categories

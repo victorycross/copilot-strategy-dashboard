@@ -31,11 +31,14 @@ import {
   UserPlus,
   BarChart,
   Settings,
-  Timer,
+  Workflow,
+  AreaChart,
   Pencil,
   Briefcase,
+  Timer,
   Share2,
   GitMerge,
+  Database
 } from "lucide-react";
 
 export const useCases = [
@@ -194,5 +197,109 @@ export const useCases = [
     complexity: "Medium",
     crossServiceValue: "High",
     keyBenefit: "65% reduction in time spent searching for information"
+  },
+  {
+    id: 13,
+    name: "Tax Planning Optimizer",
+    description: "Analyzes tax scenarios to identify optimal strategies",
+    category: "financial",
+    serviceLines: ["TAX"],
+    icon: Calculator,
+    priority: "high",
+    phase: "Phase 1",
+    complexity: "High",
+    crossServiceValue: "Medium",
+    keyBenefit: "15% average tax savings identified"
+  },
+  {
+    id: 14,
+    name: "Data Quality Monitor",
+    description: "Continuously checks data integrity and identifies issues",
+    category: "data-management",
+    serviceLines: ["ASR", "IFS"],
+    icon: Database,
+    priority: "medium",
+    phase: "Phase 2",
+    complexity: "Medium",
+    crossServiceValue: "High",
+    keyBenefit: "85% reduction in data quality issues"
+  },
+  {
+    id: 15,
+    name: "Meeting Summarizer",
+    description: "Automatically creates concise summaries of client meetings",
+    category: "client-interaction",
+    serviceLines: ["TAX", "ASR", "DEALS", "IFS"],
+    icon: FileText,
+    priority: "medium",
+    phase: "Phase 2",
+    complexity: "Low",
+    crossServiceValue: "High",
+    keyBenefit: "70% reduction in note-taking time"
+  },
+  {
+    id: 16,
+    name: "Contract Analysis Tool",
+    description: "Extracts key terms and flags potential issues in contracts",
+    category: "compliance",
+    serviceLines: ["DEALS", "IFS"],
+    icon: File,
+    priority: "high",
+    phase: "Phase 1",
+    complexity: "High",
+    crossServiceValue: "Medium",
+    keyBenefit: "55% faster contract review process"
+  },
+  {
+    id: 17,
+    name: "Project Resource Allocator",
+    description: "Optimizes staff allocation based on skills and availability",
+    category: "automation",
+    serviceLines: ["TAX", "ASR", "DEALS", "IFS"],
+    icon: Users,
+    priority: "strategic",
+    phase: "Phase 3",
+    complexity: "High",
+    crossServiceValue: "High",
+    keyBenefit: "25% improvement in resource utilization"
+  },
+  {
+    id: 18,
+    name: "Industry Compliance Tracker",
+    description: "Monitors industry-specific regulatory changes",
+    category: "compliance",
+    serviceLines: ["TAX", "ASR", "IFS"],
+    icon: Shield,
+    priority: "medium",
+    phase: "Phase 2",
+    complexity: "Medium",
+    crossServiceValue: "Medium",
+    keyBenefit: "100% compliance with regulatory updates"
+  },
+  {
+    id: 19,
+    name: "Client Portfolio Analyzer",
+    description: "Provides insights on client portfolios and recommends opportunities",
+    category: "financial",
+    serviceLines: ["DEALS", "IFS"],
+    icon: PieChart,
+    priority: "strategic",
+    phase: "Phase 3",
+    complexity: "High",
+    crossServiceValue: "Medium",
+    keyBenefit: "30% increase in cross-selling opportunities identified"
+  },
+  {
+    id: 20,
+    name: "Knowledge Sharing Platform",
+    description: "Facilitates organization-wide expertise sharing and collaboration",
+    category: "project-management",
+    serviceLines: ["TAX", "ASR", "DEALS", "IFS"],
+    icon: Share2,
+    priority: "strategic",
+    phase: "Phase 3",
+    complexity: "Medium",
+    crossServiceValue: "High",
+    keyBenefit: "40% increase in internal knowledge sharing"
   }
 ];
