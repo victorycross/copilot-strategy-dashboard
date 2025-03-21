@@ -1,3 +1,4 @@
+
 import {
   Database,
   FileText,
@@ -39,6 +40,8 @@ import {
   Share2,
   GitMerge,
 } from "lucide-react";
+
+import { useCases } from './useCasesData';
 
 // Define our categories
 export const categories = [
@@ -140,4 +143,5 @@ export const getPriorityBadgeClass = (priority) => {
   }
 };
 
-import { useCases } from './useCasesData';
+// Export useCases for use in other components
+export { useCases };
