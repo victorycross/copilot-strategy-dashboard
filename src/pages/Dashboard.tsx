@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
@@ -85,7 +86,7 @@ const Dashboard = () => {
             },
             titleFont: {
               family: "'Inter', sans-serif",
-              weight: '600'
+              weight: 'bold'
             },
             borderColor: 'rgba(0, 0, 0, 0.05)',
             borderWidth: 1,
@@ -214,7 +215,7 @@ const Dashboard = () => {
             },
             titleFont: {
               family: "'Inter', sans-serif",
-              weight: '600'
+              weight: 'bold'
             },
             borderColor: 'rgba(0, 0, 0, 0.05)',
             borderWidth: 1,
