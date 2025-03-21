@@ -204,7 +204,7 @@ export const useCases = [
     description: "Analyzes tax scenarios to identify optimal strategies",
     category: "financial",
     serviceLines: ["TAX"],
-    icon: Calculator,
+    icon: DollarSign,
     priority: "high",
     phase: "Phase 1",
     complexity: "High",
