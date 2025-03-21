@@ -65,15 +65,20 @@ const UseCasesPage = () => {
 
   // Handle use case updates
   const handleUseCaseUpdate = (updatedUseCase) => {
-    // Update the use cases array with the modified use case
-    const updatedUseCases = useCases.map(uc => 
-      uc.id === updatedUseCase.id ? updatedUseCase : uc
-    );
-    
-    setUseCases(updatedUseCases);
-    
-    // Show a toast notification
-    toast.success(`Updated ${updatedUseCase.name}`);
+    if (updatedUseCase.isNew) {
+      // Add the new use case to the list
+      const newUseCases = [...useCases, { ...updatedUseCase, isNew: undefined }];
+      setUseCases(newUseCases);
+      toast.success(`Created new use case: ${updatedUseCase.name}`);
+    } else {
+      // Update the use cases array with the modified use case
+      const updatedUseCases = useCases.map(uc => 
+        uc.id === updatedUseCase.id ? updatedUseCase : uc
+      );
+      
+      setUseCases(updatedUseCases);
+      toast.success(`Updated ${updatedUseCase.name}`);
+    }
   };
 
   // Render use case card

@@ -85,7 +85,10 @@ const UseCaseCard = ({
                 <Icon className={`w-4 h-4 text-${categoryColor}`} />
               </div>
               {hasImplementationPlan ? (
-                <ImplementationPlanDrawer useCase={localUseCase}>
+                <ImplementationPlanDrawer 
+                  useCase={localUseCase}
+                  onUseCaseUpdate={onUseCaseUpdate}
+                >
                   <CardTitle className="text-base cursor-pointer hover:text-primary hover:underline">
                     {localUseCase.name}
                   </CardTitle>
@@ -135,12 +138,28 @@ const UseCaseCard = ({
             />
           </div>
           
-          {hasImplementationPlan && (
+          {hasImplementationPlan ? (
             <div className="mt-4">
-              <ImplementationPlanDrawer useCase={localUseCase}>
+              <ImplementationPlanDrawer 
+                useCase={localUseCase}
+                onUseCaseUpdate={onUseCaseUpdate}
+              >
                 <span className="w-full">
                   <button className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none">
                     View Implementation Plan
+                  </button>
+                </span>
+              </ImplementationPlanDrawer>
+            </div>
+          ) : (
+            <div className="mt-4">
+              <ImplementationPlanDrawer 
+                useCase={localUseCase}
+                onUseCaseUpdate={onUseCaseUpdate}
+              >
+                <span className="w-full">
+                  <button className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none">
+                    Create Implementation Plan
                   </button>
                 </span>
               </ImplementationPlanDrawer>
