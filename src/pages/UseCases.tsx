@@ -62,6 +62,7 @@ const UseCasesPage = () => {
 
   // Render use case card
   const renderUseCase = (useCase) => {
+    // Make sure we pass the implementation plan data correctly
     return (
       <UseCaseCard 
         key={useCase.id}
