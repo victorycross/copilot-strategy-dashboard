@@ -1,46 +1,87 @@
 
-import React from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Copy, LayoutDashboard, Map } from "lucide-react";
-import { downloadImplementationPlan, cloneUseCase, UseCase } from "./utils/planUtils";
+import { Download, Copy, Check } from "lucide-react";
+import { UseCase, downloadImplementationPlan, cloneUseCase } from "./utils/planUtils";
+import { useState } from "react";
 
 interface PlanActionFooterProps {
   useCase: UseCase;
   onUseCaseUpdate?: (updatedUseCase: any) => void;
+  onClose?: () => void;
 }
 
 const PlanActionFooter: React.FC<PlanActionFooterProps> = ({ 
   useCase, 
-  onUseCaseUpdate 
+  onUseCaseUpdate,
+  onClose
 }) => {
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSave = () => {
+    setIsSaving(true);
+    
+    // Simulate saving process
+    setTimeout(() => {
+      setIsSaving(false);
+      if (onClose) onClose();
+    }, 800);
+  };
+
+  const handleClone = () => {
+    cloneUseCase(useCase, onUseCaseUpdate);
+    if (onClose) onClose();
+  };
+
   const handleDownload = () => {
     downloadImplementationPlan(useCase);
   };
 
-  const handleCloneUseCase = () => {
-    cloneUseCase(useCase, onUseCaseUpdate);
-  };
-
   return (
-    <div className="flex flex-col sm:flex-row gap-3 justify-between">
-      <div className="flex flex-wrap gap-2">
-        <Button onClick={handleCloneUseCase} variant="outline" className="flex items-center gap-2">
-          <Copy className="h-4 w-4" />
+    <div className="flex justify-between w-full">
+      <div className="space-x-2">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={handleDownload}
+        >
+          <Download className="mr-2 h-4 w-4" />
+          Download Plan
+        </Button>
+        
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={handleClone}
+        >
+          <Copy className="mr-2 h-4 w-4" />
           Clone Use Case
         </Button>
-        <Button variant="outline" className="flex items-center gap-2">
-          <LayoutDashboard className="h-4 w-4" />
-          Add to Dashboard
-        </Button>
-        <Button variant="outline" className="flex items-center gap-2">
-          <Map className="h-4 w-4" />
-          Add to Roadmap
-        </Button>
       </div>
-      <div className="flex gap-2">
-        <Button onClick={handleDownload} variant="outline" className="flex items-center gap-2">
-          <Download className="h-4 w-4" />
-          Download Plan
+      
+      <div className="space-x-2">
+        {onClose && (
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+        )}
+        
+        <Button 
+          size="sm" 
+          onClick={handleSave}
+          disabled={isSaving}
+        >
+          {isSaving ? (
+            <>
+              <Check className="mr-2 h-4 w-4" />
+              Saving...
+            </>
+          ) : (
+            "Save Changes"
+          )}
         </Button>
       </div>
     </div>

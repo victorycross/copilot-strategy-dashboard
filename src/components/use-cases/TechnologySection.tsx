@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import EditableField from "./EditableField";
 import { cn } from "@/lib/utils";
+import { ChevronUp, ChevronDown } from "lucide-react";
 
 interface TechnologySectionProps {
   title: string;
@@ -23,7 +24,8 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
   return (
     <div className={cn(
       "border rounded-lg p-4 transition-all duration-300",
-      "hover:border-muted-foreground/20"
+      "hover:border-muted-foreground/20",
+      !isExpanded && "bg-muted/5"
     )}>
       <div 
         className="cursor-pointer flex items-center justify-between"
@@ -37,7 +39,7 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
           aria-label={isExpanded ? "Collapse section" : "Expand section"}
           className="text-muted-foreground hover:text-foreground"
         >
-          {isExpanded ? "−" : "+"}
+          {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
       </div>
       

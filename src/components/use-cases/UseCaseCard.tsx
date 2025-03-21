@@ -138,33 +138,16 @@ const UseCaseCard = ({
             />
           </div>
           
-          {hasImplementationPlan ? (
-            <div className="mt-4">
-              <ImplementationPlanDrawer 
-                useCase={localUseCase}
-                onUseCaseUpdate={onUseCaseUpdate}
-              >
-                <span className="w-full">
-                  <button className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none">
-                    View Implementation Plan
-                  </button>
-                </span>
-              </ImplementationPlanDrawer>
-            </div>
-          ) : (
-            <div className="mt-4">
-              <ImplementationPlanDrawer 
-                useCase={localUseCase}
-                onUseCaseUpdate={onUseCaseUpdate}
-              >
-                <span className="w-full">
-                  <button className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none">
-                    Create Implementation Plan
-                  </button>
-                </span>
-              </ImplementationPlanDrawer>
-            </div>
-          )}
+          <div className="mt-4">
+            <ImplementationPlanDrawer 
+              useCase={localUseCase}
+              onUseCaseUpdate={onUseCaseUpdate}
+            >
+              <button className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none">
+                {hasImplementationPlan ? "View Implementation Plan" : "Create Implementation Plan"}
+              </button>
+            </ImplementationPlanDrawer>
+          </div>
         </CardContent>
       </Card>
     </motion.div>
