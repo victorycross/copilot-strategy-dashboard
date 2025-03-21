@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -45,7 +44,6 @@ import {
   Briefcase,
   Timer,
   Share2,
-  FileContract,
   GitMerge,
 } from "lucide-react";
 
@@ -276,7 +274,7 @@ const useCases = [
     description: "Tracks legal changes and ensures compliance with regulations.",
     category: "compliance",
     serviceLines: ["TAX", "IFS"],
-    icon: FileContract,
+    icon: FileText,
     priority: "medium",
     phase: "Phase 2",
     complexity: "High",
@@ -933,48 +931,4 @@ const UseCasesPage = () => {
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                >
-                  <div className="flex items-center mb-4">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-yellow-light mr-3">
-                      <span className="text-yellow font-bold">3</span>
-                    </div>
-                    <h2 className="text-xl font-semibold">Phase 3: Advanced Integration</h2>
-                    <span className="ml-3 text-sm text-muted-foreground">
-                      {phase3Cases.length} agents
-                    </span>
-                  </div>
-                  
-                  <p className="text-muted-foreground mb-4">7-9 Months: Sophisticated functionality for strategic advantage</p>
-                  
-                  <motion.div 
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-                  >
-                    {phase3Cases.map(useCase => renderUseCase(useCase))}
-                  </motion.div>
-                </motion.div>
-              )}
-            </div>
-          </TabsContent>
-          
-          {/* Grid View Tab */}
-          <TabsContent value="grid">
-            <motion.div 
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
-            >
-              {filteredUseCases.map(useCase => renderUseCase(useCase))}
-            </motion.div>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
-  );
-};
-
-export default UseCasesPage;
+                  transition={{ duration: 0.5, delay:
