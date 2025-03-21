@@ -7,11 +7,12 @@ import CategoryCard from "@/components/use-cases/CategoryCard";
 import PhaseCard from "@/components/use-cases/PhaseCard";
 import Filters from "@/components/use-cases/Filters";
 import Header from "@/components/use-cases/Header";
+import { toast } from "sonner";
 
 import {
   categories,
   priorities,
-  useCases,
+  useCases as initialUseCases,
   getCategoryCounts,
   getCategoryColor,
   getPriorityBadgeClass
@@ -20,6 +21,8 @@ import {
 const UseCasesPage = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [activePriority, setActivePriority] = useState("all");
+  const [useCases, setUseCases] = useState(initialUseCases);
+  
   const categoryCounts = getCategoryCounts();
   
   // Filter use cases based on active filters
@@ -60,15 +63,28 @@ const UseCasesPage = () => {
     color: priority.color
   }));
 
+  // Handle use case updates
+  const handleUseCaseUpdate = (updatedUseCase) => {
+    // Update the use cases array with the modified use case
+    const updatedUseCases = useCases.map(uc => 
+      uc.id === updatedUseCase.id ? updatedUseCase : uc
+    );
+    
+    setUseCases(updatedUseCases);
+    
+    // Show a toast notification
+    toast.success(`Updated ${updatedUseCase.name}`);
+  };
+
   // Render use case card
   const renderUseCase = (useCase) => {
-    // Make sure we pass the implementation plan data correctly
     return (
       <UseCaseCard 
         key={useCase.id}
         useCase={useCase}
         getCategoryColor={getCategoryColor}
         getPriorityBadgeClass={getPriorityBadgeClass}
+        onUseCaseUpdate={handleUseCaseUpdate}
       />
     );
   };

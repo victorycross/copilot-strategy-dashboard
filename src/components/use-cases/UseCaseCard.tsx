@@ -3,6 +3,8 @@ import { LucideIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ImplementationPlanDrawer from "./ImplementationPlanDrawer";
+import EditableField from "./EditableField";
+import { useState } from "react";
 
 // Animation variants for the card
 const itemVariants = {
@@ -37,9 +39,15 @@ interface UseCaseCardProps {
   };
   getCategoryColor: (categoryId: string) => string;
   getPriorityBadgeClass: (priority: string) => string;
+  onUseCaseUpdate?: (updatedUseCase: any) => void;
 }
 
-const UseCaseCard = ({ useCase, getCategoryColor, getPriorityBadgeClass }: UseCaseCardProps) => {
+const UseCaseCard = ({ 
+  useCase, 
+  getCategoryColor, 
+  getPriorityBadgeClass,
+  onUseCaseUpdate = () => {} // Default no-op function if not provided
+}: UseCaseCardProps) => {
   const Icon = useCase.icon;
   const categoryColor = getCategoryColor(useCase.category);
   const priorityBadgeClass = getPriorityBadgeClass(useCase.priority);
@@ -47,9 +55,25 @@ const UseCaseCard = ({ useCase, getCategoryColor, getPriorityBadgeClass }: UseCa
   // Determine if the card has an implementation plan
   const hasImplementationPlan = !!useCase.implementationPlan;
   
+  // Local state for the use case data
+  const [localUseCase, setLocalUseCase] = useState(useCase);
+
+  // Handle field updates
+  const handleFieldUpdate = (field: string, value: string) => {
+    const updatedUseCase = { ...localUseCase, [field]: value };
+    setLocalUseCase(updatedUseCase);
+    onUseCaseUpdate(updatedUseCase);
+  };
+
+  // Options for editable fields
+  const phaseOptions = ["Phase 1", "Phase 2", "Phase 3"];
+  const complexityOptions = ["Low", "Medium", "High"];
+  const valueOptions = ["Low", "Medium", "High"];
+  const priorityOptions = ["low", "medium", "high", "strategic"];
+  
   return (
     <motion.div 
-      key={useCase.id}
+      key={localUseCase.id}
       variants={itemVariants}
       className="data-card"
     >
@@ -61,43 +85,59 @@ const UseCaseCard = ({ useCase, getCategoryColor, getPriorityBadgeClass }: UseCa
                 <Icon className={`w-4 h-4 text-${categoryColor}`} />
               </div>
               {hasImplementationPlan ? (
-                <ImplementationPlanDrawer useCase={useCase}>
+                <ImplementationPlanDrawer useCase={localUseCase}>
                   <CardTitle className="text-base cursor-pointer hover:text-primary hover:underline">
-                    {useCase.name}
+                    {localUseCase.name}
                   </CardTitle>
                 </ImplementationPlanDrawer>
               ) : (
-                <CardTitle className="text-base">{useCase.name}</CardTitle>
+                <CardTitle className="text-base">{localUseCase.name}</CardTitle>
               )}
             </div>
-            <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${priorityBadgeClass}`}>
-              {useCase.phase}
-            </span>
+            <EditableField 
+              label="Phase"
+              value={localUseCase.phase}
+              options={phaseOptions}
+              onValueChange={(value) => handleFieldUpdate('phase', value)}
+            />
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground mb-3">{useCase.description}</p>
+          <p className="text-sm text-muted-foreground mb-3">{localUseCase.description}</p>
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div>
-              <p className="text-muted-foreground">Complexity</p>
-              <p className="font-medium">{useCase.complexity}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">Cross-Service Value</p>
-              <p className="font-medium">{useCase.crossServiceValue}</p>
-            </div>
+            <EditableField 
+              label="Complexity"
+              value={localUseCase.complexity}
+              options={complexityOptions}
+              onValueChange={(value) => handleFieldUpdate('complexity', value)}
+            />
+            <EditableField 
+              label="Cross-Service Value"
+              value={localUseCase.crossServiceValue}
+              options={valueOptions}
+              onValueChange={(value) => handleFieldUpdate('crossServiceValue', value)}
+            />
           </div>
           
-          <ServiceLines serviceLines={useCase.serviceLines} />
+          <ServiceLines serviceLines={localUseCase.serviceLines} />
           
           <div className="mt-3">
             <p className="text-xs text-muted-foreground">Key Benefit</p>
-            <p className="text-sm font-medium">{useCase.keyBenefit}</p>
+            <p className="text-sm font-medium">{localUseCase.keyBenefit}</p>
+          </div>
+
+          <div className="mt-3">
+            <EditableField 
+              label="Priority"
+              value={localUseCase.priority}
+              options={priorityOptions}
+              onValueChange={(value) => handleFieldUpdate('priority', value)}
+            />
           </div>
           
           {hasImplementationPlan && (
             <div className="mt-4">
-              <ImplementationPlanDrawer useCase={useCase}>
+              <ImplementationPlanDrawer useCase={localUseCase}>
                 <span className="w-full">
                   <button className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none">
                     View Implementation Plan
