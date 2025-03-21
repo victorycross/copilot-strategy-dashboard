@@ -59,18 +59,31 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
   };
 
   const handleOpen = () => {
+    console.log("Opening dialog");
     setIsOpen(true);
   };
   
   const handleClose = () => {
+    console.log("Closing dialog");
     setIsOpen(false);
+  };
+  
+  // We need to handle clicks with stopPropagation to prevent event bubbling issues
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleOpen();
   };
   
   return (
     <>
       {children ? (
         <div 
-          onClick={handleOpen}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleOpen();
+          }}
           className="cursor-pointer"
         >
           {children}
@@ -78,7 +91,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
       ) : (
         <button 
           className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none"
-          onClick={handleOpen}
+          onClick={handleButtonClick}
         >
           {localUseCase.implementationPlan && 
            Object.values(localUseCase.implementationPlan).some(value => value) 
