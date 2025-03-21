@@ -44,6 +44,9 @@ const UseCaseCard = ({ useCase, getCategoryColor, getPriorityBadgeClass }: UseCa
   const categoryColor = getCategoryColor(useCase.category);
   const priorityBadgeClass = getPriorityBadgeClass(useCase.priority);
   
+  // Determine if the card has an implementation plan
+  const hasImplementationPlan = !!useCase.implementationPlan;
+  
   return (
     <motion.div 
       key={useCase.id}
@@ -57,7 +60,15 @@ const UseCaseCard = ({ useCase, getCategoryColor, getPriorityBadgeClass }: UseCa
               <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-${categoryColor}-light mr-3`}>
                 <Icon className={`w-4 h-4 text-${categoryColor}`} />
               </div>
-              <CardTitle className="text-base">{useCase.name}</CardTitle>
+              {hasImplementationPlan ? (
+                <ImplementationPlanDrawer useCase={useCase}>
+                  <CardTitle className="text-base cursor-pointer hover:text-primary hover:underline">
+                    {useCase.name}
+                  </CardTitle>
+                </ImplementationPlanDrawer>
+              ) : (
+                <CardTitle className="text-base">{useCase.name}</CardTitle>
+              )}
             </div>
             <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${priorityBadgeClass}`}>
               {useCase.phase}
@@ -84,9 +95,15 @@ const UseCaseCard = ({ useCase, getCategoryColor, getPriorityBadgeClass }: UseCa
             <p className="text-sm font-medium">{useCase.keyBenefit}</p>
           </div>
           
-          {useCase.implementationPlan && (
+          {hasImplementationPlan && (
             <div className="mt-4">
-              <ImplementationPlanDrawer useCase={useCase} />
+              <ImplementationPlanDrawer useCase={useCase}>
+                <span className="w-full">
+                  <button className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none">
+                    View Implementation Plan
+                  </button>
+                </span>
+              </ImplementationPlanDrawer>
             </div>
           )}
         </CardContent>

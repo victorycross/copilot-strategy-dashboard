@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import { ReactNode } from "react";
 
 interface ImplementationPlanProps {
   useCase: {
@@ -23,9 +24,10 @@ interface ImplementationPlanProps {
       powerBI?: string;
     };
   };
+  children?: ReactNode;
 }
 
-const ImplementationPlanDrawer = ({ useCase }: ImplementationPlanProps) => {
+const ImplementationPlanDrawer = ({ useCase, children }: ImplementationPlanProps) => {
   if (!useCase.implementationPlan) return null;
   
   const handleDownload = () => {
@@ -67,9 +69,13 @@ const ImplementationPlanDrawer = ({ useCase }: ImplementationPlanProps) => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="outline" size="sm" className="w-full">
-          View Implementation Plan
-        </Button>
+        {children ? (
+          children
+        ) : (
+          <Button variant="outline" size="sm" className="w-full">
+            View Implementation Plan
+          </Button>
+        )}
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-4xl">
