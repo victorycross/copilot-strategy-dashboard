@@ -11,7 +11,7 @@ import {
 import { ReactNode, useState } from "react";
 import TechnologySection from "./TechnologySection";
 import PlanActionFooter from "./PlanActionFooter";
-import { UseCase } from "./utils/planUtils";
+import { UseCase } from "./data/types";
 import {
   MsCopilotIcon,
   PowerAutomateIcon,

@@ -1,7 +1,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Download, Copy, Check } from "lucide-react";
-import { UseCase, downloadImplementationPlan, cloneUseCase } from "./utils/planUtils";
+import { downloadImplementationPlan, cloneUseCase } from "./utils/planUtils";
+import { UseCase } from "./data/types";
 import { useState } from "react";
 
 interface PlanActionFooterProps {
