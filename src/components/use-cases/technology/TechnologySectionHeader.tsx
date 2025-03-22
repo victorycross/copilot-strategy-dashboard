@@ -3,6 +3,12 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronUp, ChevronDown, HelpCircle } from "lucide-react";
 import { DialogTrigger } from "@/components/ui/dialog";
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 interface TechnologySectionHeaderProps {
@@ -23,22 +29,31 @@ const TechnologySectionHeader: React.FC<TechnologySectionHeaderProps> = ({
   return (
     <div className="flex items-center justify-between">
       <h3 
-        className={`font-semibold flex items-center gap-2 ${colorClass}`}
+        className={cn("font-semibold flex items-center gap-2", colorClass)}
       >
         {icon}
         {title}
       </h3>
       <div className="flex items-center gap-2">
-        <DialogTrigger asChild>
-          <Button 
-            variant="ghost" 
-            size="icon"
-            className="h-6 w-6"
-            title={`View detailed "${title}" implementation instructions`}
-          >
-            <HelpCircle size={14} className="text-muted-foreground" />
-          </Button>
-        </DialogTrigger>
+        <TooltipProvider>
+          <Tooltip>
+            <DialogTrigger asChild>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="h-6 w-6"
+                >
+                  <HelpCircle size={14} className="text-muted-foreground" />
+                </Button>
+              </TooltipTrigger>
+            </DialogTrigger>
+            <TooltipContent>
+              <p>View detailed "{title}" implementation instructions</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        
         <button 
           type="button"
           aria-label={isExpanded ? "Collapse section" : "Expand section"}
