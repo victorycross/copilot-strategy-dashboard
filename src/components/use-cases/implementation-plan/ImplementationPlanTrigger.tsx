@@ -6,14 +6,15 @@ import { DialogTrigger } from "@/components/ui/dialog";
 interface ImplementationPlanTriggerProps {
   useCase: UseCase;
   children?: ReactNode;
+  asChild?: boolean;
 }
 
-const ImplementationPlanTrigger = ({ useCase, children }: ImplementationPlanTriggerProps) => {
+const ImplementationPlanTrigger = ({ useCase, children, asChild = true }: ImplementationPlanTriggerProps) => {
   const hasImplementationPlan = useCase.implementationPlan && 
     Object.values(useCase.implementationPlan).some(value => value);
 
   return (
-    <DialogTrigger asChild>
+    <DialogTrigger asChild={asChild}>
       {children ? (
         <div className="cursor-pointer">
           {children}
