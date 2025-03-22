@@ -1,4 +1,3 @@
-
 import { 
   Dialog,
   DialogContent,
@@ -11,7 +10,7 @@ import {
 import { ReactNode, useState } from "react";
 import TechnologySection from "./TechnologySection";
 import PlanActionFooter from "./PlanActionFooter";
-import { UseCase, ToolImplementation } from "./data/types";
+import { UseCase, ToolImplementation, ToolConnection } from "./data/types";
 import {
   MsCopilotIcon,
   PowerAutomateIcon,
@@ -49,12 +48,41 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
     return value.summary || "";
   };
 
+  // Helper function to get connections array or create an empty array
+  const getConnections = (toolKey: string): ToolConnection[] => {
+    const implementation = localUseCase.implementationPlan?.[toolKey];
+    if (typeof implementation === 'object' && implementation?.connections) {
+      return implementation.connections;
+    }
+    return [];
+  };
+
+  // Convert a string implementation to object format if needed
+  const ensureObjectFormat = (toolKey: string): ToolImplementation => {
+    const currentValue = localUseCase.implementationPlan?.[toolKey];
+    
+    // If it's already an object, return it
+    if (typeof currentValue === 'object' && currentValue) {
+      return currentValue;
+    }
+    
+    // Otherwise create a new object with the string as summary
+    return {
+      summary: typeof currentValue === 'string' ? currentValue : "",
+      connections: []
+    };
+  };
+
   const handlePlanUpdate = (field: string, value: string) => {
+    // Convert to object format if it's not already
+    const updatedImplementation = ensureObjectFormat(field);
+    updatedImplementation.summary = value;
+    
     const updatedUseCase = { 
       ...localUseCase, 
       implementationPlan: { 
         ...localUseCase.implementationPlan, 
-        [field]: value 
+        [field]: updatedImplementation 
       } 
     };
     
@@ -65,12 +93,67 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
     toast.success(`Updated ${field} implementation details`);
   };
 
+  const handleConnectionUpdate = (sourceToolKey: string, targetToolKey: string, description: string) => {
+    // Get current implementation in object format
+    const implementation = ensureObjectFormat(sourceToolKey);
+    
+    // Find if this connection already exists
+    const existingConnectionIndex = implementation.connections?.findIndex(
+      conn => conn.targetTool === targetToolKey
+    );
+    
+    // Update connections
+    let updatedConnections = [...(implementation.connections || [])];
+    
+    if (existingConnectionIndex !== -1 && existingConnectionIndex !== undefined) {
+      // Update existing connection
+      updatedConnections[existingConnectionIndex] = {
+        targetTool: targetToolKey,
+        description: description
+      };
+    } else {
+      // Add new connection
+      updatedConnections.push({
+        targetTool: targetToolKey,
+        description: description
+      });
+    }
+    
+    // Update implementation with new connections
+    implementation.connections = updatedConnections;
+    
+    // Update use case with new implementation
+    const updatedUseCase = {
+      ...localUseCase,
+      implementationPlan: {
+        ...localUseCase.implementationPlan,
+        [sourceToolKey]: implementation
+      }
+    };
+    
+    setLocalUseCase(updatedUseCase);
+    if (onUseCaseUpdate) {
+      onUseCaseUpdate(updatedUseCase);
+    }
+    toast.success(`Updated ${sourceToolKey} connection to ${targetToolKey}`);
+  };
+
   const handleClose = (open: boolean) => {
     if (!open) {
       // This will trigger when the dialog is closed
       console.log("Dialog closed");
     }
   };
+  
+  // Tool metadata for rendering
+  const tools = [
+    { key: 'msCopilot', title: 'Microsoft Copilot', icon: <MsCopilotIcon />, colorClass: 'text-blue-500' },
+    { key: 'powerAutomate', title: 'Power Automate', icon: <PowerAutomateIcon />, colorClass: 'text-purple-500' },
+    { key: 'powerApps', title: 'Power Apps', icon: <PowerAppsIcon />, colorClass: 'text-green-500' },
+    { key: 'copilotStudio', title: 'Copilot Studio', icon: <CopilotStudioIcon />, colorClass: 'text-yellow-500' },
+    { key: 'powerBI', title: 'Power BI', icon: <PowerBIIcon />, colorClass: 'text-red-500' },
+    { key: 'sharePoint', title: 'SharePoint', icon: null, colorClass: 'text-green-600' }
+  ];
   
   return (
     <Dialog onOpenChange={handleClose}>
@@ -99,50 +182,21 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-6 py-4">
-          {/* Microsoft Copilot section */}
-          <TechnologySection
-            title="Microsoft Copilot"
-            icon={<MsCopilotIcon />}
-            colorClass="text-blue-500"
-            value={getStringValue(localUseCase.implementationPlan.msCopilot)}
-            onValueChange={(value) => handlePlanUpdate('msCopilot', value)}
-          />
-          
-          {/* Power Automate section */}
-          <TechnologySection
-            title="Power Automate"
-            icon={<PowerAutomateIcon />}
-            colorClass="text-purple-500"
-            value={getStringValue(localUseCase.implementationPlan.powerAutomate)}
-            onValueChange={(value) => handlePlanUpdate('powerAutomate', value)}
-          />
-          
-          {/* Power Apps section */}
-          <TechnologySection
-            title="Power Apps"
-            icon={<PowerAppsIcon />}
-            colorClass="text-green-500"
-            value={getStringValue(localUseCase.implementationPlan.powerApps)}
-            onValueChange={(value) => handlePlanUpdate('powerApps', value)}
-          />
-          
-          {/* Copilot Studio section */}
-          <TechnologySection
-            title="Copilot Studio"
-            icon={<CopilotStudioIcon />}
-            colorClass="text-yellow-500"
-            value={getStringValue(localUseCase.implementationPlan.copilotStudio)}
-            onValueChange={(value) => handlePlanUpdate('copilotStudio', value)}
-          />
-          
-          {/* Power BI section */}
-          <TechnologySection
-            title="Power BI"
-            icon={<PowerBIIcon />}
-            colorClass="text-red-500"
-            value={getStringValue(localUseCase.implementationPlan.powerBI)}
-            onValueChange={(value) => handlePlanUpdate('powerBI', value)}
-          />
+          {tools.map((tool) => (
+            <TechnologySection
+              key={tool.key}
+              title={tool.title}
+              icon={tool.icon}
+              colorClass={tool.colorClass}
+              value={getStringValue(localUseCase.implementationPlan?.[tool.key])}
+              onValueChange={(value) => handlePlanUpdate(tool.key, value)}
+              connections={getConnections(tool.key)}
+              availableTargets={tools.filter(t => t.key !== tool.key).map(t => ({ key: t.key, title: t.title }))}
+              onConnectionUpdate={(targetTool, description) => 
+                handleConnectionUpdate(tool.key, targetTool, description)
+              }
+            />
+          ))}
         </div>
         <DialogFooter>
           <PlanActionFooter 
