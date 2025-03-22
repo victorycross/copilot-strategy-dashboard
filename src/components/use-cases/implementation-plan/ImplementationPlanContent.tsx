@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { UseCase } from "../data/types";
 import { tools } from "./ToolMetadata";
 import TechnologySectionList from "./TechnologySectionList";
@@ -19,6 +19,11 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
   onUseCaseUpdate 
 }) => {
   const [localUseCase, setLocalUseCase] = useState(useCase);
+  
+  // Update local state when props change
+  useEffect(() => {
+    setLocalUseCase(useCase);
+  }, [useCase]);
 
   // Wrapper functions that update both local state and call the parent update callback
   const onPlanUpdate = (field: string, value: string) => {

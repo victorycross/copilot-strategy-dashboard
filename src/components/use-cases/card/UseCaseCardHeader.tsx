@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { CardHeader, CardTitle } from "@/components/ui/card";
 import EditableField from "../EditableField";
 import { UseCase } from "../data/types";

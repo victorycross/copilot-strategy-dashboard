@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { CardContent } from "@/components/ui/card";
 import EditableField from "../EditableField";
 import ServiceLines from "./ServiceLines";
-import ImplementationPlanDrawer from "../ImplementationPlanDrawer";
 import { UseCase } from "../data/types";
 import { Button } from "@/components/ui/button";
+import ImplementationPlanDetail from "../ImplementationPlanDetail";
 
 interface UseCaseCardContentProps {
   useCase: UseCase;
@@ -65,14 +65,14 @@ const UseCaseCardContent = ({
       <div className="mt-4">
         <Button 
           variant="default" 
-          className="w-full text-sm text-primary-foreground bg-primary hover:bg-primary/90"
+          className="w-full text-sm bg-primary text-primary-foreground hover:bg-primary/90"
           onClick={() => setOpenDrawer(true)}
         >
           {hasImplementationPlan ? "View Implementation Plan" : "Create Implementation Plan"}
         </Button>
       </div>
       
-      <ImplementationPlanDrawer 
+      <ImplementationPlanDetail 
         useCase={useCase}
         open={openDrawer}
         onOpenChange={setOpenDrawer}
