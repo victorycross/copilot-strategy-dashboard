@@ -64,8 +64,8 @@ const UseCaseCardContent = ({
       
       <div className="mt-4">
         <Button 
-          variant="primary" 
-          className="w-full text-sm"
+          variant="default" 
+          className="w-full text-sm text-primary-foreground bg-primary hover:bg-primary/90"
           onClick={() => setOpenDrawer(true)}
         >
           {hasImplementationPlan ? "View Implementation Plan" : "Create Implementation Plan"}
