@@ -18,7 +18,7 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
   useCase, 
   onUseCaseUpdate 
 }) => {
-  const [localUseCase, setLocalUseCase] = useState(useCase);
+  const [localUseCase, setLocalUseCase] = useState<UseCase>(useCase);
   
   // Update local state when props change
   useEffect(() => {

@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import ImplementationPlanContent from "../implementation-plan/ImplementationPlanContent";
 import PlanActionFooter from "../PlanActionFooter";
-import { toast } from "sonner";
 
 interface UseCaseCardContentProps {
   useCase: UseCase;
@@ -17,6 +16,7 @@ interface UseCaseCardContentProps {
   openDrawer: boolean;
   setOpenDrawer: (open: boolean) => void;
   handleOpenDrawer: () => void;
+  priorityBadgeClass: string;
 }
 
 const UseCaseCardContent = ({
@@ -25,7 +25,8 @@ const UseCaseCardContent = ({
   onUseCaseUpdate,
   openDrawer,
   setOpenDrawer,
-  handleOpenDrawer
+  handleOpenDrawer,
+  priorityBadgeClass
 }: UseCaseCardContentProps) => {
   // Options for editable fields
   const complexityOptions = ["Low", "Medium", "High"];

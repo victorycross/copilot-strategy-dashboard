@@ -1,31 +1,37 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { UseCase } from "./data/types";
 import { UseCaseCardHeader, UseCaseCardContent } from "./card";
 import { itemVariants } from "./card/animations";
+import { toast } from "sonner";
 
 interface UseCaseCardProps {
   useCase: UseCase;
   getCategoryColor: (categoryId: string) => string;
   getPriorityBadgeClass: (priority: string) => string;
-  onUseCaseUpdate?: (updatedUseCase: UseCase) => void;
+  onUseCaseUpdate: (updatedUseCase: UseCase) => void;
 }
 
 const UseCaseCard = ({ 
   useCase, 
   getCategoryColor, 
   getPriorityBadgeClass,
-  onUseCaseUpdate = () => {} // Default no-op function if not provided
+  onUseCaseUpdate
 }: UseCaseCardProps) => {
   const categoryColor = getCategoryColor(useCase.category);
   const priorityBadgeClass = getPriorityBadgeClass(useCase.priority);
   
   // Local state for the use case data
-  const [localUseCase, setLocalUseCase] = useState(useCase);
+  const [localUseCase, setLocalUseCase] = useState<UseCase>(useCase);
   // State for drawer
   const [openDrawer, setOpenDrawer] = useState(false);
+
+  // Update local state when props change
+  useEffect(() => {
+    setLocalUseCase(useCase);
+  }, [useCase]);
 
   // Handle field updates
   const handleFieldUpdate = (field: string, value: string) => {
@@ -59,6 +65,7 @@ const UseCaseCard = ({
   const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
     setLocalUseCase(updatedUseCase);
     onUseCaseUpdate(updatedUseCase);
+    toast.success(`Updated implementation plan for ${updatedUseCase.name}`);
   };
   
   return (
@@ -80,6 +87,7 @@ const UseCaseCard = ({
           openDrawer={openDrawer}
           setOpenDrawer={setOpenDrawer}
           handleOpenDrawer={handleOpenDrawer}
+          priorityBadgeClass={priorityBadgeClass}
         />
       </Card>
     </motion.div>
