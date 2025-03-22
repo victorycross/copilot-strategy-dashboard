@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Download, FileText } from "lucide-react";
+import { Download, FileText, Eye } from "lucide-react";
 import { useCases } from "@/components/use-cases/data";
 import { downloadImplementationPlan } from "@/components/use-cases/utils/planUtils";
 import {
@@ -25,6 +25,8 @@ import {
   getPriorityBadgeClass,
 } from "@/components/use-cases/data/utils";
 import { categories } from "@/components/use-cases/data/categories";
+import ImplementationPlanDetail from "@/components/use-cases/ImplementationPlanDetail";
+import { UseCase } from "@/components/use-cases/data/types";
 
 const ImplementationPlans = () => {
   // Filter use cases that have implementation plans
@@ -33,6 +35,14 @@ const ImplementationPlans = () => {
       useCase.implementationPlan &&
       Object.values(useCase.implementationPlan).some((value) => value)
   );
+
+  const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
+  const [detailOpen, setDetailOpen] = useState(false);
+
+  const handleViewPlan = (useCase: UseCase) => {
+    setSelectedUseCase(useCase);
+    setDetailOpen(true);
+  };
 
   return (
     <div className="container py-8">
@@ -65,7 +75,7 @@ const ImplementationPlans = () => {
                   <TableHead>Priority</TableHead>
                   <TableHead>Complexity</TableHead>
                   <TableHead>Phase</TableHead>
-                  <TableHead className="text-right">Action</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -108,7 +118,15 @@ const ImplementationPlans = () => {
                       </TableCell>
                       <TableCell>{useCase.complexity}</TableCell>
                       <TableCell>{useCase.phase}</TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-right space-x-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleViewPlan(useCase)}
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          View
+                        </Button>
                         <Button
                           variant="outline"
                           size="sm"
@@ -126,6 +144,14 @@ const ImplementationPlans = () => {
           </div>
         </CardContent>
       </Card>
+
+      {selectedUseCase && (
+        <ImplementationPlanDetail
+          useCase={selectedUseCase}
+          open={detailOpen}
+          onOpenChange={setDetailOpen}
+        />
+      )}
     </div>
   );
 };
