@@ -25,9 +25,6 @@ const UseCaseCard = ({
   // Local state for the use case data
   const [localUseCase, setLocalUseCase] = useState<UseCase>(useCase);
   
-  // State for implementation plan drawer
-  const [implementationPlanOpen, setImplementationPlanOpen] = useState(false);
-
   // Update local state when props change
   useEffect(() => {
     setLocalUseCase(useCase);
@@ -40,15 +37,8 @@ const UseCaseCard = ({
     onUseCaseUpdate(updatedUseCase);
   };
   
-  // Handle opening the implementation plan dialog
-  const handleOpenImplementationPlan = () => {
-    console.log("Opening implementation plan dialog for:", localUseCase.name);
-    setImplementationPlanOpen(true);
-  };
-  
   // Handle updating the use case from the implementation plan
   const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
-    console.log("Updating use case from implementation plan:", updatedUseCase.name);
     setLocalUseCase(updatedUseCase);
     onUseCaseUpdate(updatedUseCase);
   };
@@ -70,9 +60,6 @@ const UseCaseCard = ({
           onFieldUpdate={handleFieldUpdate}
           onUseCaseUpdate={handleUseCaseUpdate}
           priorityBadgeClass={priorityBadgeClass}
-          implementationPlanOpen={implementationPlanOpen}
-          setImplementationPlanOpen={setImplementationPlanOpen}
-          onOpenImplementationPlan={handleOpenImplementationPlan}
         />
       </Card>
     </motion.div>

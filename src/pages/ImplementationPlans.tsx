@@ -1,7 +1,6 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Download, FileText, Eye } from "lucide-react";
-import { useCases } from "@/components/use-cases/data";
 import { downloadImplementationPlan } from "@/components/use-cases/utils/planUtils";
 import {
   Table,
@@ -28,9 +27,11 @@ import { categories } from "@/components/use-cases/data/categories";
 import ImplementationPlanDetail from "@/components/use-cases/ImplementationPlanDetail";
 import { UseCase } from "@/components/use-cases/data/types";
 import { useUseCaseManager } from "@/hooks/useUseCaseManager";
+import { useSearchParams } from "react-router-dom";
 
 const ImplementationPlans = () => {
-  const { useCases: allUseCases } = useUseCaseManager();
+  const { useCases: allUseCases, handleUseCaseUpdate } = useUseCaseManager();
+  const [searchParams] = useSearchParams();
   
   // Filter use cases that have implementation plans (including empty ones)
   const useCasesWithPlans = allUseCases.filter(
@@ -40,9 +41,26 @@ const ImplementationPlans = () => {
   const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
 
+  // Set the selected use case based on URL parameter
+  useEffect(() => {
+    const useCaseId = searchParams.get("useCaseId");
+    if (useCaseId) {
+      const useCase = allUseCases.find(uc => uc.id.toString() === useCaseId);
+      if (useCase) {
+        setSelectedUseCase(useCase);
+        setDetailOpen(true);
+      }
+    }
+  }, [searchParams, allUseCases]);
+
   const handleViewPlan = (useCase: UseCase) => {
     setSelectedUseCase(useCase);
     setDetailOpen(true);
+  };
+
+  const handleUseCaseUpdateFromDetail = (updatedUseCase: UseCase) => {
+    handleUseCaseUpdate(updatedUseCase);
+    setSelectedUseCase(updatedUseCase);
   };
 
   return (
@@ -86,9 +104,10 @@ const ImplementationPlans = () => {
                     (c) => c.id === useCase.category
                   );
                   const categoryName = category ? category.name : useCase.category;
+                  const isSelected = selectedUseCase?.id === useCase.id;
 
                   return (
-                    <TableRow key={useCase.id}>
+                    <TableRow key={useCase.id} className={isSelected ? "bg-muted/50" : ""}>
                       <TableCell className="font-medium">
                         <span className="text-primary hover:text-primary/80 hover:underline cursor-pointer" 
                               onClick={() => handleViewPlan(useCase)}>
@@ -154,6 +173,7 @@ const ImplementationPlans = () => {
           useCase={selectedUseCase}
           open={detailOpen}
           onOpenChange={setDetailOpen}
+          onUseCaseUpdate={handleUseCaseUpdateFromDetail}
         />
       )}
     </div>

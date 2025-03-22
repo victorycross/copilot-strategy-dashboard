@@ -5,16 +5,13 @@ import EditableField from "../EditableField";
 import ServiceLines from "./ServiceLines";
 import { UseCase } from "../data/types";
 import { Button } from "@/components/ui/button";
-import ImplementationPlanDialog from "../implementation-plan/ImplementationPlanDialog";
+import { useNavigate } from "react-router-dom";
 
 interface UseCaseCardContentProps {
   useCase: UseCase;
   onFieldUpdate: (field: string, value: string) => void;
   onUseCaseUpdate: (updatedUseCase: UseCase) => void;
   priorityBadgeClass: string;
-  implementationPlanOpen: boolean;
-  setImplementationPlanOpen: (open: boolean) => void;
-  onOpenImplementationPlan: () => void;
 }
 
 const UseCaseCardContent = ({
@@ -22,10 +19,9 @@ const UseCaseCardContent = ({
   onFieldUpdate,
   onUseCaseUpdate,
   priorityBadgeClass,
-  implementationPlanOpen,
-  setImplementationPlanOpen,
-  onOpenImplementationPlan
 }: UseCaseCardContentProps) => {
+  const navigate = useNavigate();
+  
   // Options for editable fields
   const complexityOptions = ["Low", "Medium", "High"];
   const valueOptions = ["Low", "Medium", "High"];
@@ -34,18 +30,11 @@ const UseCaseCardContent = ({
   // Determine if the card has an implementation plan
   const hasImplementationPlan = !!useCase.implementationPlan;
 
-  // Handle opening the implementation plan dialog
-  const handleOpenDialog = (e: React.MouseEvent) => {
+  // Handle navigation to implementation plan page
+  const handleViewImplementationPlan = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("Button clicked, opening implementation plan dialog");
-    onOpenImplementationPlan();
-  };
-
-  // Handle the dialog's open state change
-  const handleOpenChange = (open: boolean) => {
-    console.log("Dialog open state changing to:", open);
-    setImplementationPlanOpen(open);
+    navigate(`/implementation-plans?useCaseId=${useCase.id}`);
   };
 
   return (
@@ -86,19 +75,11 @@ const UseCaseCardContent = ({
         <Button 
           variant="default" 
           className="w-full text-sm bg-primary text-primary-foreground hover:bg-primary/90"
-          onClick={handleOpenDialog}
+          onClick={handleViewImplementationPlan}
         >
-          {hasImplementationPlan ? "View Implementation Plan" : "Create Implementation Plan"}
+          View Implementation Plan
         </Button>
       </div>
-      
-      {/* Implementation Plan Dialog */}
-      <ImplementationPlanDialog
-        useCase={useCase}
-        onUseCaseUpdate={onUseCaseUpdate}
-        open={implementationPlanOpen}
-        onOpenChange={handleOpenChange}
-      />
     </CardContent>
   );
 };
