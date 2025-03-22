@@ -1,5 +1,5 @@
 
-import { FileText, Globe, Database } from "lucide-react";
+import { FileText, Database, Filter, Globe, Search, Eye, BookOpen } from "lucide-react";
 import { UseCase } from "../types";
 
 export const dataManagementUseCases: UseCase[] = [
@@ -16,755 +16,11 @@ export const dataManagementUseCases: UseCase[] = [
     crossServiceValue: "High",
     keyBenefit: "60% reduction in document processing time",
     implementationPlan: {
-      msCopilot: {
-        summary: "Extract and summarize key information from documents",
-        examples: [
-          {
-            title: "Document Summary",
-            description: "Use Copilot to create concise summaries of lengthy documents",
-            example: "Summarize the main points from this 30-page contract focusing on payment terms and deliverables."
-          }
-        ],
-        connections: [
-          {
-            targetTool: "powerAutomate",
-            description: "Generate summaries that trigger Power Automate flows for further processing"
-          }
-        ],
-        detailedInstructions: `# Microsoft Copilot Implementation Guide for Document Analysis
-
-## Prerequisites
-1. Microsoft 365 account with Copilot license
-2. Access to organization's document repository
-3. Basic understanding of natural language prompting
-
-## Step 1: Set Up Document Access
-1. Ensure your Microsoft Copilot has access to your document libraries
-   - Open Microsoft 365 admin center
-   - Navigate to Settings > Org Settings > Copilot
-   - Verify document sources are correctly connected
-
-## Step 2: Create Effective Prompts
-For tax and financial document analysis, use these template prompts:
-
-### Financial Statement Analysis
-\`\`\`
-Analyze this financial statement and identify:
-1. Key financial ratios
-2. Year-over-year changes exceeding 10%
-3. Potential tax implications
-4. Summarize in 3-5 bullet points
-\`\`\`
-
-### Contract Analysis
-\`\`\`
-Extract from this contract:
-1. Payment terms and deadlines
-2. Service level agreements
-3. Termination clauses
-4. Tax implications
-Create a table with these key points.
-\`\`\`
-
-## Step 3: Train Users
-1. Schedule 1-hour training sessions for team members
-2. Create a prompt library document in SharePoint with effective examples
-3. Develop best practices guide for document analysis scenarios
-
-## Step 4: Integration Strategy
-1. Use browser plugin for easy access to Copilot during document review
-2. Train users to save Copilot responses in standardized format
-3. Develop workflow for sharing insights with team members
-
-## Step 5: Measuring Success
-1. Track time spent on document analysis before and after implementation
-2. Survey users on quality of extracted information
-3. Compare extraction accuracy with previous manual processes
-
-## Common Issues and Solutions
-1. **Problem**: Copilot misses specific tax terminology
-   **Solution**: Include specific instructions to focus on tax-relevant terms
-
-2. **Problem**: Long documents exceed context window
-   **Solution**: Split document analysis into sections with focused prompts
-
-3. **Problem**: Inconsistent formatting of outputs
-   **Solution**: Use structured prompts that specify output format (tables, bullet points)`
-      },
-      powerAutomate: {
-        summary: "Create workflows to route documents and trigger analysis",
-        detailedInstructions: `# Power Automate Implementation Guide for Document Processing
-
-## Prerequisites
-1. Power Automate license (Premium recommended for AI Builder features)
-2. Access to SharePoint document libraries
-3. Administrative access to create connections
-
-## Step 1: Set Up Document Storage
-1. Create a structured SharePoint document library
-   - Create separate folders for incoming, processing, and completed documents
-   - Set up appropriate permissions for team access
-
-2. Create document metadata columns
-   - Document Type (Tax Return, Financial Statement, Invoice, etc.)
-   - Processing Status (New, In Progress, Completed)
-   - Priority (High, Medium, Low)
-   - Assigned To (Person responsible)
-
-## Step 2: Create Automated Document Processing Flow
-1. Open Power Automate and select "Create new flow"
-2. Choose "Automated - from blank"
-3. Name your flow (e.g., "Client Document Processing")
-4. Select trigger: "When a file is created in a folder" (SharePoint connector)
-5. Configure the trigger to monitor your incoming documents folder
-
-## Step 3: Add Document Classification Step
-1. Add an AI Builder action: "Extract information from documents"
-2. Configure the model to extract relevant fields based on document type
-3. Add a condition to route documents based on type:
-   - Tax documents → Tax processing subfolder
-   - Financial statements → Financial analysis subfolder
-   - Invoices → Accounting subfolder
-
-## Step 4: Add Notification and Assignment Actions
-1. Add action: "Create a task" (Planner connector)
-   - Assign to appropriate team member based on document type
-   - Set due date (e.g., 2 business days from upload)
-   - Include link to document
-
-2. Add action: "Send an email notification" (Outlook connector)
-   - Notify assigned person
-   - Include document metadata and link
-   - Add priority flag for high-priority documents
-
-## Step 5: Create Status Update Flow
-1. Create a separate flow triggered when document status changes
-2. Add conditions for different status values:
-   - "In Progress" → Send status update to client
-   - "Completed" → Move to completed folder and notify team
-
-## Step 6: Testing and Optimization
-1. Upload test documents of each type
-2. Verify correct routing and task assignment
-3. Check notification delivery
-4. Measure processing time and look for bottlenecks
-
-## Step 7: Error Handling
-1. Add "Configure run after" settings to handle failures
-2. Create a dedicated error handling flow that:
-   - Logs errors to a SharePoint list
-   - Notifies administrators
-   - Attempts to restart failed flows when appropriate
-
-## Advanced Features
-1. Implement approval workflows for sensitive documents
-2. Create weekly summary reports of document processing metrics
-3. Set up automated follow-ups for stalled documents
-
-## Maintenance Plan
-1. Review flow run history weekly
-2. Update document extraction models quarterly
-3. Conduct user feedback sessions monthly`
-      },
-      powerApps: {
-        summary: "Build a custom interface for document submission and review",
-        examples: [
-          {
-            title: "Document Upload Portal",
-            description: "Create an interface for users to upload and categorize documents",
-            example: "Design a form with document type selection, priority setting, and drag-and-drop upload area."
-          },
-          {
-            title: "Document Review Dashboard",
-            description: "Build a dashboard for reviewing extracted document data",
-            example: "Create a table view showing document name, status, assigned reviewer, and key extracted information with filtering options."
-          }
-        ],
-        connections: [
-          {
-            targetTool: "sharePoint",
-            description: "Store uploaded documents and metadata in SharePoint lists"
-          },
-          {
-            targetTool: "powerAutomate",
-            description: "Trigger document processing flows when documents are uploaded"
-          }
-        ],
-        detailedInstructions: `# Power Apps Implementation Guide for Document Management
-
-## Prerequisites
-1. Power Apps license (Premium recommended for full features)
-2. Access to SharePoint document libraries and lists
-3. Basic understanding of Power Apps interface
-
-## Step 1: Plan Your App Structure
-1. Define key screens needed:
-   - Home/Dashboard
-   - Document Upload
-   - Document Search/Browse
-   - Document Review/Detail
-   - Settings/Preferences
-
-2. Define user roles and permissions:
-   - Standard Users (upload and view own documents)
-   - Reviewers (process and tag documents)
-   - Administrators (manage settings and users)
-
-## Step 2: Create a New Canvas App
-1. Open Power Apps Studio
-2. Create a new canvas app (tablet layout recommended)
-3. Name your app (e.g., "Document Management Portal")
-
-## Step 3: Set Up Data Connections
-1. Connect to SharePoint document libraries:
-   - Create a connection to your SharePoint site
-   - Add your document library as a data source
-   - Add any metadata lists as data sources
-
-2. Set up additional connections:
-   - Microsoft 365 users (for user information)
-   - Office 365 Outlook (for notifications)
-   - Power Automate flows (for document processing)
-
-## Step 4: Create the Document Upload Screen
-1. Add a form with these components:
-   - File upload control with image and instructions
-   - Document type dropdown (connected to document types list)
-   - Priority selection (radio buttons or dropdown)
-   - Department/category selection
-   - Description field
-   - Submit button
-
-2. Configure the submit button:
-   - Create a flow that saves document to SharePoint
-   - Pass metadata as parameters
-   - Show success confirmation
-   - Navigate back to dashboard
-
-## Step 5: Build the Document Browser
-1. Create a gallery control:
-   - Connect to your document library
-   - Configure to show document name, type, date, status
-   - Add filter controls above gallery
-   - Add sort options (newest, alphabetical, etc.)
-
-2. Add search functionality:
-   - Create search box that filters gallery
-   - Add advanced search option with more filters
-
-## Step 6: Create Document Detail View
-1. Design detail screen that shows:
-   - Document preview (if possible)
-   - All metadata
-   - Processing status
-   - Extracted information
-   - Action buttons (approve, reject, request changes)
-
-2. Add commenting/annotation feature:
-   - Allow users to highlight sections
-   - Enable comments on specific parts
-   - Save annotations to SharePoint
-
-## Step 7: Build Dashboard
-1. Add summary cards showing:
-   - Documents pending review
-   - Recently uploaded documents
-   - Documents assigned to current user
-   - Processing status metrics
-
-2. Add charts visualizing:
-   - Documents by type
-   - Processing times
-   - User activity
-
-## Step 8: Testing and Deployment
-1. Test with sample documents
-2. Get feedback from potential users
-3. Make refinements based on feedback
-4. Create and test user guides
-5. Deploy to test group before full rollout
-
-## Maintenance and Updates
-1. Monitor usage patterns
-2. Schedule regular updates
-3. Collect ongoing feedback
-4. Add new features based on user needs
-
-## Advanced Features
-1. Implement version control for documents
-2. Add document comparison tools
-3. Integrate Microsoft Teams for collaboration
-4. Add mobile app version for on-the-go access`
-      },
-      copilotStudio: {
-        summary: "Design custom prompt flows for document analysis",
-        examples: [
-          {
-            title: "Document Analysis Bot",
-            description: "Create a bot that can analyze and extract key information from documents",
-            example: "Build a bot that responds to 'Analyze this invoice' by extracting payment terms, amounts, and due dates."
-          }
-        ],
-        connections: [
-          {
-            targetTool: "powerApps",
-            description: "Embed the document analysis bot within the document management app"
-          }
-        ],
-        detailedInstructions: `# Copilot Studio Implementation Guide for Document Analysis
-
-## Prerequisites
-1. Copilot Studio license
-2. Access to organization's knowledge bases
-3. Basic understanding of conversational design
-
-## Step 1: Plan Your Bot's Capabilities
-1. Define primary use cases:
-   - Extracting specific information from documents
-   - Answering questions about document content
-   - Guiding users through document submission
-   - Providing document status updates
-
-2. Create conversation flows for each scenario:
-   - Document upload guidance
-   - Information extraction
-   - Status inquiries
-   - Processing instructions
-
-## Step 2: Create Your Bot in Copilot Studio
-1. Open Copilot Studio
-2. Create a new bot:
-   - Name your bot (e.g., "Document Analysis Assistant")
-   - Select your language(s)
-   - Choose a deployment environment
-
-3. Define bot personality:
-   - Professional and helpful
-   - Concise but thorough
-   - Expert in document processing terminology
-   - Patient with follow-up questions
-
-## Step 3: Build Core Conversation Topics
-1. Create a greeting topic:
-   - Welcome message introducing bot capabilities
-   - Quick help options for common tasks
-   - Clear instructions for document submission
-
-2. Create document analysis topics:
-   - "Extract information" topic for key data extraction
-   - "Summarize document" topic for quick overviews
-   - "Compare documents" topic for finding differences
-
-3. Create guidance topics:
-   - "How to prepare documents" with formatting tips
-   - "Document requirements" explaining standards
-   - "Processing timeline" explaining typical workflows
-
-## Step 4: Implement Document Processing Capabilities
-1. Set up document understanding:
-   - Create document type classifier
-   - Define extractors for different document types
-   - Test with sample documents
-
-2. Configure entity extraction:
-   - Define entities (dates, amounts, parties, terms)
-   - Train entity recognition models
-   - Create entity validation rules
-
-3. Build summarization capability:
-   - Create prompts for different document types
-   - Define output formats (bullet points, tables)
-   - Test with various document lengths
-
-## Step 5: Connect to Backend Systems
-1. Create Power Automate flow connections:
-   - Document library access
-   - Processing status check
-   - User assignment lookup
-
-2. Set up authentication:
-   - Configure SSO for seamless user experience
-   - Set permission levels for different operations
-   - Test with various user roles
-
-## Step 6: Enhance with AI Capabilities
-1. Implement prompt engineering:
-   - Create effective prompts for different document types
-   - Add context for better understanding
-   - Implement follow-up question handling
-
-2. Add knowledge bases:
-   - Connect to document processing guidelines
-   - Link to common document standards
-   - Include FAQ about document requirements
-
-## Step 7: Testing and Refinement
-1. Conduct user testing:
-   - Test with various document types
-   - Collect feedback on accuracy and usability
-   - Identify common failure points
-
-2. Improve language understanding:
-   - Add synonyms for key terms
-   - Expand trigger phrases
-   - Handle different ways users might ask for help
-
-3. Optimize response generation:
-   - Refine output formatting
-   - Adjust detail level based on context
-   - Ensure clear error messages
-
-## Step 8: Deployment and Monitoring
-1. Deploy to production:
-   - Publish to Teams, SharePoint, or web
-   - Create user guides and introduction materials
-   - Schedule training sessions
-
-2. Set up analytics:
-   - Track usage patterns
-   - Monitor success rates
-   - Identify opportunities for improvement
-
-3. Establish maintenance plan:
-   - Regular review of conversation logs
-   - Periodic retraining of AI models
-   - Quarterly feature enhancement`
-      },
-      powerBI: {
-        summary: "Visualize document processing metrics and extracted insights",
-        examples: [
-          {
-            title: "Document Processing Dashboard",
-            description: "Create visualizations of document processing efficiency",
-            example: "Build a dashboard showing average processing time by document type, volume trends, and bottleneck identification."
-          }
-        ],
-        connections: [
-          {
-            targetTool: "sharePoint",
-            description: "Pull document metadata and processing logs from SharePoint for analysis"
-          }
-        ],
-        detailedInstructions: `# Power BI Implementation Guide for Document Analytics
-
-## Prerequisites
-1. Power BI license (Pro or Premium)
-2. Access to document processing data sources
-3. Basic understanding of data modeling and visualization
-
-## Step 1: Identify Key Metrics and Data Sources
-1. Define critical metrics:
-   - Document processing volume
-   - Processing time (total and by stage)
-   - Error/exception rates
-   - User productivity
-   - Document type distribution
-   - Data extraction accuracy
-
-2. Identify data sources:
-   - SharePoint document libraries
-   - Power Automate flow logs
-   - Document metadata
-   - User activity logs
-   - Extraction results database
-
-## Step 2: Set Up Data Connections
-1. Open Power BI Desktop
-2. Create connections to data sources:
-   - Connect to SharePoint lists and libraries
-   - Add SQL databases if applicable
-   - Import Excel tracking sheets if used
-   - Connect to Power Platform dataflows
-
-3. Configure refresh settings:
-   - Set up gateway for on-premises data
-   - Configure scheduled refreshes
-   - Set up incremental refresh for large datasets
-
-## Step 3: Create Data Model
-1. Define relationships between tables:
-   - Documents to document types
-   - Documents to processing stages
-   - Documents to users
-   - Extraction results to documents
-
-2. Create calculated columns and measures:
-   - Processing time calculation
-   - SLA compliance percentage
-   - Error rate calculation
-   - Extraction accuracy metrics
-
-3. Set up hierarchies:
-   - Time hierarchy (year, quarter, month, day)
-   - Document type hierarchy (category, type, subtype)
-   - Organizational hierarchy (department, team, user)
-
-## Step 4: Build Core Visualizations
-1. Create executive summary page:
-   - KPI cards for key metrics
-   - Trend chart of processing volume
-   - Gauge charts for SLA compliance
-   - Alert indicators for problem areas
-
-2. Create operational dashboard:
-   - Document status breakdown
-   - Processing queue length
-   - Current bottlenecks
-   - Staff workload distribution
-
-3. Create performance analysis page:
-   - Processing time by document type
-   - Processing time trends
-   - Comparison to baseline/targets
-   - Exception rate analysis
-
-## Step 5: Add Advanced Analytics
-1. Implement time intelligence:
-   - Month-over-month comparisons
-   - Year-over-year growth
-   - Rolling averages
-   - Seasonal pattern detection
-
-2. Add forecasting:
-   - Predictive models for volume
-   - Processing capacity planning
-   - Exception prediction
-   - Resource requirement forecasts
-
-3. Implement anomaly detection:
-   - Identify unusual processing patterns
-   - Flag potential issues
-   - Monitor for process degradation
-
-## Step 6: Create User-Focused Views
-1. Build team lead dashboard:
-   - Team performance metrics
-   - Individual productivity
-   - Quality metrics
-   - Workload balancing tools
-
-2. Create processor dashboard:
-   - Individual queue status
-   - Performance against targets
-   - Quality metrics
-   - Upcoming work prediction
-
-3. Build executive view:
-   - Cost savings metrics
-   - Process improvement tracking
-   - Cross-department comparisons
-   - Strategic goal progress
-
-## Step 7: Deploy and Share
-1. Publish to Power BI service:
-   - Create workspace for document analytics
-   - Set up row-level security if needed
-   - Configure automatic refresh
-   - Set alerting thresholds
-
-2. Create and distribute apps:
-   - Package reports into an app
-   - Configure navigation experience
-   - Add documentation and help
-   - Share with appropriate users
-
-3. Set up subscriptions and alerts:
-   - Schedule email reports
-   - Configure critical alerts
-   - Set up mobile notifications
-
-## Step 8: Continuous Improvement
-1. Gather user feedback:
-   - Conduct usage surveys
-   - Track page popularity
-   - Monitor question frequency
-
-2. Refine and enhance:
-   - Add new visualizations
-   - Improve performance
-   - Integrate new data sources
-   - Update metrics as processes change
-
-3. Knowledge sharing:
-   - Document insights discovered
-   - Create training for effective dashboard use
-   - Develop best practices guide`
-      },
-      sharePoint: {
-        summary: "Store and organize processed documents with metadata",
-        examples: [
-          {
-            title: "Document Repository",
-            description: "Create a structured document library with appropriate metadata",
-            example: "Set up a document library with columns for document type, processing status, assigned reviewer, and key extracted data points."
-          }
-        ],
-        connections: [
-          {
-            targetTool: "powerAutomate",
-            description: "Trigger workflows when documents are added or modified in SharePoint"
-          }
-        ],
-        detailedInstructions: `# SharePoint Implementation Guide for Document Management
-
-## Prerequisites
-1. SharePoint Online or SharePoint Server
-2. Administrative access to create and configure sites
-3. Understanding of document management requirements
-
-## Step 1: Plan Your Document Management Structure
-1. Define document organization:
-   - Identify document categories
-   - Determine logical groupings
-   - Plan folder structure (if needed)
-   - Define access requirements
-
-2. Create metadata schema:
-   - Document type (choice field)
-   - Status (choice field)
-   - Department/Team (choice field)
-   - Priority (choice field)
-   - Custom fields for extracted data
-
-3. Plan workflows:
-   - Document approval process
-   - Routing rules
-   - Notification requirements
-   - Archiving policies
-
-## Step 2: Create SharePoint Site
-1. Create a dedicated site or use existing site:
-   - Go to SharePoint admin center
-   - Click "Create site"
-   - Choose "Team site" or "Communication site"
-   - Name your site (e.g., "Document Management Center")
-
-2. Configure site settings:
-   - Set appropriate site permissions
-   - Enable required features
-   - Configure navigation
-   - Apply branding if needed
-
-## Step 3: Set Up Document Libraries
-1. Create main document library:
-   - Go to site content
-   - Click "New" > "Document library"
-   - Name it (e.g., "Client Documents")
-
-2. Create additional libraries as needed:
-   - Templates library
-   - Archive library
-   - Department-specific libraries
-
-3. Configure library settings:
-   - Enable versioning
-   - Set required check-out if needed
-   - Configure item-level permissions if required
-
-## Step 4: Create Metadata Columns
-1. Add standard columns to libraries:
-   - Document Type (choice field)
-   - Status (choice field)
-   - Priority (choice field)
-   - Department (choice field)
-   - Assigned To (person field)
-
-2. Add document processing columns:
-   - Processed Date (date field)
-   - Processing Time (number field)
-   - Extraction Confidence (number field)
-   - Extracted Data columns (as needed)
-
-3. Create additional calculated columns:
-   - Days Since Submission
-   - SLA Status
-   - Age Category
-
-## Step 5: Create Content Types
-1. Define content types for different document categories:
-   - Invoice
-   - Contract
-   - Tax Return
-   - Financial Statement
-
-2. Configure each content type:
-   - Add appropriate columns
-   - Set required fields
-   - Configure document template if applicable
-
-3. Apply content types to libraries:
-   - Enable content type management in library settings
-   - Add relevant content types to libraries
-
-## Step 6: Set Up Views
-1. Create status-based views:
-   - New Documents
-   - In Processing
-   - Completed
-   - Exception/Error
-
-2. Create role-based views:
-   - My Assigned Documents
-   - My Department's Documents
-   - High Priority Documents
-   - SLA At Risk
-
-3. Configure each view:
-   - Select relevant columns
-   - Set appropriate filtering
-   - Define sorting (typically by date or priority)
-   - Choose layout (list, tile, etc.)
-
-## Step 7: Configure Document Sets
-1. Create document sets for related documents:
-   - Enable document sets feature
-   - Create document set content types
-   - Configure shared properties
-   - Set up welcome page
-
-2. Configure document set workflows:
-   - Set up automatic routing
-   - Configure approval processes
-   - Create notification rules
-
-## Step 8: Set Up Retention Policies
-1. Define retention schedules:
-   - Determine how long to keep documents
-   - Set up different schedules based on document type
-   - Configure deletion or archiving
-
-2. Implement records management:
-   - Declare certain documents as records
-   - Set up in-place records management
-   - Configure record restrictions
-
-## Step 9: Implement Search Configuration
-1. Customize search experience:
-   - Create custom search pages
-   - Configure refiners based on metadata
-   - Create targeted search verticals
-
-2. Set up metadata-driven search:
-   - Ensure columns are searchable
-   - Create managed properties if needed
-   - Set up result types for document preview
-
-## Step 10: Set Up Integration with Power Platform
-1. Configure SharePoint as data source:
-   - Create appropriate connections
-   - Set up secure access
-   - Test connectivity
-
-2. Create integration points:
-   - Document upload forms
-   - Processing status dashboards
-   - Document viewer webparts
-
-3. Implement automated workflows:
-   - Document upload notifications
-   - Status change alerts
-   - Approval process automations`
-      }
+      msCopilot: "Extract and summarize key information from documents",
+      powerAutomate: "Create workflows to route documents and trigger analysis",
+      powerApps: "Build a custom interface for document submission and review",
+      copilotStudio: "Design custom prompt flows for document analysis",
+      powerBI: "Visualize document processing metrics and extracted insights"
     }
   },
   {
@@ -800,115 +56,709 @@ Create a table with these key points.
     crossServiceValue: "High",
     keyBenefit: "85% reduction in data quality issues",
     implementationPlan: {
-      msCopilot: {
-        summary: "Analyze data patterns and quality issues",
-        examples: [
-          {
-            title: "Data Pattern Analysis",
-            description: "Use Copilot to identify patterns in data that might indicate quality issues",
-            example: "Analyze the last 3 months of customer data and identify any patterns that suggest data quality issues, such as inconsistent formatting or missing fields."
-          },
-          {
-            title: "Quality Report Generation",
-            description: "Generate weekly data quality reports",
-            example: "Create a comprehensive report summarizing the data quality issues found this week, prioritized by severity and impact on business operations."
-          }
-        ],
-        connections: [
-          {
-            targetTool: "powerAutomate",
-            description: "Generate alerts when Copilot identifies critical data quality issues that require immediate attention"
-          },
-          {
-            targetTool: "powerBI",
-            description: "Send Copilot analysis results to Power BI for visualization of data quality metrics over time"
-          }
-        ]
-      },
-      powerAutomate: {
-        summary: "Create automated data quality checks",
-        examples: [
-          {
-            title: "Scheduled Data Validation",
-            description: "Set up automatic validation of new data entries",
-            example: "Create a flow that runs daily at midnight to validate all new data entries from the previous day, checking for duplicates, missing fields, and inconsistent formatting."
-          }
-        ],
-        connections: [
-          {
-            targetTool: "sharePoint",
-            description: "Trigger flows when new data is added to SharePoint lists to perform immediate validation"
-          },
-          {
-            targetTool: "powerApps",
-            description: "Receive notifications from Power Apps when users manually flag data quality issues"
-          }
-        ]
-      },
-      powerApps: {
-        summary: "Build a data quality management dashboard",
-        examples: [
-          {
-            title: "Quality Dashboard",
-            description: "Create an interactive dashboard for monitoring data quality",
-            example: "Design a dashboard showing real-time data quality metrics with filters for department, data source, and time period."
-          }
-        ],
-        connections: [
-          {
-            targetTool: "sharePoint",
-            description: "Connect to SharePoint lists to display and edit data directly within the app"
-          }
-        ]
-      },
-      copilotStudio: {
-        summary: "Develop a data quality assistant",
-        examples: [
-          {
-            title: "Quality Chatbot",
-            description: "Create a conversational interface for data quality management",
-            example: "Build a bot that can answer questions like 'What are the most common data quality issues in the customer database?' or 'Show me the trend of data quality issues over the past month.'"
-          }
-        ],
-        connections: [
-          {
-            targetTool: "powerBI",
-            description: "Access Power BI reports to answer questions about data quality metrics and trends"
-          }
-        ]
-      },
-      powerBI: {
-        summary: "Track data quality metrics and improvement trends",
-        examples: [
-          {
-            title: "Quality Metrics Dashboard",
-            description: "Visualize key data quality metrics",
-            example: "Create a dashboard with charts showing completeness, accuracy, consistency, and timeliness metrics for all critical data sources."
-          }
-        ],
-        connections: [
-          {
-            targetTool: "sharePoint",
-            description: "Pull data directly from SharePoint lists to generate real-time quality metrics"
-          }
-        ]
-      },
-      sharePoint: {
-        summary: "Store and manage data quality documentation and standards",
-        examples: [
-          {
-            title: "Documentation Repository",
-            description: "Create a central repository for data quality standards",
-            example: "Set up a SharePoint site with libraries for data quality policies, standards, and procedures, with version control and approval workflows."
-          }
-        ],
-        connections: [
-          {
-            targetTool: "powerAutomate",
-            description: "Trigger validation workflows when new data is added to SharePoint lists"
-          }
-        ]
-      }
+      msCopilot: "Analyze data patterns and quality issues",
+      powerAutomate: "Create automated data quality checks",
+      powerApps: "Build a data quality management dashboard",
+      copilotStudio: "Develop a data quality assistant",
+      powerBI: "Track data quality metrics and improvement trends"
     }
+  },
+  {
+    id: 111,
+    name: "Data Flow Pattern Analyzer",
+    description: "Monitors and analyzes organization-wide data flows for compliance issues",
+    category: "data-management",
+    serviceLines: ["TAX", "ASR", "DEALS", "IFS"],
+    icon: Filter,
+    priority: "high",
+    phase: "Phase 1",
+    complexity: "High",
+    crossServiceValue: "High",
+    keyBenefit: "90% visibility into previously unknown data flows",
+    implementationPlan: {
+      msCopilot: "Analyze data flow patterns and identify compliance concerns",
+      powerAutomate: "Create automated monitoring and alerting for suspicious flows",
+      powerApps: "Build comprehensive data flow visualization and management tools",
+      copilotStudio: "Develop a conversational data flow analysis assistant",
+      powerBI: "Create interactive data flow maps with compliance overlays"
+    },
+    detailedImplementationGuide: `# Data Flow Pattern Analyzer Implementation Guide
+
+## Overview
+This solution discovers, maps, and continuously monitors data flows throughout the organization to identify compliance risks, unauthorized transfers, and inefficient patterns. It provides visibility into how data moves between systems, applications, and entities.
+
+## Step 1: Data Source Discovery
+1. Create comprehensive inventory of data sources:
+   - Databases and data warehouses
+   - File servers and document repositories
+   - Cloud storage and applications
+   - Email and communication systems
+   - Endpoint devices
+2. Implement automated discovery scanning
+3. Build manual registration capabilities
+
+## Step 2: Network Traffic Analysis
+1. Configure monitoring for:
+   - Internal network traffic
+   - External data transfers
+   - API calls
+   - File transfers
+   - Database queries
+2. Implement protocol-specific analyzers
+3. Build metadata extraction capabilities
+
+## Step 3: Data Flow Mapping
+1. Design entity relationship modeling:
+   - System-to-system connections
+   - Application dependencies
+   - User access patterns
+   - Third-party data sharing
+   - Cross-border transfers
+2. Create visual flow mapping
+3. Implement data volume analytics
+
+## Step 4: Classification Integration
+1. Connect to data classification systems to identify:
+   - Personal data flows
+   - Financial data transfers
+   - Intellectual property movement
+   - Regulated data processing
+2. Implement classification inheritance
+3. Build sensitivity heat mapping
+
+## Step 5: Pattern Recognition Engine
+1. Develop detection capabilities for:
+   - Unusual data movement patterns
+   - Unauthorized access patterns
+   - Excessive data transfers
+   - Compliance-violating flows
+   - Inefficient data routing
+2. Create historical baseline comparisons
+3. Implement anomaly alerting
+
+## Step 6: Compliance Rule Engine
+1. Build comprehensive rule library:
+   - Data residency requirements
+   - Transfer restriction rules
+   - Access control mandates
+   - Processing limitation rules
+   - Retention compliance checks
+2. Create rule-based validation
+3. Implement compliance scoring
+
+## Step 7: Flow Management Interface
+1. Design control dashboard with:
+   - Flow approval capabilities
+   - Exception management
+   - Remediation planning
+   - Flow optimization tools
+   - Documentation generation
+2. Create role-based access controls
+3. Build change management workflows
+
+## Step 8: Alerting and Reporting System
+1. Implement multi-level alerting:
+   - Real-time critical alerts
+   - Daily compliance digests
+   - Weekly pattern reports
+   - Monthly compliance summaries
+2. Create custom reporting capabilities
+3. Build regulatory documentation packages
+
+## Maintenance & Optimization
+1. Regularly update compliance rules
+2. Refine detection algorithms
+3. Expand monitoring coverage
+4. Optimize performance for large environments
+
+## Best Practices
+- Start with highest-risk data systems
+- Calibrate sensitivity to reduce false positives
+- Document legitimate exceptions thoroughly
+- Use visualizations to communicate with stakeholders`,
+    exampleScenarios: [
+      {
+        title: "Financial Services Data Governance",
+        description: "A financial institution implemented the solution to track customer data flows. The system identified several instances where personally identifiable information was being replicated to development environments without proper masking, allowing immediate remediation."
+      },
+      {
+        title: "Global Manufacturing Compliance",
+        description: "A manufacturing company used the system to monitor cross-border data flows. The solution detected unauthorized transfers of European employee data to Asia-Pacific systems, enabling the company to implement proper transfer mechanisms before regulatory issues arose."
+      }
+    ],
+    toolConnections: [
+      {
+        tool: "Microsoft Purview Data Map",
+        description: "Integrates with Microsoft Purview Data Map to enhance data flow visibility and classification"
+      },
+      {
+        tool: "Microsoft Defender for Cloud Apps",
+        description: "Connects with Microsoft Defender for Cloud Apps to monitor SaaS application data flows"
+      },
+      {
+        tool: "Microsoft Sentinel",
+        description: "Uses Microsoft Sentinel's SIEM capabilities to correlate data flow patterns with security events"
+      }
+    ]
+  },
+  {
+    id: 112,
+    name: "Data Inventory Automation",
+    description: "Automatically discovers, catalogs, and maps data assets across the organization",
+    category: "data-management",
+    serviceLines: ["ASR", "IFS"],
+    icon: Database,
+    priority: "high",
+    phase: "Phase 1",
+    complexity: "High",
+    crossServiceValue: "High",
+    keyBenefit: "95% reduction in manual data mapping efforts",
+    implementationPlan: {
+      msCopilot: "Generate comprehensive data asset documentation",
+      powerAutomate: "Create workflows for inventory validation and updates",
+      powerApps: "Build a data inventory management and search portal",
+      copilotStudio: "Develop a conversational data discovery assistant",
+      powerBI: "Visualize data landscape with ownership and sensitivity metrics"
+    },
+    detailedImplementationGuide: `# Data Inventory Automation Implementation Guide
+
+## Overview
+This solution automates the discovery, cataloging, and ongoing maintenance of a comprehensive data inventory. It provides visibility into what data exists, where it's stored, how it's used, and who's responsible for it, enabling effective governance and compliance.
+
+## Step 1: Discovery Configuration
+1. Set up scanning capabilities across:
+   - Structured databases
+   - File servers and storage systems
+   - Cloud applications and storage
+   - Email and collaboration platforms
+   - Local endpoint repositories
+2. Configure scanning parameters:
+   - Scope and exclusions
+   - Depth and sampling rates
+   - Performance impact limitations
+3. Create incremental scanning schedules
+
+## Step 2: Metadata Collection
+1. Design comprehensive metadata schema:
+   - Technical attributes (size, format, location)
+   - Business context (purpose, owner, usage)
+   - Governance details (classification, retention)
+   - Compliance factors (regulations, controls)
+2. Implement automated metadata extraction
+3. Build manual enrichment workflows
+
+## Step 3: Data Classification Integration
+1. Connect to classification systems for:
+   - Sensitivity labeling
+   - PII identification
+   - Confidentiality marking
+   - Value assessment
+2. Implement automated classification suggestion
+3. Create classification verification workflows
+
+## Step 4: Data Relationship Mapping
+1. Develop relationship discovery for:
+   - Parent-child relationships
+   - Source-copy relationships
+   - Reference relationships
+   - Logical data groups
+   - Processing dependencies
+2. Create visual relationship mapping
+3. Build lineage tracking capabilities
+
+## Step 5: Governance Attribution
+1. Implement automated assignment of:
+   - Data owners
+   - Stewards and custodians
+   - Access control groups
+   - Applicable policies
+   - Retention requirements
+2. Create ownership confirmation workflows
+3. Build governance gap identification
+
+## Step 6: Search and Discovery Interface
+1. Design intuitive search experience:
+   - Natural language search
+   - Faceted filtering
+   - Visual browsing
+   - Relationship exploration
+   - Context-aware results
+2. Implement role-based access controls
+3. Create personalized views and saved searches
+
+## Step 7: Maintenance Automation
+1. Build continuous update capabilities:
+   - Change detection
+   - New asset discovery
+   - Decommissioning tracking
+   - Attribute updates
+   - Relationship changes
+2. Implement attestation workflows
+3. Create validation reporting
+
+## Step 8: Compliance Reporting
+1. Design regulation-specific views:
+   - GDPR Article 30 reports
+   - CCPA disclosure reports
+   - HIPAA inventory requirements
+   - Industry-specific documentation
+2. Create customizable reporting
+3. Build evidence package generation
+
+## Maintenance & Optimization
+1. Regularly update scanning patterns
+2. Refine classification integration
+3. Optimize discovery performance
+4. Expand coverage to new data sources
+
+## Best Practices
+- Prioritize critical data systems for initial inventory
+- Balance scanning depth with performance impact
+- Involve business stakeholders in governance attribution
+- Establish regular attestation cadence`,
+    exampleScenarios: [
+      {
+        title: "Regulatory Compliance Program",
+        description: "A regulated financial institution implemented the solution to create a GDPR Article 30 record of processing activities. The automated inventory identified several previously undocumented data processing systems, allowing the compliance team to properly document them before a regulatory audit."
+      },
+      {
+        title: "Data Migration Project",
+        description: "An organization undergoing a major system migration used the tool to discover and catalog legacy data. The automated inventory found over 200 undocumented databases and file shares, preventing critical data from being left behind in the migration."
+      }
+    ],
+    toolConnections: [
+      {
+        tool: "Microsoft Purview Data Catalog",
+        description: "Integrates with Microsoft Purview Data Catalog for enhanced metadata management and data discovery"
+      },
+      {
+        tool: "Microsoft Information Protection",
+        description: "Connects with Microsoft Information Protection to incorporate sensitivity labeling into the inventory"
+      },
+      {
+        tool: "Microsoft Syntex",
+        description: "Uses Microsoft Syntex for intelligent document understanding and metadata extraction"
+      }
+    ]
+  },
+  {
+    id: 113,
+    name: "Social Media Monitoring System",
+    description: "Scans social platforms for potential data leaks and unauthorized disclosures",
+    category: "data-management",
+    serviceLines: ["DEALS", "IFS"],
+    icon: Search,
+    priority: "medium",
+    phase: "Phase 2",
+    complexity: "Medium",
+    crossServiceValue: "Medium",
+    keyBenefit: "85% faster identification of sensitive data exposure",
+    implementationPlan: {
+      msCopilot: "Analyze social content for potential confidential information",
+      powerAutomate: "Create automated monitoring and alert workflows",
+      powerApps: "Build a monitoring dashboard and incident management system",
+      copilotStudio: "Develop investigation assistant for potential exposure incidents",
+      powerBI: "Track exposure metrics and remediation effectiveness"
+    },
+    detailedImplementationGuide: `# Social Media Monitoring System Implementation Guide
+
+## Overview
+This solution scans social media platforms, forums, and public websites to identify potential data leaks, unauthorized disclosures, or confidential information exposure. It provides early detection and rapid response capabilities to minimize damage from data exposure.
+
+## Step 1: Monitoring Scope Configuration
+1. Define target platforms for monitoring:
+   - Major social networks
+   - Industry forums and communities
+   - Code repositories
+   - Paste sites and document sharing platforms
+   - News and media outlets
+2. Configure monitoring parameters
+3. Set up authentication and API connections
+
+## Step 2: Detection Pattern Development
+1. Create comprehensive signature libraries:
+   - Company-specific identifiers
+   - Document watermarks and footers
+   - Source code patterns
+   - Product identifiers
+   - Customer data patterns
+2. Implement fuzzy matching algorithms
+3. Build contextual pattern recognition
+
+## Step 3: Risk Detection Engine
+1. Design tiered detection approach:
+   - Basic pattern matching
+   - Contextual analysis
+   - Natural language understanding
+   - Image recognition
+   - Intent classification
+2. Implement confidence scoring
+3. Create false positive filtering
+
+## Step 4: Alert Management System
+1. Build multi-level alerting:
+   - Severity classification
+   - Risk categorization
+   - Escalation paths
+   - Response suggestions
+   - Evidence capture
+2. Implement notification workflows
+3. Create case management capabilities
+
+## Step 5: Investigation Interface
+1. Design investigation workspace:
+   - Content visualization
+   - Historical context
+   - Similar incidents
+   - Source analysis
+   - Impact assessment
+2. Implement evidence collection
+3. Build response action tracking
+
+## Step 6: Remediation Workflow
+1. Create playbook-driven response:
+   - Takedown requests
+   - Legal notifications
+   - Platform reporting
+   - Public relations coordination
+   - Internal system verification
+2. Implement response tracking
+3. Build effectiveness measurement
+
+## Step 7: Employee Monitoring Guidelines
+1. Develop ethical monitoring framework:
+   - Scope limitations
+   - Privacy considerations
+   - Permitted use cases
+   - Prohibited activities
+   - Employee notification
+2. Create policy documentation
+3. Implement compliance safeguards
+
+## Step 8: Threat Intelligence Integration
+1. Design intelligence feedback loops:
+   - Incident pattern analysis
+   - Threat actor identification
+   - Method evolution tracking
+   - Risk prediction modeling
+   - Preventive control suggestions
+2. Create trend reporting
+3. Build risk forecasting capabilities
+
+## Maintenance & Optimization
+1. Regularly update detection patterns
+2. Refine false positive filtering
+3. Expand platform coverage
+4. Optimize performance for real-time detection
+
+## Best Practices
+- Focus on high-risk information types
+- Balance comprehensiveness with precision
+- Ensure proper legal review of monitoring practices
+- Document incident response for compliance evidence`,
+    exampleScenarios: [
+      {
+        title: "Inadvertent Code Exposure",
+        description: "A technology company implemented the solution to monitor for source code leaks. The system detected proprietary code snippets posted on a developer forum by an employee seeking help, allowing for immediate removal before competitors discovered it."
+      },
+      {
+        title: "Customer Data Protection",
+        description: "A financial services firm used the monitoring system to identify a screenshot of customer information posted on social media by an employee showing their workspace. The early detection enabled prompt removal and targeted training."
+      }
+    ],
+    toolConnections: [
+      {
+        tool: "Microsoft Sentinel",
+        description: "Integrates with Microsoft Sentinel to correlate social media risks with other security threats"
+      },
+      {
+        tool: "Microsoft Defender for Cloud Apps",
+        description: "Connects with Microsoft Defender for Cloud Apps to extend monitoring to cloud-shared content"
+      },
+      {
+        tool: "Microsoft Purview Communication Compliance",
+        description: "Uses Microsoft Purview Communication Compliance for ethical monitoring of employee communications"
+      }
+    ]
+  },
+  {
+    id: 114,
+    name: "Data Retention Scheduler",
+    description: "Generates and enforces customized data retention schedules across systems",
+    category: "data-management",
+    serviceLines: ["TAX", "ASR", "IFS"],
+    icon: Clock,
+    priority: "medium",
+    phase: "Phase 2",
+    complexity: "Medium",
+    crossServiceValue: "High",
+    keyBenefit: "100% documentation of retention decisions",
+    implementationPlan: {
+      msCopilot: "Generate retention period recommendations based on data types and regulations",
+      powerAutomate: "Create automated retention enforcement workflows",
+      powerApps: "Build a retention schedule management and exception system",
+      copilotStudio: "Develop a retention policy advisor for data owners",
+      powerBI: "Track retention compliance and data lifecycle metrics"
+    },
+    detailedImplementationGuide: `# Data Retention Scheduler Implementation Guide
+
+## Overview
+This solution automates the creation, management, and enforcement of data retention schedules across the organization. It balances regulatory requirements, business needs, and data minimization principles to ensure appropriate lifecycle management of information assets.
+
+## Step 1: Regulatory Requirement Mapping
+1. Create comprehensive retention library:
+   - Industry-specific regulations
+   - Geographic requirements
+   - Cross-sector obligations
+   - Internal policies
+   - Contractual obligations
+2. Map requirements to data categories
+3. Identify conflicts and determine precedence
+
+## Step 2: Business Need Assessment
+1. Design business value framework:
+   - Operational necessity periods
+   - Legal defense considerations
+   - Historical value assessment
+   - Analytics requirements
+   - Knowledge management needs
+2. Implement business justification workflows
+3. Create value decay modeling
+
+## Step 3: Retention Schedule Generation
+1. Build recommendation engine for:
+   - Minimum retention periods
+   - Maximum retention limits
+   - Conditional retention rules
+   - Event-based triggers
+   - Exception categories
+2. Implement schedule optimization
+3. Create approval workflows
+
+## Step 4: System Integration
+1. Develop connectors for:
+   - Document management systems
+   - Email and collaboration platforms
+   - Database systems
+   - File shares and storage
+   - Archive systems
+2. Build retention metadata tagging
+3. Create schedule distribution mechanisms
+
+## Step 5: Enforcement Automation
+1. Design lifecycle action workflows:
+   - Review notifications
+   - Archive transfers
+   - Anonymization processes
+   - Deletion actions
+   - Exception handling
+2. Implement approval checkpoints
+3. Build completion verification
+
+## Step 6: Exception Management
+1. Create exception request system:
+   - Legal hold integration
+   - Business justification paths
+   - Temporary extensions
+   - Permanent exceptions
+   - Approval routing
+2. Implement exception documentation
+3. Build regular review triggers
+
+## Step 7: Compliance Documentation
+1. Design comprehensive retention evidence:
+   - Schedule justification
+   - Implementation verification
+   - Exception documentation
+   - Completion certificates
+   - Destruction logs
+2. Create audit-ready reporting
+3. Implement version control for schedule changes
+
+## Step 8: Analytics and Optimization
+1. Build retention intelligence:
+   - Storage reduction metrics
+   - Compliance improvement tracking
+   - Risk reduction measurement
+   - Cost impact analysis
+   - Process efficiency metrics
+2. Create trend analysis
+3. Implement continuous improvement recommendations
+
+## Maintenance & Optimization
+1. Regularly update regulatory requirements
+2. Review business value assessments
+3. Optimize integration performance
+4. Expand system coverage
+
+## Best Practices
+- Document retention decisions and justifications
+- Implement consistent metadata for retention
+- Create clear ownership for retention decisions
+- Balance minimization with legitimate needs`,
+    exampleScenarios: [
+      {
+        title: "Financial Records Management",
+        description: "A financial institution implemented the solution to manage retention of transaction records. The system automatically determined appropriate retention periods based on transaction types, jurisdictions, and account status, then enforced consistent retention across all systems."
+      },
+      {
+        title: "Healthcare Information Lifecycle",
+        description: "A healthcare provider used the system to manage patient records retention. The automated scheduler correctly applied longer retention periods for pediatric records while ensuring timely review of records eligible for destruction, reducing storage costs while maintaining compliance."
+      }
+    ],
+    toolConnections: [
+      {
+        tool: "Microsoft Purview Records Management",
+        description: "Integrates with Microsoft Purview Records Management for retention labeling and disposition processes"
+      },
+      {
+        tool: "Microsoft Syntex",
+        description: "Uses Microsoft Syntex for intelligent content analysis to determine appropriate retention periods"
+      },
+      {
+        tool: "SharePoint Retention Policies",
+        description: "Leverages SharePoint retention policies for document-level retention enforcement"
+      }
+    ]
+  },
+  {
+    id: 115,
+    name: "AI-Powered Data Classification Engine",
+    description: "Automatically categorizes and labels data based on content and context",
+    category: "data-management",
+    serviceLines: ["TAX", "ASR", "DEALS", "IFS"],
+    icon: BookOpen,
+    priority: "high",
+    phase: "Phase 1",
+    complexity: "High",
+    crossServiceValue: "High",
+    keyBenefit: "95% accuracy in sensitive data identification",
+    implementationPlan: {
+      msCopilot: "Develop and refine classification rules based on content analysis",
+      powerAutomate: "Create workflows to apply protection based on classification",
+      powerApps: "Build a classification management and exception handling system",
+      copilotStudio: "Create a classification assistant to guide users",
+      powerBI: "Visualize classification coverage and protection metrics"
+    },
+    detailedImplementationGuide: `# AI-Powered Data Classification Engine Implementation Guide
+
+## Overview
+This solution uses artificial intelligence to automatically analyze, categorize, and label data across the organization based on content, context, and metadata. It enables appropriate protection, governance, and lifecycle management for all information assets.
+
+## Step 1: Classification Taxonomy Development
+1. Create multi-dimensional classification framework:
+   - Sensitivity levels (Public, Internal, Confidential, Restricted)
+   - Content categories (Financial, HR, Customer, Intellectual Property)
+   - Regulatory relevance (GDPR, HIPAA, PCI, etc.)
+   - Business value tiers (Critical, High, Medium, Low)
+2. Develop category definitions and examples
+3. Create classification visualization scheme
+
+## Step 2: Training Data Preparation
+1. Build comprehensive training datasets:
+   - Labeled document examples
+   - Structured data samples
+   - Email and communication examples
+   - Code and technical content
+   - Media and image samples
+2. Implement quality control process
+3. Create cross-validation sets
+
+## Step 3: AI Model Development
+1. Design multi-technique approach:
+   - Pattern recognition
+   - Natural language processing
+   - Document understanding
+   - Image content analysis
+   - Context evaluation
+2. Implement confidence scoring
+3. Build model performance monitoring
+
+## Step 4: Classification Engine Configuration
+1. Create processing workflows for:
+   - Document repositories
+   - Email systems
+   - Database content
+   - File shares
+   - Cloud storage
+2. Implement batch and real-time processing
+3. Build incremental scanning capabilities
+
+## Step 5: Human Review System
+1. Design review interface for:
+   - Low-confidence classifications
+   - Random quality assurance
+   - Exception handling
+   - Model improvement feedback
+   - New pattern submission
+2. Create review workflow routing
+3. Build feedback integration
+
+## Step 6: Protection Action Framework
+1. Develop policy-driven protection:
+   - Access control adjustment
+   - Encryption application
+   - Watermarking and labeling
+   - Usage restriction enforcement
+   - Monitoring level assignment
+2. Implement automated protection application
+3. Create exception handling
+
+## Step 7: User Experience Integration
+1. Build seamless user touchpoints:
+   - Classification indicators
+   - Override capabilities
+   - Justification workflows
+   - Education messages
+   - Guided remediation
+2. Implement minimal friction design
+3. Create personalized guidance
+
+## Step 8: Analytics and Reporting
+1. Design comprehensive intelligence:
+   - Classification coverage
+   - Protection effectiveness
+   - User behavior metrics
+   - Risk reduction measurement
+   - Compliance improvement tracking
+2. Create trend analysis reporting
+3. Build executive dashboards
+
+## Maintenance & Optimization
+1. Regularly retrain models with new data
+2. Refine classification rules
+3. Optimize processing performance
+4. Expand coverage to new repositories
+
+## Best Practices
+- Start with high-risk data repositories
+- Balance automation with appropriate human oversight
+- Provide clear remediation guidance to users
+- Document classification decisions for compliance evidence`,
+    exampleScenarios: [
+      {
+        title: "Enterprise Content Management",
+        description: "A large corporation implemented the solution across their document management system. The AI automatically classified over 3 million documents, identifying 150,000 improperly secured documents containing sensitive information, which were then automatically protected."
+      },
+      {
+        title: "Research Data Protection",
+        description: "A pharmaceutical company used the system to classify research data. The AI correctly identified combinations of seemingly innocuous data elements that together could reveal confidential research directions, applying appropriate protections before external sharing."
+      }
+    ],
+    toolConnections: [
+      {
+        tool: "Microsoft Purview Information Protection",
+        description: "Integrates with Microsoft Purview Information Protection to apply sensitivity labels based on classification"
+      },
+      {
+        tool: "Microsoft Syntex",
+        description: "Leverages Microsoft Syntex's advanced document understanding for enhanced classification accuracy"
+      },
+      {
+        tool: "Microsoft Defender for Cloud Apps",
+        description: "Connects with Microsoft Defender for Cloud Apps to extend classification to cloud applications"
+      }
+    ]
   }
 ];
+
