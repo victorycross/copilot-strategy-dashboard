@@ -154,7 +154,7 @@ const ImplementationPlanDetail: React.FC<ImplementationPlanDetailProps> = ({
                   <li key={idx} className="flex gap-2 items-start">
                     <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></div>
                     <div>
-                      <span className="font-medium">{connection.targetTool}:</span>{" "}
+                      <span className="font-medium">{connection.targetTool || connection.tool}:</span>{" "}
                       {connection.description}
                     </div>
                   </li>
@@ -173,7 +173,7 @@ const ImplementationPlanDetail: React.FC<ImplementationPlanDetailProps> = ({
     if (!data) return null;
     
     // Check if detailed instructions are available
-    if (typeof data === "object" && data.detailedInstructions && data.detailedInstructions.trim() !== "") {
+    if (typeof data === 'object' && data.detailedInstructions && data.detailedInstructions.trim() !== "") {
       return true;
     }
     return false;

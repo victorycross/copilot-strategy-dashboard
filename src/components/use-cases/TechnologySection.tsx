@@ -139,13 +139,13 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
                         {connections.map((connection, index) => (
                           <div key={index} className="flex items-start gap-2 p-2 bg-muted/20 rounded-md">
                             <div className="flex-1">
-                              <p className="text-sm font-medium">{getToolDisplayName(connection.targetTool)}</p>
+                              <p className="text-sm font-medium">{getToolDisplayName(connection.targetTool || '')}</p>
                               <p className="text-sm text-muted-foreground">{connection.description}</p>
                             </div>
                             <Button 
                               variant="ghost" 
                               size="icon"
-                              onClick={() => onConnectionUpdate?.(connection.targetTool, "")}
+                              onClick={() => onConnectionUpdate?.(connection.targetTool || '', "")}
                               title="Remove connection"
                             >
                               <Trash2 size={14} className="text-muted-foreground hover:text-destructive" />

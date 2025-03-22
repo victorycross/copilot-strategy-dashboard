@@ -8,7 +8,8 @@ export interface ToolExample {
 }
 
 export interface ToolConnection {
-  tool: string;
+  tool?: string;
+  targetTool?: string;
   description: string;
 }
 

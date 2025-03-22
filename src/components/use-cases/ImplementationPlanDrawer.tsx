@@ -1,4 +1,3 @@
-
 import { 
   Dialog,
   DialogContent,
@@ -124,12 +123,14 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
     } else if (existingConnectionIndex !== -1 && existingConnectionIndex !== undefined) {
       // Update existing connection
       updatedConnections[existingConnectionIndex] = {
+        tool: sourceToolKey,
         targetTool: targetToolKey,
         description: description
       };
     } else {
       // Add new connection
       updatedConnections.push({
+        tool: sourceToolKey,
         targetTool: targetToolKey,
         description: description
       });
