@@ -13,11 +13,19 @@ interface ImplementationPlanProps {
   useCase: UseCase;
   children?: ReactNode;
   onUseCaseUpdate?: (updatedUseCase: UseCase) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: ImplementationPlanProps) => {
+const ImplementationPlanDrawer = ({ 
+  useCase, 
+  children, 
+  onUseCaseUpdate,
+  open,
+  onOpenChange 
+}: ImplementationPlanProps) => {
   const [localUseCase, setLocalUseCase] = useState(useCase);
-  const [open, setOpen] = useState(false);
+  const [localOpen, setLocalOpen] = useState(false);
   
   if (!localUseCase.implementationPlan) {
     // Create a default implementation plan if it doesn't exist
@@ -38,28 +46,32 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
   };
 
   const handleClose = (isOpen: boolean) => {
-    setOpen(isOpen);
+    // Update local state if we're not using controlled props
+    if (onOpenChange === undefined) {
+      setLocalOpen(isOpen);
+    } else {
+      onOpenChange(isOpen);
+    }
+    
     if (!isOpen) {
       // This will trigger when the drawer is closed
       console.log("Drawer closed");
     }
   };
+
+  // Determine if we're using controlled or uncontrolled open state
+  const isControlled = open !== undefined && onOpenChange !== undefined;
+  const drawerOpen = isControlled ? open : localOpen;
   
   return (
-    <Drawer open={open} onOpenChange={handleClose}>
-      <DrawerTrigger asChild>
-        {children ? (
+    <Drawer open={drawerOpen} onOpenChange={handleClose}>
+      {children && (
+        <DrawerTrigger asChild>
           <div className="cursor-pointer">
             {children}
           </div>
-        ) : (
-          <button className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none">
-            {localUseCase.implementationPlan && Object.values(localUseCase.implementationPlan).some(value => value) 
-              ? "View Implementation Plan" 
-              : "Create Implementation Plan"}
-          </button>
-        )}
-      </DrawerTrigger>
+        </DrawerTrigger>
+      )}
 
       <DrawerContent className="max-h-[85vh]">
         <div className="mx-auto w-full max-w-[800px] p-6">

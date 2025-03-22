@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { CardHeader, CardTitle } from "@/components/ui/card";
 import ImplementationPlanDrawer from "../ImplementationPlanDrawer";
 import EditableField from "../EditableField";
@@ -18,6 +18,7 @@ const UseCaseCardHeader = ({
 }: UseCaseCardHeaderProps) => {
   const Icon = useCase.icon;
   const hasImplementationPlan = !!useCase.implementationPlan;
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const phaseOptions = ["Phase 1", "Phase 2", "Phase 3"];
 
@@ -28,22 +29,30 @@ const UseCaseCardHeader = ({
           <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-${categoryColor}-light mr-3`}>
             <Icon className={`w-4 h-4 text-${categoryColor}`} />
           </div>
+          
           {hasImplementationPlan ? (
-            <ImplementationPlanDrawer 
-              useCase={useCase}
-              onUseCaseUpdate={(updatedUseCase) => {
-                // Pass updates up to parent
-                Object.keys(updatedUseCase).forEach(key => {
-                  if (key !== 'implementationPlan' && useCase[key] !== updatedUseCase[key]) {
-                    onFieldUpdate(key, updatedUseCase[key]);
-                  }
-                });
-              }}
-            >
-              <CardTitle className="text-base cursor-pointer text-primary hover:text-primary/80 hover:underline transition-colors">
+            <>
+              <CardTitle 
+                className="text-base cursor-pointer text-primary hover:text-primary/80 hover:underline transition-colors"
+                onClick={() => setOpenDrawer(true)}
+              >
                 {useCase.name}
               </CardTitle>
-            </ImplementationPlanDrawer>
+              
+              <ImplementationPlanDrawer 
+                useCase={useCase}
+                open={openDrawer}
+                onOpenChange={setOpenDrawer}
+                onUseCaseUpdate={(updatedUseCase) => {
+                  // Pass updates up to parent
+                  Object.keys(updatedUseCase).forEach(key => {
+                    if (key !== 'implementationPlan' && useCase[key] !== updatedUseCase[key]) {
+                      onFieldUpdate(key, updatedUseCase[key]);
+                    }
+                  });
+                }}
+              />
+            </>
           ) : (
             <CardTitle className="text-base">{useCase.name}</CardTitle>
           )}

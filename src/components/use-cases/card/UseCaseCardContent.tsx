@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { CardContent } from "@/components/ui/card";
 import EditableField from "../EditableField";
 import ServiceLines from "./ServiceLines";
@@ -18,6 +18,8 @@ const UseCaseCardContent = ({
   onFieldUpdate,
   onUseCaseUpdate
 }: UseCaseCardContentProps) => {
+  const [openDrawer, setOpenDrawer] = useState(false);
+  
   // Options for editable fields
   const complexityOptions = ["Low", "Medium", "High"];
   const valueOptions = ["Low", "Medium", "High"];
@@ -61,17 +63,20 @@ const UseCaseCardContent = ({
       </div>
       
       <div className="mt-4">
+        <Button 
+          variant="primary" 
+          className="w-full text-sm"
+          onClick={() => setOpenDrawer(true)}
+        >
+          {hasImplementationPlan ? "View Implementation Plan" : "Create Implementation Plan"}
+        </Button>
+        
         <ImplementationPlanDrawer 
           useCase={useCase}
+          open={openDrawer}
+          onOpenChange={setOpenDrawer}
           onUseCaseUpdate={onUseCaseUpdate}
-        >
-          <Button 
-            variant="default" 
-            className="w-full text-sm"
-          >
-            {hasImplementationPlan ? "View Implementation Plan" : "Create Implementation Plan"}
-          </Button>
-        </ImplementationPlanDrawer>
+        />
       </div>
     </CardContent>
   );
