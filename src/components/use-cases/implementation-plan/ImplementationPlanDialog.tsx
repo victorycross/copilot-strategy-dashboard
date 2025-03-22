@@ -14,6 +14,7 @@ import ImplementationPlanContent from "./ImplementationPlanContent";
 import PlanActionFooter from "../PlanActionFooter";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { isImplementationPlanInitialized } from "./ConnectionUtils";
 
 interface ImplementationPlanDialogProps {
   useCase: UseCase;
@@ -41,22 +42,48 @@ const ImplementationPlanDialog = ({
   // Update internal open state when prop changes
   useEffect(() => {
     if (open !== undefined) {
+      console.log("Dialog open state changed to:", open);
       setInternalOpen(open);
     }
   }, [open]);
   
   // Initialize implementation plan if it doesn't exist
   useEffect(() => {
-    if (!localUseCase.implementationPlan) {
+    if (!isImplementationPlanInitialized(localUseCase.implementationPlan)) {
+      console.log("Initializing implementation plan for:", localUseCase.name);
       const initializedUseCase = {
         ...localUseCase,
         implementationPlan: {
-          msCopilot: "",
-          powerAutomate: "",
-          powerApps: "",
-          copilotStudio: "",
-          powerBI: "",
-          sharePoint: ""
+          msCopilot: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          powerAutomate: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          powerApps: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          copilotStudio: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          powerBI: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          sharePoint: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          }
         }
       };
       setLocalUseCase(initializedUseCase);
@@ -67,6 +94,7 @@ const ImplementationPlanDialog = ({
   }, [localUseCase, onUseCaseUpdate]);
 
   const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
+    console.log("Updating use case in dialog:", updatedUseCase.name);
     setLocalUseCase(updatedUseCase);
     if (onUseCaseUpdate) {
       onUseCaseUpdate(updatedUseCase);
@@ -75,6 +103,7 @@ const ImplementationPlanDialog = ({
   };
 
   const handleOpenChange = (newOpen: boolean) => {
+    console.log("Dialog open state changing to:", newOpen);
     setInternalOpen(newOpen);
     if (onOpenChange) {
       onOpenChange(newOpen);

@@ -1,3 +1,4 @@
+
 import { ToolImplementation, ToolConnection, ImplementationPlan } from "../data/types";
 
 // Helper function to extract string value from either string or ToolImplementation
@@ -73,8 +74,10 @@ export const isImplementationPlanInitialized = (implementationPlan: Implementati
   
   // Check if at least one tool has a non-empty implementation
   const tools = ['msCopilot', 'powerAutomate', 'powerApps', 'copilotStudio', 'powerBI', 'sharePoint'];
-  return tools.some(tool => {
+  
+  // Check that all tool keys exist and have proper object structure
+  return tools.every(tool => {
     const implementation = implementationPlan[tool as keyof ImplementationPlan];
-    return !!implementation;
+    return implementation !== undefined;
   });
 };

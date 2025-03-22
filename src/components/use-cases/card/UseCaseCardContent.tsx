@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { CardContent } from "@/components/ui/card";
 import EditableField from "../EditableField";
 import ServiceLines from "./ServiceLines";
@@ -12,8 +12,9 @@ interface UseCaseCardContentProps {
   onFieldUpdate: (field: string, value: string) => void;
   onUseCaseUpdate: (updatedUseCase: UseCase) => void;
   priorityBadgeClass: string;
-  implementationPlanOpen?: boolean;
-  setImplementationPlanOpen?: (open: boolean) => void;
+  implementationPlanOpen: boolean;
+  setImplementationPlanOpen: (open: boolean) => void;
+  onOpenImplementationPlan: () => void;
 }
 
 const UseCaseCardContent = ({
@@ -21,8 +22,9 @@ const UseCaseCardContent = ({
   onFieldUpdate,
   onUseCaseUpdate,
   priorityBadgeClass,
-  implementationPlanOpen = false,
-  setImplementationPlanOpen = () => {}
+  implementationPlanOpen,
+  setImplementationPlanOpen,
+  onOpenImplementationPlan
 }: UseCaseCardContentProps) => {
   // Options for editable fields
   const complexityOptions = ["Low", "Medium", "High"];
@@ -35,7 +37,7 @@ const UseCaseCardContent = ({
   // Handle opening the implementation plan dialog
   const handleOpenDialog = () => {
     console.log("Opening implementation plan dialog");
-    setImplementationPlanOpen(true);
+    onOpenImplementationPlan();
   };
 
   return (

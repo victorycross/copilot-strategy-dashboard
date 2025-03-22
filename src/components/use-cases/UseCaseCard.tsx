@@ -38,6 +38,12 @@ const UseCaseCard = ({
     onUseCaseUpdate(updatedUseCase);
   };
   
+  // Handle opening the implementation plan dialog
+  const handleOpenImplementationPlan = () => {
+    console.log("Opening implementation plan dialog for:", localUseCase.name);
+    setImplementationPlanOpen(true);
+  };
+  
   // Handle updating the use case from the implementation plan
   const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
     setLocalUseCase(updatedUseCase);
@@ -63,6 +69,7 @@ const UseCaseCard = ({
           priorityBadgeClass={priorityBadgeClass}
           implementationPlanOpen={implementationPlanOpen}
           setImplementationPlanOpen={setImplementationPlanOpen}
+          onOpenImplementationPlan={handleOpenImplementationPlan}
         />
       </Card>
     </motion.div>

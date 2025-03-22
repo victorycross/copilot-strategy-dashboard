@@ -25,15 +25,40 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
   // Initialize implementation plan if it doesn't exist
   useEffect(() => {
     if (!localUseCase.implementationPlan) {
+      console.log("Implementation plan missing, initializing...");
       const initializedUseCase = {
         ...localUseCase,
         implementationPlan: {
-          msCopilot: "",
-          powerAutomate: "",
-          powerApps: "",
-          copilotStudio: "",
-          powerBI: "",
-          sharePoint: ""
+          msCopilot: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          powerAutomate: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          powerApps: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          copilotStudio: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          powerBI: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          sharePoint: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          }
         }
       };
       setLocalUseCase(initializedUseCase);
@@ -67,6 +92,12 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
       console.error(`Error updating plan for ${toolKey}:`, error);
     }
   };
+
+  // Safety check
+  if (!localUseCase.implementationPlan) {
+    console.warn("Implementation plan is still null in render");
+    return <div>Loading implementation plan...</div>;
+  }
 
   return (
     <div className="space-y-6">
