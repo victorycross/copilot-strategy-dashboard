@@ -1,5 +1,5 @@
 
-import { FileText, Database, Filter, Globe, Search, Eye, BookOpen } from "lucide-react";
+import { FileText, Database, Filter, Globe, Search, Eye, BookOpen, Clock } from "lucide-react";
 import { UseCase } from "../types";
 
 export const dataManagementUseCases: UseCase[] = [

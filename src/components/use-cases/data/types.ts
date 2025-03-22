@@ -4,11 +4,11 @@ import { LucideIcon } from "lucide-react";
 export interface ToolExample {
   title: string;
   description: string;
-  example: string;
+  example?: string;
 }
 
 export interface ToolConnection {
-  targetTool: string;
+  tool: string;
   description: string;
 }
 
@@ -28,6 +28,11 @@ export interface ImplementationPlan {
   sharePoint?: string | ToolImplementation;
 }
 
+export interface ExampleScenario {
+  title: string;
+  description: string;
+}
+
 export interface UseCase {
   id: number;
   name: string;
@@ -41,4 +46,7 @@ export interface UseCase {
   crossServiceValue: string;
   keyBenefit: string;
   implementationPlan?: ImplementationPlan;
+  detailedImplementationGuide?: string;
+  exampleScenarios?: ExampleScenario[];
+  toolConnections?: ToolConnection[];
 }
