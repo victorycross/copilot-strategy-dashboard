@@ -1,6 +1,6 @@
 
 import { UseCase } from "../data/types";
-import TechnologySection from "../TechnologySection";
+import TechnologySection from "../technology/TechnologySection";
 import { tools } from "./ToolMetadata";
 import { 
   getStringValue, 
