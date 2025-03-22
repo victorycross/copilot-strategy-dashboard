@@ -16,6 +16,7 @@ export interface ToolImplementation {
   summary: string;
   examples?: ToolExample[];
   connections?: ToolConnection[];
+  detailedInstructions?: string;
 }
 
 export interface ImplementationPlan {

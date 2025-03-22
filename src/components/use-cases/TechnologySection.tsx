@@ -1,7 +1,8 @@
+
 import React, { useState } from "react";
 import EditableField from "./EditableField";
 import { cn } from "@/lib/utils";
-import { ChevronUp, ChevronDown, Link, Plus, Trash2 } from "lucide-react";
+import { ChevronUp, ChevronDown, Link, Plus, Trash2, HelpCircle, FileText } from "lucide-react";
 import { ToolConnection } from "./data/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +13,16 @@ import {
 } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 interface TechnologySectionProps {
   title: string;
@@ -22,6 +33,8 @@ interface TechnologySectionProps {
   connections?: ToolConnection[];
   availableTargets?: { key: string; title: string }[];
   onConnectionUpdate?: (targetTool: string, description: string) => void;
+  detailedInstructions?: string;
+  onDetailedInstructionsChange?: (value: string) => void;
 }
 
 const TechnologySection: React.FC<TechnologySectionProps> = ({
@@ -33,10 +46,14 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
   connections = [],
   availableTargets = [],
   onConnectionUpdate,
+  detailedInstructions = "",
+  onDetailedInstructionsChange,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [newConnectionTarget, setNewConnectionTarget] = useState("");
   const [newConnectionDescription, setNewConnectionDescription] = useState("");
+  const [isEditingInstructions, setIsEditingInstructions] = useState(false);
+  const [localInstructions, setLocalInstructions] = useState(detailedInstructions);
 
   const toggleExpand = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -56,6 +73,14 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
     return target ? target.title : key;
   };
 
+  const handleSaveInstructions = () => {
+    if (onDetailedInstructionsChange) {
+      onDetailedInstructionsChange(localInstructions);
+      setIsEditingInstructions(false);
+      toast.success(`Detailed instructions for ${title} updated`);
+    }
+  };
+
   return (
     <div className={cn(
       "border rounded-lg p-4 transition-all duration-300",
@@ -69,14 +94,26 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
           {icon}
           {title}
         </h3>
-        <button 
-          type="button"
-          aria-label={isExpanded ? "Collapse section" : "Expand section"}
-          className="text-muted-foreground hover:text-foreground"
-          onClick={toggleExpand}
-        >
-          {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
+        <div className="flex items-center gap-2">
+          <DialogTrigger asChild>
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="h-6 w-6"
+              title={`View detailed "${title}" implementation instructions`}
+            >
+              <HelpCircle size={14} className="text-muted-foreground" />
+            </Button>
+          </DialogTrigger>
+          <button 
+            type="button"
+            aria-label={isExpanded ? "Collapse section" : "Expand section"}
+            className="text-muted-foreground hover:text-foreground"
+            onClick={toggleExpand}
+          >
+            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </button>
+        </div>
       </div>
       
       {isExpanded && (
@@ -164,6 +201,62 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
           )}
         </div>
       )}
+
+      <Dialog>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {icon}
+              <span>{title} Implementation Guide</span>
+            </DialogTitle>
+            <DialogDescription>
+              Detailed step-by-step instructions for implementing this technology
+            </DialogDescription>
+          </DialogHeader>
+          
+          {isEditingInstructions ? (
+            <div className="space-y-4 mt-4">
+              <Textarea 
+                value={localInstructions} 
+                onChange={(e) => setLocalInstructions(e.target.value)}
+                placeholder={`Write detailed step-by-step instructions for implementing ${title} for this use case...`}
+                className="min-h-[300px]"
+              />
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setIsEditingInstructions(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSaveInstructions}>
+                  Save Instructions
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4 mt-4">
+              <div className="border rounded-lg p-4 bg-muted/5">
+                {detailedInstructions ? (
+                  <div className="prose prose-sm max-w-none">
+                    <div className="whitespace-pre-wrap">{detailedInstructions}</div>
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <FileText className="mx-auto h-8 w-8 mb-2" />
+                    <p>No detailed instructions available yet.</p>
+                    <p className="text-xs mt-1">Click the button below to add step-by-step instructions.</p>
+                  </div>
+                )}
+              </div>
+              {onDetailedInstructionsChange && (
+                <div className="flex justify-end">
+                  <Button variant="outline" onClick={() => setIsEditingInstructions(true)}>
+                    {detailedInstructions ? "Edit Instructions" : "Add Detailed Instructions"}
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+
 import { 
   Dialog,
   DialogContent,
@@ -57,6 +58,15 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
     return [];
   };
 
+  // Helper function to get detailed instructions
+  const getDetailedInstructions = (toolKey: string): string => {
+    const implementation = localUseCase.implementationPlan?.[toolKey];
+    if (typeof implementation === 'object' && implementation?.detailedInstructions) {
+      return implementation.detailedInstructions;
+    }
+    return "";
+  };
+
   // Convert a string implementation to object format if needed
   const ensureObjectFormat = (toolKey: string): ToolImplementation => {
     const currentValue = localUseCase.implementationPlan?.[toolKey];
@@ -69,7 +79,8 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
     // Otherwise create a new object with the string as summary
     return {
       summary: typeof currentValue === 'string' ? currentValue : "",
-      connections: []
+      connections: [],
+      detailedInstructions: ""
     };
   };
 
@@ -105,7 +116,12 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
     // Update connections
     let updatedConnections = [...(implementation.connections || [])];
     
-    if (existingConnectionIndex !== -1 && existingConnectionIndex !== undefined) {
+    if (description === "") {
+      // Remove connection if description is empty
+      if (existingConnectionIndex !== -1 && existingConnectionIndex !== undefined) {
+        updatedConnections.splice(existingConnectionIndex, 1);
+      }
+    } else if (existingConnectionIndex !== -1 && existingConnectionIndex !== undefined) {
       // Update existing connection
       updatedConnections[existingConnectionIndex] = {
         targetTool: targetToolKey,
@@ -135,7 +151,34 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
     if (onUseCaseUpdate) {
       onUseCaseUpdate(updatedUseCase);
     }
-    toast.success(`Updated ${sourceToolKey} connection to ${targetToolKey}`);
+    
+    if (description === "") {
+      toast.success(`Removed connection from ${sourceToolKey} to ${targetToolKey}`);
+    } else {
+      toast.success(`Updated ${sourceToolKey} connection to ${targetToolKey}`);
+    }
+  };
+
+  const handleDetailedInstructionsUpdate = (toolKey: string, instructions: string) => {
+    // Get current implementation in object format
+    const implementation = ensureObjectFormat(toolKey);
+    
+    // Update detailed instructions
+    implementation.detailedInstructions = instructions;
+    
+    // Update use case with new implementation
+    const updatedUseCase = {
+      ...localUseCase,
+      implementationPlan: {
+        ...localUseCase.implementationPlan,
+        [toolKey]: implementation
+      }
+    };
+    
+    setLocalUseCase(updatedUseCase);
+    if (onUseCaseUpdate) {
+      onUseCaseUpdate(updatedUseCase);
+    }
   };
 
   const handleClose = (open: boolean) => {
@@ -194,6 +237,10 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
               availableTargets={tools.filter(t => t.key !== tool.key).map(t => ({ key: t.key, title: t.title }))}
               onConnectionUpdate={(targetTool, description) => 
                 handleConnectionUpdate(tool.key, targetTool, description)
+              }
+              detailedInstructions={getDetailedInstructions(tool.key)}
+              onDetailedInstructionsChange={(instructions) => 
+                handleDetailedInstructionsUpdate(tool.key, instructions)
               }
             />
           ))}

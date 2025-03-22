@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { UseCase, ToolImplementation } from "./data/types";
 import {
   MsCopilotIcon,
@@ -17,7 +18,7 @@ import {
   CopilotStudioIcon,
   PowerBIIcon,
 } from "./icons/TechnologyIcons";
-import { Code, Link, FileText } from "lucide-react";
+import { Code, Link, FileText, BookOpen } from "lucide-react";
 
 // Custom SharePoint icon
 const SharePointIcon = () => (
@@ -50,6 +51,9 @@ const ImplementationPlanDetail: React.FC<ImplementationPlanDetailProps> = ({
   open,
   onOpenChange,
 }) => {
+  const [activeTab, setActiveTab] = useState("msCopilot");
+  const [viewMode, setViewMode] = useState<"summary" | "details">("summary");
+  
   if (!useCase.implementationPlan) return null;
 
   // Helper function to render tool content
@@ -73,7 +77,33 @@ const ImplementationPlanDetail: React.FC<ImplementationPlanDetailProps> = ({
       );
     }
 
-    // Handle object format
+    // Detailed instructions available?
+    const hasDetailedInstructions = toolData.detailedInstructions && toolData.detailedInstructions.trim() !== "";
+
+    // If in details mode but no details exist, fall back to summary
+    const currentViewMode = hasDetailedInstructions ? viewMode : "summary";
+
+    if (currentViewMode === "details" && hasDetailedInstructions) {
+      return (
+        <div className="space-y-4">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base flex items-center gap-2">
+                <BookOpen className="w-4 h-4" />
+                Detailed Implementation Guide
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="prose prose-sm max-w-none">
+                <div className="whitespace-pre-wrap">{toolData.detailedInstructions}</div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      );
+    }
+
+    // Handle object format - summary view
     return (
       <div className="space-y-4">
         <Card>
@@ -137,6 +167,21 @@ const ImplementationPlanDetail: React.FC<ImplementationPlanDetailProps> = ({
     );
   };
 
+  // Get current tool data
+  const getCurrentToolData = () => {
+    const data = useCase.implementationPlan?.[activeTab];
+    if (!data) return null;
+    
+    // Check if detailed instructions are available
+    if (typeof data === "object" && data.detailedInstructions && data.detailedInstructions.trim() !== "") {
+      return true;
+    }
+    return false;
+  };
+
+  // Determine if the current tool has detailed instructions
+  const hasDetailedInstructions = getCurrentToolData();
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
@@ -147,7 +192,37 @@ const ImplementationPlanDetail: React.FC<ImplementationPlanDetailProps> = ({
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs defaultValue="msCopilot" className="w-full mt-4">
+        <div className="flex justify-end mt-2 mb-4">
+          {hasDetailedInstructions && (
+            <div className="border rounded-md overflow-hidden flex">
+              <Button 
+                variant={viewMode === "summary" ? "default" : "outline"} 
+                size="sm" 
+                onClick={() => setViewMode("summary")}
+                className="rounded-none border-0"
+              >
+                Summary
+              </Button>
+              <Button 
+                variant={viewMode === "details" ? "default" : "outline"} 
+                size="sm" 
+                onClick={() => setViewMode("details")}
+                className="rounded-none border-0 border-l"
+              >
+                Complete Guide
+              </Button>
+            </div>
+          )}
+        </div>
+
+        <Tabs 
+          defaultValue="msCopilot" 
+          value={activeTab} 
+          onValueChange={(value) => {
+            setActiveTab(value);
+          }} 
+          className="w-full"
+        >
           <TabsList className="grid grid-cols-3 md:grid-cols-6 mb-4">
             <TabsTrigger value="msCopilot" className="text-xs">Microsoft Copilot</TabsTrigger>
             <TabsTrigger value="powerAutomate" className="text-xs">Power Automate</TabsTrigger>
