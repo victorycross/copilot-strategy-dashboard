@@ -11,7 +11,7 @@ import {
 import { ReactNode, useState } from "react";
 import TechnologySection from "./TechnologySection";
 import PlanActionFooter from "./PlanActionFooter";
-import { UseCase } from "./data/types";
+import { UseCase, ToolImplementation } from "./data/types";
 import {
   MsCopilotIcon,
   PowerAutomateIcon,
@@ -41,6 +41,13 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
       powerBI: ""
     };
   }
+
+  // Helper function to extract string value from either string or ToolImplementation
+  const getStringValue = (value: string | ToolImplementation | undefined): string => {
+    if (!value) return "";
+    if (typeof value === 'string') return value;
+    return value.summary || "";
+  };
 
   const handlePlanUpdate = (field: string, value: string) => {
     const updatedUseCase = { 
@@ -97,7 +104,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
             title="Microsoft Copilot"
             icon={<MsCopilotIcon />}
             colorClass="text-blue-500"
-            value={localUseCase.implementationPlan.msCopilot || ""}
+            value={getStringValue(localUseCase.implementationPlan.msCopilot)}
             onValueChange={(value) => handlePlanUpdate('msCopilot', value)}
           />
           
@@ -106,7 +113,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
             title="Power Automate"
             icon={<PowerAutomateIcon />}
             colorClass="text-purple-500"
-            value={localUseCase.implementationPlan.powerAutomate || ""}
+            value={getStringValue(localUseCase.implementationPlan.powerAutomate)}
             onValueChange={(value) => handlePlanUpdate('powerAutomate', value)}
           />
           
@@ -115,7 +122,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
             title="Power Apps"
             icon={<PowerAppsIcon />}
             colorClass="text-green-500"
-            value={localUseCase.implementationPlan.powerApps || ""}
+            value={getStringValue(localUseCase.implementationPlan.powerApps)}
             onValueChange={(value) => handlePlanUpdate('powerApps', value)}
           />
           
@@ -124,7 +131,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
             title="Copilot Studio"
             icon={<CopilotStudioIcon />}
             colorClass="text-yellow-500"
-            value={localUseCase.implementationPlan.copilotStudio || ""}
+            value={getStringValue(localUseCase.implementationPlan.copilotStudio)}
             onValueChange={(value) => handlePlanUpdate('copilotStudio', value)}
           />
           
@@ -133,7 +140,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
             title="Power BI"
             icon={<PowerBIIcon />}
             colorClass="text-red-500"
-            value={localUseCase.implementationPlan.powerBI || ""}
+            value={getStringValue(localUseCase.implementationPlan.powerBI)}
             onValueChange={(value) => handlePlanUpdate('powerBI', value)}
           />
         </div>
