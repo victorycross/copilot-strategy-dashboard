@@ -1,6 +1,14 @@
 
 import { LucideIcon } from "lucide-react";
 
+export interface ImplementationPlan {
+  msCopilot?: string;
+  powerAutomate?: string;
+  powerApps?: string;
+  copilotStudio?: string;
+  powerBI?: string;
+}
+
 export interface UseCase {
   id: number;
   name: string;
@@ -13,11 +21,5 @@ export interface UseCase {
   complexity: string;
   crossServiceValue: string;
   keyBenefit: string;
-  implementationPlan?: {
-    msCopilot?: string;
-    powerAutomate?: string;
-    powerApps?: string;
-    copilotStudio?: string;
-    powerBI?: string;
-  };
+  implementationPlan?: ImplementationPlan;
 }
