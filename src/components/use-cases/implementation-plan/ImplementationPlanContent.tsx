@@ -1,7 +1,8 @@
+
 import React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ToolSection from "./ToolSection";
 import { UseCase } from "../data/types";
+import { tools } from "./ToolMetadata";
+import TechnologySectionList from "./TechnologySectionList";
 import { ensureObjectFormat } from "./ConnectionUtils";
 
 interface ImplementationPlanContentProps {
@@ -61,15 +62,86 @@ const ImplementationPlanContent = ({
     return null;
   }
 
-  // Handle updating a specific tool
-  const handleToolUpdate = (toolKey: string, value: any) => {
+  // Handle update for a specific tool's summary text
+  const handlePlanUpdate = (toolKey: string, value: string) => {
     if (!useCase.implementationPlan) return;
     
-    console.log(`Updating tool ${toolKey} with:`, value);
+    const toolImpl = ensureObjectFormat(toolKey, useCase.implementationPlan);
+    
+    const updatedToolImpl = {
+      ...toolImpl,
+      summary: value
+    };
     
     const updatedImplementationPlan = {
       ...useCase.implementationPlan,
-      [toolKey]: value
+      [toolKey]: updatedToolImpl
+    };
+    
+    const updatedUseCase = {
+      ...useCase,
+      implementationPlan: updatedImplementationPlan
+    };
+    
+    onUseCaseUpdate(updatedUseCase);
+  };
+
+  // Handle update for connections between tools
+  const handleConnectionUpdate = (sourceToolKey: string, targetToolKey: string, description: string) => {
+    if (!useCase.implementationPlan) return;
+    
+    const sourceToolImpl = ensureObjectFormat(sourceToolKey, useCase.implementationPlan);
+    
+    // Find if connection already exists to update, otherwise create new
+    const connections = sourceToolImpl.connections || [];
+    const existingConnectionIndex = connections.findIndex(c => c.targetTool === targetToolKey);
+    
+    let updatedConnections;
+    if (existingConnectionIndex >= 0) {
+      updatedConnections = [...connections];
+      updatedConnections[existingConnectionIndex] = {
+        ...updatedConnections[existingConnectionIndex],
+        description
+      };
+    } else {
+      updatedConnections = [
+        ...connections,
+        { targetTool: targetToolKey, description }
+      ];
+    }
+    
+    const updatedToolImpl = {
+      ...sourceToolImpl,
+      connections: updatedConnections
+    };
+    
+    const updatedImplementationPlan = {
+      ...useCase.implementationPlan,
+      [sourceToolKey]: updatedToolImpl
+    };
+    
+    const updatedUseCase = {
+      ...useCase,
+      implementationPlan: updatedImplementationPlan
+    };
+    
+    onUseCaseUpdate(updatedUseCase);
+  };
+
+  // Handle update for detailed instructions
+  const handleDetailedInstructionsUpdate = (toolKey: string, instructions: string) => {
+    if (!useCase.implementationPlan) return;
+    
+    const toolImpl = ensureObjectFormat(toolKey, useCase.implementationPlan);
+    
+    const updatedToolImpl = {
+      ...toolImpl,
+      detailedInstructions: instructions
+    };
+    
+    const updatedImplementationPlan = {
+      ...useCase.implementationPlan,
+      [toolKey]: updatedToolImpl
     };
     
     const updatedUseCase = {
@@ -81,70 +153,15 @@ const ImplementationPlanContent = ({
   };
 
   return (
-    <Tabs defaultValue="msCopilot" className="w-full">
-      <TabsList className="grid grid-cols-3 lg:grid-cols-6 h-auto">
-        <TabsTrigger value="msCopilot" className="text-xs">Copilot for M365</TabsTrigger>
-        <TabsTrigger value="powerAutomate" className="text-xs">Power Automate</TabsTrigger>
-        <TabsTrigger value="powerApps" className="text-xs">Power Apps</TabsTrigger>
-        <TabsTrigger value="copilotStudio" className="text-xs">Copilot Studio</TabsTrigger>
-        <TabsTrigger value="powerBI" className="text-xs">Power BI</TabsTrigger>
-        <TabsTrigger value="sharePoint" className="text-xs">SharePoint</TabsTrigger>
-      </TabsList>
-      
-      <TabsContent value="msCopilot">
-        <ToolSection
-          toolKey="msCopilot"
-          toolName="Copilot for M365"
-          implementation={ensureObjectFormat("msCopilot", useCase.implementationPlan)}
-          onUpdate={(value) => handleToolUpdate("msCopilot", value)}
-        />
-      </TabsContent>
-      
-      <TabsContent value="powerAutomate">
-        <ToolSection
-          toolKey="powerAutomate"
-          toolName="Power Automate"
-          implementation={ensureObjectFormat("powerAutomate", useCase.implementationPlan)}
-          onUpdate={(value) => handleToolUpdate("powerAutomate", value)}
-        />
-      </TabsContent>
-      
-      <TabsContent value="powerApps">
-        <ToolSection
-          toolKey="powerApps"
-          toolName="Power Apps"
-          implementation={ensureObjectFormat("powerApps", useCase.implementationPlan)}
-          onUpdate={(value) => handleToolUpdate("powerApps", value)}
-        />
-      </TabsContent>
-      
-      <TabsContent value="copilotStudio">
-        <ToolSection
-          toolKey="copilotStudio"
-          toolName="Copilot Studio"
-          implementation={ensureObjectFormat("copilotStudio", useCase.implementationPlan)}
-          onUpdate={(value) => handleToolUpdate("copilotStudio", value)}
-        />
-      </TabsContent>
-      
-      <TabsContent value="powerBI">
-        <ToolSection
-          toolKey="powerBI"
-          toolName="Power BI"
-          implementation={ensureObjectFormat("powerBI", useCase.implementationPlan)}
-          onUpdate={(value) => handleToolUpdate("powerBI", value)}
-        />
-      </TabsContent>
-      
-      <TabsContent value="sharePoint">
-        <ToolSection
-          toolKey="sharePoint"
-          toolName="SharePoint"
-          implementation={ensureObjectFormat("sharePoint", useCase.implementationPlan)}
-          onUpdate={(value) => handleToolUpdate("sharePoint", value)}
-        />
-      </TabsContent>
-    </Tabs>
+    <div className="space-y-6">
+      <TechnologySectionList
+        useCase={useCase}
+        tools={tools}
+        onPlanUpdate={handlePlanUpdate}
+        onConnectionUpdate={handleConnectionUpdate}
+        onDetailedInstructionsUpdate={handleDetailedInstructionsUpdate}
+      />
+    </div>
   );
 };
 
