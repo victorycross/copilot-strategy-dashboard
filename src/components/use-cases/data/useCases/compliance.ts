@@ -1,6 +1,23 @@
 
-// Import the necessary icons including Globe from lucide-react
-import { FileText, Database, Filter, Globe, Search, Eye, BookOpen, Clock } from "lucide-react";
+// Import all the necessary icons from lucide-react
+import { 
+  FileText, 
+  Database, 
+  Filter, 
+  Globe, 
+  Search, 
+  Eye, 
+  BookOpen, 
+  Clock, 
+  ShieldCheck,
+  AlertTriangle,
+  UserCheck,
+  ClipboardCheck,
+  Shield,
+  FileSearch,
+  Bell,
+  File 
+} from "lucide-react";
 import { UseCase } from "../types";
 
 export const complianceUseCases: UseCase[] = [
