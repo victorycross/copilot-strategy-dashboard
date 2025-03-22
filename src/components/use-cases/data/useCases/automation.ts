@@ -1258,7 +1258,7 @@ Power Apps will provide the user interface for the Resource Allocation system, a
    - End date must be after start date
    - Effort percentage between 10% and 100%
 3. Create the submission logic:
-   ```
+   \`\`\`
    Patch(
      ResourceRequests,
      Defaults(ResourceRequests),
@@ -1275,7 +1275,7 @@ Power Apps will provide the user interface for the Resource Allocation system, a
      }
    );
    Navigate(RequestConfirmationScreen);
-   ```
+   \`\`\`
 
 ## Step 6: Build Resource Manager Approval Screen
 1. Create a gallery of pending requests with:
@@ -1293,7 +1293,7 @@ Power Apps will provide the user interface for the Resource Allocation system, a
    - Color-coding based on current allocation
    - Sorting options (best match, availability, cost)
 5. Add assignment function:
-   ```
+   \`\`\`
    Patch(
      Assignments,
      Defaults(Assignments),
@@ -1316,7 +1316,7 @@ Power Apps will provide the user interface for the Resource Allocation system, a
    );
    // Trigger notification flow
    PowerAutomate.Run("AssignmentNotificationFlow", {requestId: CurrentRequest.ID});
-   ```
+   \`\`\`
 
 ## Step 7: Create Resource Calendar View
 1. Add a calendar control showing:
@@ -1356,7 +1356,7 @@ Power Apps will provide the user interface for the Resource Allocation system, a
    - Find alternative resources
    - Escalate to stakeholders
 3. Implement conflict resolution workflow:
-   ```
+   \`\`\`
    // Update conflicting assignments
    Patch(
      Assignments,
@@ -1379,7 +1379,7 @@ Power Apps will provide the user interface for the Resource Allocation system, a
        Notes: ResolutionNotes.Text
      }
    );
-   ```
+   \`\`\`
 
 ## Step 10: Build Analytics Dashboard
 1. Create visualization screens with:
@@ -1881,3 +1881,4 @@ Power BI will provide data visualization and analytics for resource allocation, 
     }
   }
 ];
+
