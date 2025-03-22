@@ -24,6 +24,8 @@ const UseCaseCard = ({
   
   // Local state for the use case data
   const [localUseCase, setLocalUseCase] = useState<UseCase>(useCase);
+  
+  // State for implementation plan drawer
   const [implementationPlanOpen, setImplementationPlanOpen] = useState(false);
 
   // Update local state when props change
@@ -46,6 +48,7 @@ const UseCaseCard = ({
   
   // Handle updating the use case from the implementation plan
   const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
+    console.log("Updating use case from implementation plan:", updatedUseCase.name);
     setLocalUseCase(updatedUseCase);
     onUseCaseUpdate(updatedUseCase);
   };

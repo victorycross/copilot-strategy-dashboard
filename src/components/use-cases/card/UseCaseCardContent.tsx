@@ -35,9 +35,17 @@ const UseCaseCardContent = ({
   const hasImplementationPlan = !!useCase.implementationPlan;
 
   // Handle opening the implementation plan dialog
-  const handleOpenDialog = () => {
-    console.log("Opening implementation plan dialog");
+  const handleOpenDialog = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Button clicked, opening implementation plan dialog");
     onOpenImplementationPlan();
+  };
+
+  // Handle the dialog's open state change
+  const handleOpenChange = (open: boolean) => {
+    console.log("Dialog open state changing to:", open);
+    setImplementationPlanOpen(open);
   };
 
   return (
@@ -89,7 +97,7 @@ const UseCaseCardContent = ({
         useCase={useCase}
         onUseCaseUpdate={onUseCaseUpdate}
         open={implementationPlanOpen}
-        onOpenChange={setImplementationPlanOpen}
+        onOpenChange={handleOpenChange}
       />
     </CardContent>
   );
