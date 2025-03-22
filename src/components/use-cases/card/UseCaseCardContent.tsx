@@ -5,7 +5,10 @@ import EditableField from "../EditableField";
 import ServiceLines from "./ServiceLines";
 import { UseCase } from "../data/types";
 import { Button } from "@/components/ui/button";
-import ImplementationPlanDetail from "../ImplementationPlanDetail";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
+import ImplementationPlanContent from "../implementation-plan/ImplementationPlanContent";
+import PlanActionFooter from "../PlanActionFooter";
+import { toast } from "sonner";
 
 interface UseCaseCardContentProps {
   useCase: UseCase;
@@ -19,6 +22,7 @@ const UseCaseCardContent = ({
   onUseCaseUpdate
 }: UseCaseCardContentProps) => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [localUseCase, setLocalUseCase] = useState(useCase);
   
   // Options for editable fields
   const complexityOptions = ["Low", "Medium", "High"];
@@ -27,6 +31,32 @@ const UseCaseCardContent = ({
   
   // Determine if the card has an implementation plan
   const hasImplementationPlan = !!useCase.implementationPlan;
+
+  // Handle opening the drawer
+  const handleOpenDrawer = () => {
+    // Initialize implementation plan if it doesn't exist
+    if (!localUseCase.implementationPlan) {
+      setLocalUseCase({
+        ...localUseCase,
+        implementationPlan: {
+          msCopilot: "",
+          powerAutomate: "",
+          powerApps: "",
+          copilotStudio: "",
+          powerBI: "",
+          sharePoint: ""
+        }
+      });
+    }
+    setOpenDrawer(true);
+  };
+
+  // Handle updating the use case from the implementation plan
+  const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
+    setLocalUseCase(updatedUseCase);
+    onUseCaseUpdate(updatedUseCase);
+    toast.success("Implementation plan updated");
+  };
 
   return (
     <CardContent>
@@ -66,18 +96,36 @@ const UseCaseCardContent = ({
         <Button 
           variant="default" 
           className="w-full text-sm bg-primary text-primary-foreground hover:bg-primary/90"
-          onClick={() => setOpenDrawer(true)}
+          onClick={handleOpenDrawer}
         >
           {hasImplementationPlan ? "View Implementation Plan" : "Create Implementation Plan"}
         </Button>
       </div>
       
-      <ImplementationPlanDetail 
-        useCase={useCase}
-        open={openDrawer}
-        onOpenChange={setOpenDrawer}
-        onUseCaseUpdate={onUseCaseUpdate}
-      />
+      {/* Implementation Plan Drawer */}
+      <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
+        <DrawerContent className="max-h-[85vh]">
+          <div className="mx-auto w-full max-w-[800px] p-6">
+            <h2 className="text-xl font-semibold mb-2 text-primary">Implementation Plan: {localUseCase.name}</h2>
+            <p className="text-muted-foreground mb-6">
+              How to implement this use case using Microsoft technologies
+            </p>
+            
+            <ImplementationPlanContent 
+              useCase={localUseCase} 
+              onUseCaseUpdate={handleUseCaseUpdate}
+            />
+            
+            <div className="mt-6">
+              <PlanActionFooter 
+                useCase={localUseCase}
+                onUseCaseUpdate={onUseCaseUpdate}
+                onClose={() => setOpenDrawer(false)}
+              />
+            </div>
+          </div>
+        </DrawerContent>
+      </Drawer>
     </CardContent>
   );
 };

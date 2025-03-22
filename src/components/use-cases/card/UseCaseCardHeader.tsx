@@ -16,7 +16,6 @@ const UseCaseCardHeader = ({
   onFieldUpdate 
 }: UseCaseCardHeaderProps) => {
   const Icon = useCase.icon;
-  const hasImplementationPlan = !!useCase.implementationPlan;
   const phaseOptions = ["Phase 1", "Phase 2", "Phase 3"];
 
   return (
