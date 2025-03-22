@@ -70,14 +70,14 @@ const UseCaseCardContent = ({
         >
           {hasImplementationPlan ? "View Implementation Plan" : "Create Implementation Plan"}
         </Button>
-        
-        <ImplementationPlanDrawer 
-          useCase={useCase}
-          open={openDrawer}
-          onOpenChange={setOpenDrawer}
-          onUseCaseUpdate={onUseCaseUpdate}
-        />
       </div>
+      
+      <ImplementationPlanDrawer 
+        useCase={useCase}
+        open={openDrawer}
+        onOpenChange={setOpenDrawer}
+        onUseCaseUpdate={onUseCaseUpdate}
+      />
     </CardContent>
   );
 };

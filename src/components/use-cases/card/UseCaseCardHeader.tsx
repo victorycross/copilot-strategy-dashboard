@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
 import { CardHeader, CardTitle } from "@/components/ui/card";
-import ImplementationPlanDrawer from "../ImplementationPlanDrawer";
 import EditableField from "../EditableField";
 import { UseCase } from "../data/types";
 
@@ -18,8 +17,6 @@ const UseCaseCardHeader = ({
 }: UseCaseCardHeaderProps) => {
   const Icon = useCase.icon;
   const hasImplementationPlan = !!useCase.implementationPlan;
-  const [openDrawer, setOpenDrawer] = useState(false);
-
   const phaseOptions = ["Phase 1", "Phase 2", "Phase 3"];
 
   return (
@@ -30,32 +27,9 @@ const UseCaseCardHeader = ({
             <Icon className={`w-4 h-4 text-${categoryColor}`} />
           </div>
           
-          {hasImplementationPlan ? (
-            <>
-              <CardTitle 
-                className="text-base cursor-pointer text-primary hover:text-primary/80 hover:underline transition-colors"
-                onClick={() => setOpenDrawer(true)}
-              >
-                {useCase.name}
-              </CardTitle>
-              
-              <ImplementationPlanDrawer 
-                useCase={useCase}
-                open={openDrawer}
-                onOpenChange={setOpenDrawer}
-                onUseCaseUpdate={(updatedUseCase) => {
-                  // Pass updates up to parent
-                  Object.keys(updatedUseCase).forEach(key => {
-                    if (key !== 'implementationPlan' && useCase[key] !== updatedUseCase[key]) {
-                      onFieldUpdate(key, updatedUseCase[key]);
-                    }
-                  });
-                }}
-              />
-            </>
-          ) : (
-            <CardTitle className="text-base">{useCase.name}</CardTitle>
-          )}
+          <CardTitle className="text-base">
+            {useCase.name}
+          </CardTitle>
         </div>
         <EditableField 
           label="Phase"

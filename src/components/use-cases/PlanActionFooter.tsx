@@ -4,6 +4,7 @@ import { Download, Copy, Check } from "lucide-react";
 import { downloadImplementationPlan, cloneUseCase } from "./utils/planUtils";
 import { UseCase } from "./data/types";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface PlanActionFooterProps {
   useCase: UseCase;
@@ -24,17 +25,24 @@ const PlanActionFooter: React.FC<PlanActionFooterProps> = ({
     // Simulate saving process
     setTimeout(() => {
       setIsSaving(false);
-      if (onClose) onClose();
+      if (onClose) {
+        toast.success("Implementation plan saved");
+        onClose();
+      }
     }, 800);
   };
 
   const handleClone = () => {
-    cloneUseCase(useCase, onUseCaseUpdate);
+    if (onUseCaseUpdate) {
+      cloneUseCase(useCase, onUseCaseUpdate);
+      toast.success("Use case cloned successfully");
+    }
     if (onClose) onClose();
   };
 
   const handleDownload = () => {
     downloadImplementationPlan(useCase);
+    toast.success("Implementation plan downloaded");
   };
 
   return (

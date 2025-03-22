@@ -4,7 +4,7 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import PlanActionFooter from "./PlanActionFooter";
 import { UseCase } from "./data/types";
 import ImplementationPlanContent from "./implementation-plan/ImplementationPlanContent";
@@ -25,10 +25,14 @@ const ImplementationPlanDrawer = ({
   onOpenChange 
 }: ImplementationPlanProps) => {
   const [localUseCase, setLocalUseCase] = useState(useCase);
-  const [localOpen, setLocalOpen] = useState(false);
   
+  // Update local use case when the prop changes
+  useEffect(() => {
+    setLocalUseCase(useCase);
+  }, [useCase]);
+  
+  // Initialize implementation plan if it doesn't exist
   if (!localUseCase.implementationPlan) {
-    // Create a default implementation plan if it doesn't exist
     localUseCase.implementationPlan = {
       msCopilot: "",
       powerAutomate: "",
@@ -46,25 +50,17 @@ const ImplementationPlanDrawer = ({
   };
 
   const handleClose = (isOpen: boolean) => {
-    // Update local state if we're not using controlled props
-    if (onOpenChange === undefined) {
-      setLocalOpen(isOpen);
-    } else {
+    if (onOpenChange) {
       onOpenChange(isOpen);
     }
     
     if (!isOpen) {
-      // This will trigger when the drawer is closed
       console.log("Drawer closed");
     }
   };
 
-  // Determine if we're using controlled or uncontrolled open state
-  const isControlled = open !== undefined && onOpenChange !== undefined;
-  const drawerOpen = isControlled ? open : localOpen;
-  
   return (
-    <Drawer open={drawerOpen} onOpenChange={handleClose}>
+    <Drawer open={open} onOpenChange={handleClose}>
       {children && (
         <DrawerTrigger asChild>
           <div className="cursor-pointer">
