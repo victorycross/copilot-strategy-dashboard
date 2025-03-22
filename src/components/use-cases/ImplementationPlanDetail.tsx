@@ -5,6 +5,7 @@ import ImplementationPlanContent from "./implementation-plan/ImplementationPlanC
 import PlanActionFooter from "./PlanActionFooter";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ImplementationPlanDetailProps {
   useCase: UseCase;
@@ -21,6 +22,7 @@ const ImplementationPlanDetail = ({
 }: ImplementationPlanDetailProps) => {
   console.log("ImplementationPlanDetail rendering for:", useCase.name, "open:", open);
   const [localUseCase, setLocalUseCase] = useState(useCase);
+  const navigate = useNavigate();
 
   // Update local state when the prop changes
   useEffect(() => {
@@ -88,10 +90,21 @@ const ImplementationPlanDetail = ({
   const handleClose = () => {
     console.log("ImplementationPlanDetail closing");
     onOpenChange(false);
+    // Remove the useCaseId parameter from the URL when closing
+    navigate('/implementation-plans');
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    console.log("ImplementationPlanDetail openChange to:", newOpen);
+    if (!newOpen) {
+      handleClose();
+    } else {
+      onOpenChange(true);
+    }
   };
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={open} onOpenChange={handleOpenChange}>
       <DrawerContent className="max-h-[85vh]">
         <div className="mx-auto w-full max-w-[800px] p-6">
           <h2 className="text-xl font-semibold mb-2 text-primary">Implementation Plan: {localUseCase.name}</h2>

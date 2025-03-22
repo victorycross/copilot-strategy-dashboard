@@ -28,8 +28,22 @@ const UseCaseCardContent = ({
   const priorityOptions = ["low", "medium", "high", "strategic"];
   
   // Handle navigation to implementation plan page
-  const handleViewImplementationPlan = () => {
+  const handleViewImplementationPlan = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     console.log("Navigating to implementation plan for use case:", useCase.id, useCase.name);
+    
+    // Ensure the use case has an implementation plan object, even if empty
+    if (!useCase.implementationPlan) {
+      console.log("Initializing empty implementation plan before navigation");
+      const updatedUseCase = {
+        ...useCase,
+        implementationPlan: {}
+      };
+      onUseCaseUpdate(updatedUseCase);
+    }
+    
+    // Navigate to the implementation plans page with the use case ID in the URL
     navigate(`/implementation-plans?useCaseId=${useCase.id}`);
   };
 

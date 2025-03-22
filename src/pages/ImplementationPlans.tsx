@@ -63,11 +63,46 @@ const ImplementationPlans = () => {
           console.log("Creating empty implementation plan for:", useCase.name);
           const updatedUseCase = {
             ...useCase,
-            implementationPlan: {}
+            implementationPlan: {
+              msCopilot: {
+                summary: "",
+                connections: [],
+                detailedInstructions: ""
+              },
+              powerAutomate: {
+                summary: "",
+                connections: [],
+                detailedInstructions: ""
+              },
+              powerApps: {
+                summary: "",
+                connections: [],
+                detailedInstructions: ""
+              },
+              copilotStudio: {
+                summary: "",
+                connections: [],
+                detailedInstructions: ""
+              },
+              powerBI: {
+                summary: "",
+                connections: [],
+                detailedInstructions: ""
+              },
+              sharePoint: {
+                summary: "",
+                connections: [],
+                detailedInstructions: ""
+              }
+            }
           };
           handleUseCaseUpdate(updatedUseCase);
         }
       }
+    } else {
+      // If no useCaseId in URL, close the detail view
+      setDetailOpen(false);
+      setSelectedUseCase(null);
     }
   }, [searchParams, allUseCases, handleUseCaseUpdate]);
 
@@ -83,6 +118,15 @@ const ImplementationPlans = () => {
     console.log("Updating use case from detail:", updatedUseCase.name);
     handleUseCaseUpdate(updatedUseCase);
     setSelectedUseCase(updatedUseCase);
+  };
+
+  const handleDetailOpenChange = (open: boolean) => {
+    console.log("Detail open change to:", open);
+    setDetailOpen(open);
+    if (!open) {
+      // When closing, remove the useCaseId parameter
+      navigate('/implementation-plans');
+    }
   };
 
   return (
@@ -194,7 +238,7 @@ const ImplementationPlans = () => {
         <ImplementationPlanDetail
           useCase={selectedUseCase}
           open={detailOpen}
-          onOpenChange={setDetailOpen}
+          onOpenChange={handleDetailOpenChange}
           onUseCaseUpdate={handleUseCaseUpdateFromDetail}
         />
       )}
