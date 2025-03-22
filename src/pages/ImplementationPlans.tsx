@@ -33,10 +33,14 @@ const ImplementationPlans = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   
+  console.log("ImplementationPlans component rendering");
+  console.log("All use cases:", allUseCases.map(uc => ({id: uc.id, name: uc.name, hasImplPlan: !!uc.implementationPlan})));
+  
   // Filter use cases that have implementation plans (including empty ones)
   const useCasesWithPlans = allUseCases.filter(
     (useCase) => useCase.implementationPlan !== undefined
   );
+  console.log("Use cases with plans:", useCasesWithPlans.length);
 
   const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
@@ -44,14 +48,19 @@ const ImplementationPlans = () => {
   // Set the selected use case based on URL parameter
   useEffect(() => {
     const useCaseId = searchParams.get("useCaseId");
+    console.log("URL parameter useCaseId:", useCaseId);
+    
     if (useCaseId) {
       const useCase = allUseCases.find(uc => uc.id.toString() === useCaseId);
+      console.log("Found use case:", useCase?.name);
+      
       if (useCase) {
         setSelectedUseCase(useCase);
         setDetailOpen(true);
         
         // If the use case doesn't have an implementation plan yet, create an empty one
         if (!useCase.implementationPlan) {
+          console.log("Creating empty implementation plan for:", useCase.name);
           const updatedUseCase = {
             ...useCase,
             implementationPlan: {}
@@ -63,6 +72,7 @@ const ImplementationPlans = () => {
   }, [searchParams, allUseCases, handleUseCaseUpdate]);
 
   const handleViewPlan = (useCase: UseCase) => {
+    console.log("Viewing implementation plan for:", useCase.name);
     // Update the URL with the use case ID for better navigation
     navigate(`/implementation-plans?useCaseId=${useCase.id}`);
     setSelectedUseCase(useCase);
@@ -70,6 +80,7 @@ const ImplementationPlans = () => {
   };
 
   const handleUseCaseUpdateFromDetail = (updatedUseCase: UseCase) => {
+    console.log("Updating use case from detail:", updatedUseCase.name);
     handleUseCaseUpdate(updatedUseCase);
     setSelectedUseCase(updatedUseCase);
   };

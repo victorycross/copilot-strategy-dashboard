@@ -29,6 +29,7 @@ const UseCaseCardContent = ({
   
   // Handle navigation to implementation plan page
   const handleViewImplementationPlan = () => {
+    console.log("Navigating to implementation plan for use case:", useCase.id, useCase.name);
     navigate(`/implementation-plans?useCaseId=${useCase.id}`);
   };
 

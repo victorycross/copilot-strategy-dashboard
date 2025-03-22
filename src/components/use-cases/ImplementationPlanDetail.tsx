@@ -19,31 +19,65 @@ const ImplementationPlanDetail = ({
   onOpenChange,
   onUseCaseUpdate
 }: ImplementationPlanDetailProps) => {
+  console.log("ImplementationPlanDetail rendering for:", useCase.name, "open:", open);
   const [localUseCase, setLocalUseCase] = useState(useCase);
 
   // Update local state when the prop changes
   useEffect(() => {
+    console.log("ImplementationPlanDetail useCase prop changed:", useCase.name);
     setLocalUseCase(useCase);
   }, [useCase]);
   
   // Initialize implementation plan if it doesn't exist
   useEffect(() => {
     if (!localUseCase.implementationPlan) {
-      setLocalUseCase(prev => ({
-        ...prev,
+      console.log("Initializing empty implementation plan in detail component");
+      const updatedUseCase = {
+        ...localUseCase,
         implementationPlan: {
-          msCopilot: "",
-          powerAutomate: "",
-          powerApps: "",
-          copilotStudio: "",
-          powerBI: "",
-          sharePoint: ""
+          msCopilot: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          powerAutomate: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          powerApps: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          copilotStudio: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          powerBI: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          },
+          sharePoint: {
+            summary: "",
+            connections: [],
+            detailedInstructions: ""
+          }
         }
-      }));
+      };
+      setLocalUseCase(updatedUseCase);
+      
+      if (onUseCaseUpdate) {
+        console.log("Updating use case with initialized implementation plan");
+        onUseCaseUpdate(updatedUseCase);
+      }
     }
-  }, [localUseCase]);
+  }, [localUseCase, onUseCaseUpdate]);
 
   const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
+    console.log("ImplementationPlanDetail handleUseCaseUpdate:", updatedUseCase.name);
     setLocalUseCase(updatedUseCase);
     if (onUseCaseUpdate) {
       onUseCaseUpdate(updatedUseCase);
@@ -52,6 +86,7 @@ const ImplementationPlanDetail = ({
   };
 
   const handleClose = () => {
+    console.log("ImplementationPlanDetail closing");
     onOpenChange(false);
   };
 

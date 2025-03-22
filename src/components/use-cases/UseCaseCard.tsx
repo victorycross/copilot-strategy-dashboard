@@ -19,6 +19,7 @@ const UseCaseCard = ({
   getPriorityBadgeClass,
   onUseCaseUpdate
 }: UseCaseCardProps) => {
+  console.log("Rendering UseCaseCard for:", useCase.id, useCase.name);
   const categoryColor = getCategoryColor(useCase.category);
   const priorityBadgeClass = getPriorityBadgeClass(useCase.priority);
   
@@ -32,6 +33,7 @@ const UseCaseCard = ({
 
   // Handle field updates
   const handleFieldUpdate = (field: string, value: string) => {
+    console.log(`Updating field ${field} to ${value} for use case:`, localUseCase.id);
     const updatedUseCase = { ...localUseCase, [field]: value };
     setLocalUseCase(updatedUseCase);
     onUseCaseUpdate(updatedUseCase);

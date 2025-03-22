@@ -30,13 +30,23 @@ export const useUseCaseManager = () => {
 
   // Handle use case updates
   const handleUseCaseUpdate = (updatedUseCase) => {
+    console.log("handleUseCaseUpdate called with:", updatedUseCase.name);
+    
     if (updatedUseCase.isNew) {
-      // Add the new use case to the list
-      const newUseCases = [...useCases, { ...updatedUseCase, isNew: undefined }];
+      // Add the new use case to the list with an empty implementation plan
+      console.log("Creating new use case with empty implementation plan:", updatedUseCase.name);
+      const newUseCase = { 
+        ...updatedUseCase, 
+        isNew: undefined,
+        implementationPlan: {} // Initialize with empty implementation plan
+      };
+      
+      const newUseCases = [...useCases, newUseCase];
       setUseCases(newUseCases);
       toast.success(`Created new use case: ${updatedUseCase.name}`);
     } else {
       // Update the use cases array with the modified use case
+      console.log("Updating existing use case:", updatedUseCase.name);
       const updatedUseCases = useCases.map(uc => 
         uc.id === updatedUseCase.id ? updatedUseCase : uc
       );
