@@ -37,12 +37,6 @@ const UseCaseCard = ({
     onUseCaseUpdate(updatedUseCase);
   };
   
-  // Handle updating the use case from the implementation plan
-  const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
-    setLocalUseCase(updatedUseCase);
-    onUseCaseUpdate(updatedUseCase);
-  };
-  
   return (
     <motion.div 
       key={localUseCase.id}
@@ -58,7 +52,7 @@ const UseCaseCard = ({
         <UseCaseCardContent 
           useCase={localUseCase}
           onFieldUpdate={handleFieldUpdate}
-          onUseCaseUpdate={handleUseCaseUpdate}
+          onUseCaseUpdate={onUseCaseUpdate}
           priorityBadgeClass={priorityBadgeClass}
         />
       </Card>

@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Download, FileText, Eye } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import { downloadImplementationPlan } from "@/components/use-cases/utils/planUtils";
 import {
   Table,
@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  getCategoryCounts,
   getCategoryColor,
   getPriorityBadgeClass,
 } from "@/components/use-cases/data/utils";
@@ -27,11 +26,12 @@ import { categories } from "@/components/use-cases/data/categories";
 import ImplementationPlanDetail from "@/components/use-cases/ImplementationPlanDetail";
 import { UseCase } from "@/components/use-cases/data/types";
 import { useUseCaseManager } from "@/hooks/useUseCaseManager";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 const ImplementationPlans = () => {
   const { useCases: allUseCases, handleUseCaseUpdate } = useUseCaseManager();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   
   // Filter use cases that have implementation plans (including empty ones)
   const useCasesWithPlans = allUseCases.filter(
@@ -49,11 +49,22 @@ const ImplementationPlans = () => {
       if (useCase) {
         setSelectedUseCase(useCase);
         setDetailOpen(true);
+        
+        // If the use case doesn't have an implementation plan yet, create an empty one
+        if (!useCase.implementationPlan) {
+          const updatedUseCase = {
+            ...useCase,
+            implementationPlan: {}
+          };
+          handleUseCaseUpdate(updatedUseCase);
+        }
       }
     }
-  }, [searchParams, allUseCases]);
+  }, [searchParams, allUseCases, handleUseCaseUpdate]);
 
   const handleViewPlan = (useCase: UseCase) => {
+    // Update the URL with the use case ID for better navigation
+    navigate(`/implementation-plans?useCaseId=${useCase.id}`);
     setSelectedUseCase(useCase);
     setDetailOpen(true);
   };

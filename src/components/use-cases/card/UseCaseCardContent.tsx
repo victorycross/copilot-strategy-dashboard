@@ -27,13 +27,8 @@ const UseCaseCardContent = ({
   const valueOptions = ["Low", "Medium", "High"];
   const priorityOptions = ["low", "medium", "high", "strategic"];
   
-  // Determine if the card has an implementation plan
-  const hasImplementationPlan = !!useCase.implementationPlan;
-
   // Handle navigation to implementation plan page
-  const handleViewImplementationPlan = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleViewImplementationPlan = () => {
     navigate(`/implementation-plans?useCaseId=${useCase.id}`);
   };
 
