@@ -1,5 +1,5 @@
 
-import { UseCase } from "../data/types";
+import { UseCase, ImplementationPlan } from "../data/types";
 import { ensureObjectFormat } from "./ConnectionUtils";
 import { toast } from "sonner";
 
@@ -10,14 +10,17 @@ export const handlePlanUpdate = (
   useCase: UseCase,
   onUseCaseUpdate?: (updatedUseCase: UseCase) => void
 ) => {
+  // Initialize implementationPlan if it doesn't exist
+  const currentImplementationPlan = useCase.implementationPlan || {};
+
   // Convert to object format if it's not already
-  const updatedImplementation = ensureObjectFormat(field, useCase.implementationPlan);
+  const updatedImplementation = ensureObjectFormat(field, currentImplementationPlan);
   updatedImplementation.summary = value;
   
   const updatedUseCase = { 
     ...useCase, 
     implementationPlan: { 
-      ...useCase.implementationPlan, 
+      ...currentImplementationPlan, 
       [field]: updatedImplementation 
     } 
   };
@@ -38,8 +41,11 @@ export const handleConnectionUpdate = (
   useCase: UseCase,
   onUseCaseUpdate?: (updatedUseCase: UseCase) => void
 ) => {
+  // Initialize implementationPlan if it doesn't exist
+  const currentImplementationPlan = useCase.implementationPlan || {};
+  
   // Get current implementation in object format
-  const implementation = ensureObjectFormat(sourceToolKey, useCase.implementationPlan);
+  const implementation = ensureObjectFormat(sourceToolKey, currentImplementationPlan);
   
   // Find if this connection already exists
   const existingConnectionIndex = implementation.connections?.findIndex(
@@ -77,7 +83,7 @@ export const handleConnectionUpdate = (
   const updatedUseCase = {
     ...useCase,
     implementationPlan: {
-      ...useCase.implementationPlan,
+      ...currentImplementationPlan,
       [sourceToolKey]: implementation
     }
   };
@@ -102,8 +108,11 @@ export const handleDetailedInstructionsUpdate = (
   useCase: UseCase,
   onUseCaseUpdate?: (updatedUseCase: UseCase) => void
 ) => {
+  // Initialize implementationPlan if it doesn't exist
+  const currentImplementationPlan = useCase.implementationPlan || {};
+  
   // Get current implementation in object format
-  const implementation = ensureObjectFormat(toolKey, useCase.implementationPlan);
+  const implementation = ensureObjectFormat(toolKey, currentImplementationPlan);
   
   // Update detailed instructions
   implementation.detailedInstructions = instructions;
@@ -112,7 +121,7 @@ export const handleDetailedInstructionsUpdate = (
   const updatedUseCase = {
     ...useCase,
     implementationPlan: {
-      ...useCase.implementationPlan,
+      ...currentImplementationPlan,
       [toolKey]: implementation
     }
   };

@@ -25,32 +25,63 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
     setLocalUseCase(useCase);
   }, [useCase]);
 
+  // Initialize implementation plan if it doesn't exist
+  useEffect(() => {
+    if (!localUseCase.implementationPlan) {
+      const initializedUseCase = {
+        ...localUseCase,
+        implementationPlan: {
+          msCopilot: "",
+          powerAutomate: "",
+          powerApps: "",
+          copilotStudio: "",
+          powerBI: "",
+          sharePoint: ""
+        }
+      };
+      setLocalUseCase(initializedUseCase);
+      onUseCaseUpdate(initializedUseCase);
+    }
+  }, [localUseCase, onUseCaseUpdate]);
+
   // Wrapper functions that update both local state and call the parent update callback
   const onPlanUpdate = (field: string, value: string) => {
-    const updated = handlePlanUpdate(field, value, localUseCase);
-    setLocalUseCase(updated);
-    onUseCaseUpdate(updated);
+    try {
+      const updated = handlePlanUpdate(field, value, localUseCase);
+      setLocalUseCase(updated);
+      onUseCaseUpdate(updated);
+    } catch (error) {
+      console.error(`Error updating plan for ${field}:`, error);
+    }
   };
 
   const onConnectionUpdate = (sourceToolKey: string, targetToolKey: string, description: string) => {
-    const updated = handleConnectionUpdate(
-      sourceToolKey, 
-      targetToolKey, 
-      description, 
-      localUseCase
-    );
-    setLocalUseCase(updated);
-    onUseCaseUpdate(updated);
+    try {
+      const updated = handleConnectionUpdate(
+        sourceToolKey, 
+        targetToolKey, 
+        description, 
+        localUseCase
+      );
+      setLocalUseCase(updated);
+      onUseCaseUpdate(updated);
+    } catch (error) {
+      console.error(`Error updating connection from ${sourceToolKey} to ${targetToolKey}:`, error);
+    }
   };
 
   const onDetailedInstructionsUpdate = (toolKey: string, instructions: string) => {
-    const updated = handleDetailedInstructionsUpdate(
-      toolKey, 
-      instructions, 
-      localUseCase
-    );
-    setLocalUseCase(updated);
-    onUseCaseUpdate(updated);
+    try {
+      const updated = handleDetailedInstructionsUpdate(
+        toolKey, 
+        instructions, 
+        localUseCase
+      );
+      setLocalUseCase(updated);
+      onUseCaseUpdate(updated);
+    } catch (error) {
+      console.error(`Error updating detailed instructions for ${toolKey}:`, error);
+    }
   };
 
   return (

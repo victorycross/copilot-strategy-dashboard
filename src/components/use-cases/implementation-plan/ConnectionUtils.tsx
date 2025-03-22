@@ -1,4 +1,4 @@
-import { ToolImplementation, ToolConnection } from "../data/types";
+import { ToolImplementation, ToolConnection, ImplementationPlan } from "../data/types";
 
 // Helper function to extract string value from either string or ToolImplementation
 export const getStringValue = (value: string | ToolImplementation | undefined): string => {
@@ -8,8 +8,13 @@ export const getStringValue = (value: string | ToolImplementation | undefined): 
 };
 
 // Helper function to get connections array or create an empty array
-export const getConnections = (toolKey: string, implementationPlan: any): ToolConnection[] => {
-  const implementation = implementationPlan?.[toolKey];
+export const getConnections = (
+  toolKey: string, 
+  implementationPlan: ImplementationPlan | undefined
+): ToolConnection[] => {
+  if (!implementationPlan) return [];
+  
+  const implementation = implementationPlan[toolKey as keyof ImplementationPlan];
   if (typeof implementation === 'object' && implementation?.connections) {
     return implementation.connections;
   }
@@ -17,8 +22,13 @@ export const getConnections = (toolKey: string, implementationPlan: any): ToolCo
 };
 
 // Helper function to get detailed instructions
-export const getDetailedInstructions = (toolKey: string, implementationPlan: any): string => {
-  const implementation = implementationPlan?.[toolKey];
+export const getDetailedInstructions = (
+  toolKey: string, 
+  implementationPlan: ImplementationPlan | undefined
+): string => {
+  if (!implementationPlan) return "";
+  
+  const implementation = implementationPlan[toolKey as keyof ImplementationPlan];
   if (typeof implementation === 'object' && implementation?.detailedInstructions) {
     return implementation.detailedInstructions;
   }
@@ -26,12 +36,27 @@ export const getDetailedInstructions = (toolKey: string, implementationPlan: any
 };
 
 // Convert a string implementation to object format if needed
-export const ensureObjectFormat = (toolKey: string, implementationPlan: any): ToolImplementation => {
-  const currentValue = implementationPlan?.[toolKey];
+export const ensureObjectFormat = (
+  toolKey: string, 
+  implementationPlan: ImplementationPlan | undefined
+): ToolImplementation => {
+  if (!implementationPlan) {
+    return {
+      summary: "",
+      connections: [],
+      detailedInstructions: ""
+    };
+  }
+  
+  const currentValue = implementationPlan[toolKey as keyof ImplementationPlan];
   
   // If it's already an object, return it
   if (typeof currentValue === 'object' && currentValue) {
-    return currentValue;
+    return {
+      summary: currentValue.summary || "",
+      connections: currentValue.connections || [],
+      detailedInstructions: currentValue.detailedInstructions || ""
+    };
   }
   
   // Otherwise create a new object with the string as summary
@@ -40,4 +65,16 @@ export const ensureObjectFormat = (toolKey: string, implementationPlan: any): To
     connections: [],
     detailedInstructions: ""
   };
+};
+
+// Verify if an implementation plan is properly initialized
+export const isImplementationPlanInitialized = (implementationPlan: ImplementationPlan | undefined): boolean => {
+  if (!implementationPlan) return false;
+  
+  // Check if at least one tool has a non-empty implementation
+  const tools = ['msCopilot', 'powerAutomate', 'powerApps', 'copilotStudio', 'powerBI', 'sharePoint'];
+  return tools.some(tool => {
+    const implementation = implementationPlan[tool as keyof ImplementationPlan];
+    return !!implementation;
+  });
 };
