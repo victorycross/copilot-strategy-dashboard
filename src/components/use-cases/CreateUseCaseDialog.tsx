@@ -11,59 +11,18 @@ import {
   DialogClose
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
-import { categories } from "./data";
+
+import UseCaseForm from "./create-use-case/UseCaseForm";
+import { createEmptyUseCase, finalizeUseCase } from "./create-use-case/emptyUseCaseTemplate";
 
 interface CreateUseCaseDialogProps {
   onUseCaseCreate: (useCase: any) => void;
 }
 
 const CreateUseCaseDialog = ({ onUseCaseCreate }: CreateUseCaseDialogProps) => {
-  const [newUseCase, setNewUseCase] = useState({
-    name: "",
-    description: "",
-    category: "productive-knowledge-work",
-    phase: "Phase 1",
-    complexity: "Medium",
-    crossServiceValue: "Medium",
-    priority: "medium",
-    serviceLines: ["Digital & App Innovation"],
-    keyBenefit: "",
-    implementationPlan: {
-      msCopilot: {
-        summary: "",
-        connections: [],
-        detailedInstructions: ""
-      },
-      powerAutomate: {
-        summary: "",
-        connections: [],
-        detailedInstructions: ""
-      },
-      powerApps: {
-        summary: "",
-        connections: [],
-        detailedInstructions: ""
-      },
-      copilotStudio: {
-        summary: "",
-        connections: [],
-        detailedInstructions: ""
-      },
-      powerBI: {
-        summary: "",
-        connections: [],
-        detailedInstructions: ""
-      },
-      sharePoint: {
-        summary: "",
-        connections: [],
-        detailedInstructions: ""
-      }
-    }
-  });
+  const [newUseCase, setNewUseCase] = useState(createEmptyUseCase());
 
   const handleCreateUseCase = () => {
     // Validate required fields
@@ -72,58 +31,14 @@ const CreateUseCaseDialog = ({ onUseCaseCreate }: CreateUseCaseDialogProps) => {
       return;
     }
     
-    const useCaseToCreate = {
-      ...newUseCase,
-      id: Date.now(), // Generate a unique ID based on timestamp
-      icon: categories.find(c => c.id === newUseCase.category)?.icon || categories[0].icon
-    };
+    // Create the use case with ID and icon
+    const useCaseToCreate = finalizeUseCase(newUseCase);
 
+    // Pass to parent with isNew flag
     onUseCaseCreate({...useCaseToCreate, isNew: true});
     
     // Reset the form fields
-    setNewUseCase({
-      name: "",
-      description: "",
-      category: "productive-knowledge-work",
-      phase: "Phase 1",
-      complexity: "Medium",
-      crossServiceValue: "Medium",
-      priority: "medium",
-      serviceLines: ["Digital & App Innovation"],
-      keyBenefit: "",
-      implementationPlan: {
-        msCopilot: {
-          summary: "",
-          connections: [],
-          detailedInstructions: ""
-        },
-        powerAutomate: {
-          summary: "",
-          connections: [],
-          detailedInstructions: ""
-        },
-        powerApps: {
-          summary: "",
-          connections: [],
-          detailedInstructions: ""
-        },
-        copilotStudio: {
-          summary: "",
-          connections: [],
-          detailedInstructions: ""
-        },
-        powerBI: {
-          summary: "",
-          connections: [],
-          detailedInstructions: ""
-        },
-        sharePoint: {
-          summary: "",
-          connections: [],
-          detailedInstructions: ""
-        }
-      }
-    });
+    setNewUseCase(createEmptyUseCase());
   };
 
   return (
@@ -142,52 +57,7 @@ const CreateUseCaseDialog = ({ onUseCaseCreate }: CreateUseCaseDialogProps) => {
           </DialogDescription>
         </DialogHeader>
         
-        <div className="grid gap-4 py-4">
-          <div className="grid gap-2">
-            <label htmlFor="name" className="text-sm font-medium">Name</label>
-            <Input
-              id="name"
-              value={newUseCase.name}
-              onChange={(e) => setNewUseCase({...newUseCase, name: e.target.value})}
-              placeholder="Enter use case name"
-            />
-          </div>
-          
-          <div className="grid gap-2">
-            <label htmlFor="description" className="text-sm font-medium">Description</label>
-            <textarea
-              id="description"
-              className="p-2 border rounded-md min-h-[80px]"
-              value={newUseCase.description}
-              onChange={(e) => setNewUseCase({...newUseCase, description: e.target.value})}
-              placeholder="Enter use case description"
-            />
-          </div>
-          
-          <div className="grid gap-2">
-            <label htmlFor="category" className="text-sm font-medium">Category</label>
-            <select
-              id="category"
-              className="p-2 border rounded-md"
-              value={newUseCase.category}
-              onChange={(e) => setNewUseCase({...newUseCase, category: e.target.value})}
-            >
-              {categories.map(category => (
-                <option key={category.id} value={category.id}>{category.name}</option>
-              ))}
-            </select>
-          </div>
-          
-          <div className="grid gap-2">
-            <label htmlFor="keyBenefit" className="text-sm font-medium">Key Benefit</label>
-            <Input
-              id="keyBenefit"
-              value={newUseCase.keyBenefit}
-              onChange={(e) => setNewUseCase({...newUseCase, keyBenefit: e.target.value})}
-              placeholder="Enter key benefit"
-            />
-          </div>
-        </div>
+        <UseCaseForm newUseCase={newUseCase} setNewUseCase={setNewUseCase} />
         
         <DialogFooter>
           <DialogClose asChild>
