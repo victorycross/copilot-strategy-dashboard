@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { LayoutDashboard, FileText } from "lucide-react";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -26,14 +27,16 @@ const Header = () => {
             className="bg-white/10 border-white/20 hover:bg-white/20 text-white"
             onClick={() => navigate('/dashboard')}
           >
+            <LayoutDashboard className="mr-2 h-4 w-4" />
             View Dashboard
           </Button>
           <Button 
             variant="outline" 
             className="bg-white/10 border-white/20 hover:bg-white/20 text-white"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/implementation-plans')}
           >
-            Back to Home
+            <FileText className="mr-2 h-4 w-4" />
+            Implementation Plans
           </Button>
         </div>
       </div>
