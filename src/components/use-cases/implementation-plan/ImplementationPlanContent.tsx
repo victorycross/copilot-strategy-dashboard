@@ -48,13 +48,15 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
   };
 
   return (
-    <TechnologySectionList 
-      useCase={localUseCase}
-      tools={tools}
-      onPlanUpdate={onPlanUpdate}
-      onConnectionUpdate={onConnectionUpdate}
-      onDetailedInstructionsUpdate={onDetailedInstructionsUpdate}
-    />
+    <div className="space-y-6">
+      <TechnologySectionList 
+        useCase={localUseCase}
+        tools={tools}
+        onPlanUpdate={onPlanUpdate}
+        onConnectionUpdate={onConnectionUpdate}
+        onDetailedInstructionsUpdate={onDetailedInstructionsUpdate}
+      />
+    </div>
   );
 };
 

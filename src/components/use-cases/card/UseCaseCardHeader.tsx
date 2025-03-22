@@ -1,6 +1,5 @@
 
 import React from "react";
-import { LucideIcon } from "lucide-react";
 import { CardHeader, CardTitle } from "@/components/ui/card";
 import ImplementationPlanDrawer from "../ImplementationPlanDrawer";
 import EditableField from "../EditableField";

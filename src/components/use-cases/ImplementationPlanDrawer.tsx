@@ -1,12 +1,9 @@
 
 import { 
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { ReactNode, useState } from "react";
 import PlanActionFooter from "./PlanActionFooter";
 import { UseCase } from "./data/types";
@@ -42,38 +39,48 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
 
   const handleClose = (open: boolean) => {
     if (!open) {
-      // This will trigger when the dialog is closed
-      console.log("Dialog closed");
+      // This will trigger when the drawer is closed
+      console.log("Drawer closed");
     }
   };
   
   return (
-    <Dialog onOpenChange={handleClose}>
-      <ImplementationPlanTrigger useCase={localUseCase}>
-        {children}
-      </ImplementationPlanTrigger>
+    <Drawer onOpenChange={handleClose}>
+      <DrawerTrigger asChild>
+        {children ? (
+          <div className="cursor-pointer">
+            {children}
+          </div>
+        ) : (
+          <button className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none">
+            {localUseCase.implementationPlan && Object.values(localUseCase.implementationPlan).some(value => value) 
+              ? "View Implementation Plan" 
+              : "Create Implementation Plan"}
+          </button>
+        )}
+      </DrawerTrigger>
 
-      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Implementation Plan: {localUseCase.name}</DialogTitle>
-          <DialogDescription>
+      <DrawerContent className="max-h-[85vh]">
+        <div className="mx-auto w-full max-w-[800px] p-6">
+          <h2 className="text-xl font-semibold mb-2">Implementation Plan: {localUseCase.name}</h2>
+          <p className="text-muted-foreground mb-6">
             How to implement this use case using Microsoft technologies
-          </DialogDescription>
-        </DialogHeader>
-        
-        <ImplementationPlanContent 
-          useCase={localUseCase} 
-          onUseCaseUpdate={handleUseCaseUpdate}
-        />
-        
-        <DialogFooter>
-          <PlanActionFooter 
+          </p>
+          
+          <ImplementationPlanContent 
             useCase={localUseCase} 
-            onUseCaseUpdate={onUseCaseUpdate}
+            onUseCaseUpdate={handleUseCaseUpdate}
           />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          
+          <div className="mt-6">
+            <PlanActionFooter 
+              useCase={localUseCase} 
+              onUseCaseUpdate={onUseCaseUpdate}
+            />
+          </div>
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 };
 
