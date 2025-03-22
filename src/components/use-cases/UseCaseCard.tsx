@@ -10,7 +10,7 @@ interface UseCaseCardProps {
   useCase: UseCase;
   getCategoryColor: (categoryId: string) => string;
   getPriorityBadgeClass: (priority: string) => string;
-  onUseCaseUpdate?: (updatedUseCase: any) => void;
+  onUseCaseUpdate?: (updatedUseCase: UseCase) => void;
 }
 
 const UseCaseCard = ({ 

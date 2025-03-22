@@ -11,7 +11,7 @@ import {
 
 interface ImplementationPlanContentProps {
   useCase: UseCase;
-  onUseCaseUpdate?: (updatedUseCase: UseCase) => void;
+  onUseCaseUpdate: (updatedUseCase: UseCase) => void;
 }
 
 const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({ 
@@ -27,8 +27,9 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
 
   // Wrapper functions that update both local state and call the parent update callback
   const onPlanUpdate = (field: string, value: string) => {
-    const updated = handlePlanUpdate(field, value, localUseCase, onUseCaseUpdate);
+    const updated = handlePlanUpdate(field, value, localUseCase);
     setLocalUseCase(updated);
+    onUseCaseUpdate(updated);
   };
 
   const onConnectionUpdate = (sourceToolKey: string, targetToolKey: string, description: string) => {
@@ -36,20 +37,20 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
       sourceToolKey, 
       targetToolKey, 
       description, 
-      localUseCase, 
-      onUseCaseUpdate
+      localUseCase
     );
     setLocalUseCase(updated);
+    onUseCaseUpdate(updated);
   };
 
   const onDetailedInstructionsUpdate = (toolKey: string, instructions: string) => {
     const updated = handleDetailedInstructionsUpdate(
       toolKey, 
       instructions, 
-      localUseCase, 
-      onUseCaseUpdate
+      localUseCase
     );
     setLocalUseCase(updated);
+    onUseCaseUpdate(updated);
   };
 
   return (
