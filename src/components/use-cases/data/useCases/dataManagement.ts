@@ -1,4 +1,3 @@
-
 import { FileText, Database, Filter, Globe, Search, Eye, BookOpen, Clock } from "lucide-react";
 import { UseCase } from "../types";
 
@@ -16,12 +15,628 @@ export const dataManagementUseCases: UseCase[] = [
     crossServiceValue: "High",
     keyBenefit: "60% reduction in document processing time",
     implementationPlan: {
-      msCopilot: "Extract and summarize key information from documents",
-      powerAutomate: "Create workflows to route documents and trigger analysis",
-      powerApps: "Build a custom interface for document submission and review",
-      copilotStudio: "Design custom prompt flows for document analysis",
-      powerBI: "Visualize document processing metrics and extracted insights"
-    }
+      msCopilot: {
+        summary: "Extract and summarize key information from documents",
+        detailedInstructions: `# Copilot Studio Agent Configuration
+
+### Conversation Topics
+
+1. **Document Submission**
+   - Prompt: "I need to process a new client document"
+   - Response: Guide user through document submission process
+   - Actions: Trigger document upload flow, collect metadata
+
+2. **Status Inquiry**
+   - Prompt: "What's the status of the Smith Tax Return?"
+   - Response: Provide current processing status and estimated completion time
+   - Actions: Query SharePoint for document status, return processing stage
+
+3. **Data Extraction**
+   - Prompt: "Extract the total income from the Johnson tax return"
+   - Response: Retrieve and present specific data points from processed documents
+   - Actions: Query extracted data JSON, format and present results
+
+4. **Error Handling**
+   - Prompt: "The system couldn't process this invoice"
+   - Response: Collect information about error, suggest solutions
+   - Actions: Log error, route to human operator if needed
+
+### Agent Actions
+
+Sample action definition for document submission:
+- Processes a new client document submission
+- Handles parameters like documentType, clientName, serviceLine
+- Executes upload actions and triggers document intake workflow
+- Provides success/failure responses with appropriate details`,
+        examples: [
+          {
+            title: "Document Processing Request",
+            description: "User: 'I need to analyze a client tax return for Johnson Enterprises'",
+            example: "Copilot: 'I can help with that. Please upload the tax return document and I'll guide you through the process. Would you like to specify any particular data points you're interested in extracting?'"
+          },
+          {
+            title: "Data Extraction Query",
+            description: "User: 'Can you extract the total revenue and expenses from the Q3 financial statement?'",
+            example: "Copilot: 'I'll extract that information for you. Based on the Q3 financial statement, the total revenue is $2.45M and the total expenses are $1.87M, resulting in a profit of $580K for the quarter.'"
+          }
+        ],
+        connections: [
+          {
+            tool: "Document Intelligence",
+            description: "Utilizes Document Intelligence API to extract structured data from various document formats"
+          },
+          {
+            targetTool: "powerAutomate",
+            description: "Initiates document processing workflows when users submit new documents"
+          }
+        ]
+      },
+      powerAutomate: {
+        summary: "Create workflows to route documents and trigger analysis",
+        detailedInstructions: `## Power Automate Workflows
+
+1. **Document Intake Flow**:
+   - Triggered when document is uploaded to Incoming folder
+   - Performs initial classification
+   - Moves document to InProcess folder
+   - Logs metadata to tracking system
+
+2. **Document Analysis Flow**:
+   - Extracts text and form data using Azure Document Intelligence
+   - Identifies document type and relevant fields
+   - Generates structured data JSON
+   - Tags document with service line and document type
+
+3. **Extraction Verification Flow**:
+   - Routes document to human verifier when confidence score is below threshold
+   - Captures feedback for model improvement
+
+4. **Post-Processing Flow**:
+   - Moves processed documents to appropriate service line folder
+   - Notifies relevant team members
+   - Updates tracking systems`,
+        examples: [
+          {
+            title: "Document Intake Workflow",
+            description: "Automated processing of new document uploads",
+            example: "When a document is uploaded to SharePoint 'Incoming' folder → Identify document type using AI → Move to appropriate processing queue → Notify processing team"
+          },
+          {
+            title: "Verification Workflow",
+            description: "Human verification process for low-confidence extractions",
+            example: "When extraction confidence < 80% → Create verification task → Assign to appropriate team → Collect feedback → Update AI model"
+          }
+        ],
+        connections: [
+          {
+            tool: "SharePoint",
+            description: "Monitors document libraries for new uploads and manages document movement between processing stages"
+          },
+          {
+            targetTool: "powerApps",
+            description: "Triggers notifications in the Power Apps interface when documents require human verification"
+          }
+        ]
+      },
+      powerApps: {
+        summary: "Build a custom interface for document submission and review",
+        detailedInstructions: `## Power Apps Interface
+
+**User Roles**:
+- Document Submitters
+- Document Processors
+- Service Line Reviewers
+- Administrators
+
+**Key Screens**:
+- Document Upload Interface
+- Processing Status Dashboard
+- Verification Portal
+- Analytics Dashboard
+- Configuration Settings
+
+The interface provides role-based access to document processing capabilities, with specialized views for different user types. The verification portal allows human reviewers to confirm AI extractions and provide feedback for continuous improvement.`,
+        examples: [
+          {
+            title: "Document Processing Dashboard",
+            description: "Central monitoring interface for processing team",
+            example: "Interactive dashboard showing documents by stage (New, Processing, Verification Needed, Completed, Error) with ability to drill down into specific documents and view extraction results"
+          },
+          {
+            title: "Verification Interface",
+            description: "Tool for human verification of AI extractions",
+            example: "Side-by-side view of original document and extracted data, with ability to correct errors, approve results, and provide feedback to improve the AI model"
+          }
+        ],
+        connections: [
+          {
+            targetTool: "powerBI",
+            description: "Embeds Power BI analytics dashboard for monitoring document processing metrics"
+          },
+          {
+            targetTool: "sharePoint",
+            description: "Accesses and manages documents stored in SharePoint document libraries"
+          }
+        ]
+      },
+      copilotStudio: {
+        summary: "Design custom prompt flows for document analysis",
+        detailedInstructions: `## Copilot Studio Integration
+
+The Copilot agent serves as the primary interface for users to interact with the document analyzer system.
+
+**Key Topics (Conversation Triggers)**:
+- Document submission
+- Document status inquiry
+- Data extraction requests
+- Report generation
+- Error handling
+
+**Primary Actions**:
+- Initiate document processing workflows
+- Update metadata for document categorization
+- Generate reports based on extracted data
+- Route documents to appropriate service lines
+
+The agent uses natural language processing to understand user requests and guide them through the document analysis process, acting as a knowledgeable assistant for all document-related tasks.`,
+        examples: [
+          {
+            title: "Guided Document Submission",
+            description: "Conversational flow for document upload",
+            example: "User: 'I have a new tax return to process'\nCopilot: 'Great, I can help with that. Is this for an individual or corporate client?'\nUser: 'Corporate, for Acme Inc.'\nCopilot: 'Thanks. Please upload the document, and I'll start processing it for the corporate tax team.'"
+          },
+          {
+            title: "Data Extraction Dialog",
+            description: "Interactive extraction of specific information",
+            example: "User: 'I need the capital expenditures from the Smith financial statement'\nCopilot: 'I'll find that for you. According to the processed statement, capital expenditures were $425,000 for the period. Would you like me to extract any other financial data?'"
+          }
+        ],
+        connections: [
+          {
+            targetTool: "msCopilot",
+            description: "Leverages Microsoft Copilot capabilities for enhanced document understanding"
+          },
+          {
+            tool: "Power Virtual Agents",
+            description: "Builds on Power Virtual Agents framework for conversational interfaces"
+          }
+        ]
+      },
+      powerBI: {
+        summary: "Visualize document processing metrics and extracted insights",
+        detailedInstructions: `## Analytics and Reporting
+
+The solution includes Power BI analytics capabilities to track:
+
+1. Document processing volume by type and service line
+2. Average processing time
+3. Extraction confidence scores
+4. Error rates and common error types
+5. Cost savings and efficiency metrics
+
+Dashboards provide real-time visibility into the document processing pipeline, helping managers identify bottlenecks and optimize the process. Historical trend analysis shows improvement over time as the AI models learn from human feedback.`,
+        examples: [
+          {
+            title: "Processing Efficiency Dashboard",
+            description: "Monitoring of key performance metrics",
+            example: "Interactive dashboard showing processing time trends, volume by document type, confidence score distribution, and cost savings calculations based on manual vs. automated processing time"
+          },
+          {
+            title: "Service Line Analytics",
+            description: "Service-specific performance metrics",
+            example: "Filtered views showing document volume, processing efficiency, and extraction accuracy specific to TAX and ASR service lines, with drill-down capability to identify specific document types or clients"
+          }
+        ],
+        connections: [
+          {
+            tool: "Dataverse",
+            description: "Uses Dataverse as the data source for analytics, combining document metadata with processing metrics"
+          },
+          {
+            targetTool: "sharePoint",
+            description: "Pulls document metadata from SharePoint for comprehensive reporting"
+          }
+        ]
+      },
+      sharePoint: {
+        summary: "Manage document storage and classification structure",
+        detailedInstructions: `## SharePoint Document Library Structure
+
+\`\`\`
+/ClientDocuments
+  /Incoming          # New documents pending processing
+  /InProcess         # Documents currently being analyzed
+  /Processed         # Completed documents
+    /TAX             # Tax-specific documents
+    /ASR             # Advisory and Risk documents
+  /Templates         # Document templates for recognition training
+  /ExtractedData     # JSON files containing extracted data
+\`\`\`
+
+The SharePoint structure serves as the backbone of the document management system, with custom metadata fields to track:
+- Document Type
+- Service Line
+- Processing Status
+- Confidence Score
+- Processed Date
+
+Document libraries use content types and metadata-driven views to organize information effectively, with appropriate permissions at each level to ensure data security and compliance.`,
+        examples: [
+          {
+            title: "Automated Document Organization",
+            description: "Rules-based filing system",
+            example: "Tax returns are automatically tagged with DocumentType='Tax Return' and ServiceLine='TAX', then moved to /Processed/TAX with appropriate retention policies applied"
+          },
+          {
+            title: "Template Management",
+            description: "Document pattern storage for AI training",
+            example: "The Templates library contains annotated examples of common document types, which are used to improve AI recognition accuracy for specific document formats and structures"
+          }
+        ],
+        connections: [
+          {
+            tool: "Microsoft Graph",
+            description: "Uses Microsoft Graph API for programmatic access to document properties and content"
+          },
+          {
+            targetTool: "powerAutomate",
+            description: "Triggers Power Automate workflows when documents are added or modified"
+          }
+        ]
+      }
+    },
+    detailedImplementationGuide: `# Client Document Analyzer: Agentic Framework Implementation
+
+## Solution Overview
+
+The Client Document Analyzer is a Phase 1, high priority solution that automatically extracts and categorizes data from client documents. It serves TAX and ASR service lines with medium complexity and high cross-service value, delivering a 60% reduction in document processing time.
+
+## Technical Architecture
+
+### Components
+
+1. **Microsoft Copilot Studio**: Core AI-powered conversational agent
+2. **SharePoint**: Document storage and organization
+3. **Power Automate**: Workflow automation for document processing
+4. **Power Apps**: Custom interface for document submission and review
+5. **Azure Document Intelligence**: Extract data from various document types
+6. **Microsoft Graph API**: Access to Microsoft 365 services
+
+### Integration Flow
+
+![Client Document Analyzer Flow](placeholder-for-diagram)
+
+## Implementation Framework
+
+### 1. Copilot Studio Agent Configuration
+
+The Copilot agent will serve as the primary interface for users to interact with the document analyzer system.
+
+**Key Topics (Conversation Triggers)**:
+- Document submission
+- Document status inquiry
+- Data extraction requests
+- Report generation
+- Error handling
+
+**Primary Actions**:
+- Initiate document processing workflows
+- Update metadata for document categorization
+- Generate reports based on extracted data
+- Route documents to appropriate service lines
+
+### 2. SharePoint Document Library Structure
+
+\`\`\`
+/ClientDocuments
+  /Incoming          # New documents pending processing
+  /InProcess         # Documents currently being analyzed
+  /Processed         # Completed documents
+    /TAX             # Tax-specific documents
+    /ASR             # Advisory and Risk documents
+  /Templates         # Document templates for recognition training
+  /ExtractedData     # JSON files containing extracted data
+\`\`\`
+
+### 3. Power Automate Workflows
+
+1. **Document Intake Flow**:
+   - Triggered when document is uploaded to Incoming folder
+   - Performs initial classification
+   - Moves document to InProcess folder
+   - Logs metadata to tracking system
+
+2. **Document Analysis Flow**:
+   - Extracts text and form data using Azure Document Intelligence
+   - Identifies document type and relevant fields
+   - Generates structured data JSON
+   - Tags document with service line and document type
+
+3. **Extraction Verification Flow**:
+   - Routes document to human verifier when confidence score is below threshold
+   - Captures feedback for model improvement
+
+4. **Post-Processing Flow**:
+   - Moves processed documents to appropriate service line folder
+   - Notifies relevant team members
+   - Updates tracking systems
+
+### 4. Power Apps Interface
+
+**User Roles**:
+- Document Submitters
+- Document Processors
+- Service Line Reviewers
+- Administrators
+
+**Key Screens**:
+- Document Upload Interface
+- Processing Status Dashboard
+- Verification Portal
+- Analytics Dashboard
+- Configuration Settings
+
+### 5. Microsoft Graph Integration
+
+- User authentication and authorization
+- Document access management
+- Team collaboration features
+- Notification services
+
+## PowerShell Implementation Script
+
+\`\`\`powershell
+# Client Document Analyzer - Implementation Script
+# This script sets up the required infrastructure for the Client Document Analyzer solution
+
+# Parameters
+param (
+    [string]$tenantUrl = "https://contoso.sharepoint.com",
+    [string]$siteName = "ClientDocumentAnalyzer",
+    [string]$adminEmail = "admin@contoso.com"
+)
+
+# Connect to Microsoft 365 services
+Connect-MgGraph -Scopes "Sites.ReadWrite.All", "Files.ReadWrite.All", "AppCatalog.ReadWrite.All"
+Connect-PnPOnline -Url $tenantUrl -Interactive
+
+# Create SharePoint site
+Write-Host "Creating SharePoint site for document management..."
+$site = New-PnPSite -Type TeamSite -Title "Client Document Analyzer" -Alias $siteName -Description "Automated document processing system for client documents"
+
+# Create document libraries and folder structure
+Write-Host "Setting up document libraries and folder structure..."
+Connect-PnPOnline -Url $site.Url -Interactive
+
+New-PnPList -Title "ClientDocuments" -Template DocumentLibrary
+Add-PnPFolder -Name "Incoming" -Folder "ClientDocuments"
+Add-PnPFolder -Name "InProcess" -Folder "ClientDocuments"
+Add-PnPFolder -Name "Processed" -Folder "ClientDocuments"
+Add-PnPFolder -Name "TAX" -Folder "ClientDocuments/Processed"
+Add-PnPFolder -Name "ASR" -Folder "ClientDocuments/Processed"
+Add-PnPFolder -Name "Templates" -Folder "ClientDocuments"
+Add-PnPFolder -Name "ExtractedData" -Folder "ClientDocuments"
+
+# Add custom metadata fields to document library
+Write-Host "Adding metadata fields for document categorization..."
+Add-PnPField -List "ClientDocuments" -DisplayName "Document Type" -InternalName "DocumentType" -Type Choice -Choices "Tax Return", "Financial Statement", "Receipt", "Invoice", "Contract", "Other"
+Add-PnPField -List "ClientDocuments" -DisplayName "Service Line" -InternalName "ServiceLine" -Type Choice -Choices "TAX", "ASR"
+Add-PnPField -List "ClientDocuments" -DisplayName "Processing Status" -InternalName "ProcessingStatus" -Type Choice -Choices "New", "Processing", "Verification Needed", "Completed", "Error"
+Add-PnPField -List "ClientDocuments" -DisplayName "Confidence Score" -InternalName "ConfidenceScore" -Type Number
+Add-PnPField -List "ClientDocuments" -DisplayName "Processed Date" -InternalName "ProcessedDate" -Type DateTime
+
+# Register Azure Document Intelligence Service
+Write-Host "Setting up Azure Document Intelligence..."
+$documentIntelligenceParams = @{
+    resourceGroupName = "RG-ClientDocAnalyzer"
+    name = "docint-clientdocanalyzer"
+    location = "eastus"
+    sku = "S0"
+}
+New-AzCognitiveServicesAccount @documentIntelligenceParams
+
+# Create Power App (Placeholder - would normally use Power Apps API)
+Write-Host "Creating Power Apps solution..."
+# This would normally use the Power Apps cmdlets to create the app
+# For now, just creating a placeholder file with app specifications
+$powerAppSpecs = @"
+{
+    "AppName": "Client Document Analyzer",
+    "Description": "Interface for managing client document processing",
+    "Screens": [
+        "DocumentUpload",
+        "ProcessingDashboard",
+        "VerificationPortal",
+        "Analytics"
+    ]
+}
+"@
+$powerAppSpecs | Out-File -FilePath "./PowerAppSpecs.json"
+
+# Create Power Automate flows (Placeholder)
+Write-Host "Setting up Power Automate flows..."
+# This would normally use the Power Automate cmdlets to create flows
+# For now, just creating placeholder files with flow specifications
+$documentIntakeFlow = @"
+{
+    "FlowName": "Document Intake Process",
+    "Trigger": "When a file is created in SharePoint",
+    "Actions": [
+        "Initialize variables",
+        "Get file properties",
+        "Create metadata entry", 
+        "Move file to InProcess folder",
+        "Start document analysis flow"
+    ]
+}
+"@
+$documentIntakeFlow | Out-File -FilePath "./DocumentIntakeFlow.json"
+
+$documentAnalysisFlow = @"
+{
+    "FlowName": "Document Analysis Process",
+    "Trigger": "Called by Document Intake Flow",
+    "Actions": [
+        "Get file content",
+        "Call Azure Document Intelligence",
+        "Parse results",
+        "Generate structured data JSON",
+        "Update metadata",
+        "Determine if verification needed"
+    ]
+}
+"@
+$documentAnalysisFlow | Out-File -FilePath "./DocumentAnalysisFlow.json"
+
+# Setup Copilot Studio bot
+Write-Host "Creating Copilot Studio agent..."
+# This would use the Copilot Studio API to create the bot
+# For now, creating a placeholder with bot specifications
+$copilotSpecs = @"
+{
+    "BotName": "Client Document Analyzer",
+    "Description": "AI assistant for managing client document processing",
+    "Topics": [
+        "Document Submission",
+        "Processing Status",
+        "Data Extraction",
+        "Report Generation"
+    ],
+    "Actions": [
+        "InitiateDocumentProcessing",
+        "CheckDocumentStatus",
+        "ExtractSpecificData",
+        "GenerateReport"
+    ]
+}
+"@
+$copilotSpecs | Out-File -FilePath "./CopilotSpecs.json"
+
+# Set permissions
+Write-Host "Setting up permissions..."
+# This would set up appropriate permissions across the services
+# Example permission setting for SharePoint site
+Set-PnPGroup -Identity "Client Document Analyzer Members" -AddRole "Contribute"
+New-PnPGroup -Title "Document Verifiers" -Description "Users who verify processed documents"
+Add-PnPUserToGroup -LoginName $adminEmail -Identity "Document Verifiers"
+
+Write-Host "Setup completed successfully!"
+\`\`\`
+
+## Copilot Studio Agent Configuration
+
+### Conversation Topics
+
+1. **Document Submission**
+   - Prompt: "I need to process a new client document"
+   - Response: Guide user through document submission process
+   - Actions: Trigger document upload flow, collect metadata
+
+2. **Status Inquiry**
+   - Prompt: "What's the status of the Smith Tax Return?"
+   - Response: Provide current processing status and estimated completion time
+   - Actions: Query SharePoint for document status, return processing stage
+
+3. **Data Extraction**
+   - Prompt: "Extract the total income from the Johnson tax return"
+   - Response: Retrieve and present specific data points from processed documents
+   - Actions: Query extracted data JSON, format and present results
+
+4. **Error Handling**
+   - Prompt: "The system couldn't process this invoice"
+   - Response: Collect information about error, suggest solutions
+   - Actions: Log error, route to human operator if needed
+
+### Agent Actions
+
+\`\`\`yaml
+# Sample action definition for document submission
+name: SubmitNewDocument
+description: Processes a new client document submission
+parameters:
+  - name: documentType
+    description: Type of document being submitted
+    type: string
+    enum: ["Tax Return", "Financial Statement", "Receipt", "Invoice", "Contract", "Other"]
+  - name: clientName
+    description: Name of the client
+    type: string
+  - name: serviceLine
+    description: Service line for routing
+    type: string
+    enum: ["TAX", "ASR"]
+  - name: documentFile
+    description: The document file to upload
+    type: file
+execution:
+  - action: uploadDocument
+    parameters:
+      library: "ClientDocuments"
+      folder: "Incoming"
+      file: $documentFile
+      metadata:
+        DocumentType: $documentType
+        ClientName: $clientName
+        ServiceLine: $serviceLine
+        ProcessingStatus: "New"
+  - action: triggerFlow
+    parameters:
+      flowName: "Document Intake Process"
+      documentId: $uploadResult.id
+response:
+  success: "Your $documentType for $clientName has been submitted and will be processed shortly. You can check status by asking 'What's the status of $clientName $documentType?'"
+  failure: "There was an issue submitting your document. [Error details: $error]"
+\`\`\`
+
+## Analytics and Reporting
+
+The solution includes analytics capabilities to track:
+
+1. Document processing volume by type and service line
+2. Average processing time
+3. Extraction confidence scores
+4. Error rates and common error types
+5. Cost savings and efficiency metrics
+
+## Training and Customization
+
+The framework includes a feedback loop for continuous improvement:
+
+1. Document templates are stored in the Templates library
+2. Manual corrections are logged for model improvement
+3. Service-line specific terminology and document types can be added
+4. Custom extraction rules can be defined for unique document types
+
+## Security and Compliance
+
+- All documents are processed within the Microsoft ecosystem
+- Data classification is applied based on document content
+- Audit logs track all access and modifications
+- Retention policies align with organizational requirements`,
+    exampleScenarios: [
+      {
+        title: "Global Tax Document Processing",
+        description: "A multinational corporation implemented the solution across their tax practice, automating the extraction of key data from tax returns, financial statements, and supporting documents across multiple jurisdictions. The system automatically identified document types, extracted relevant data, and organized documents by entity and tax year, reducing processing time by 60%."
+      },
+      {
+        title: "Audit Documentation Analysis",
+        description: "An audit team deployed the system to process client financial statements and supporting documentation. The analyzer extracted key financial metrics, identified discrepancies, and flagged areas requiring additional scrutiny, enabling auditors to focus on high-value analytical tasks instead of manual data extraction."
+      }
+    ],
+    toolConnections: [
+      {
+        tool: "Azure Document Intelligence",
+        description: "Core document processing engine for extracting structured data from unstructured documents"
+      },
+      {
+        tool: "Microsoft Dataverse",
+        description: "Central storage for extracted data and document metadata, enabling cross-system analytics"
+      },
+      {
+        tool: "Microsoft Teams",
+        description: "Integration enables document submission and processing updates directly within collaboration workspaces"
+      }
+    ]
   },
   {
     id: 7,
@@ -351,414 +966,4 @@ This solution automates the discovery, cataloging, and ongoing maintenance of a 
     priority: "medium",
     phase: "Phase 2",
     complexity: "Medium",
-    crossServiceValue: "Medium",
-    keyBenefit: "85% faster identification of sensitive data exposure",
-    implementationPlan: {
-      msCopilot: "Analyze social content for potential confidential information",
-      powerAutomate: "Create automated monitoring and alert workflows",
-      powerApps: "Build a monitoring dashboard and incident management system",
-      copilotStudio: "Develop investigation assistant for potential exposure incidents",
-      powerBI: "Track exposure metrics and remediation effectiveness"
-    },
-    detailedImplementationGuide: `# Social Media Monitoring System Implementation Guide
-
-## Overview
-This solution scans social media platforms, forums, and public websites to identify potential data leaks, unauthorized disclosures, or confidential information exposure. It provides early detection and rapid response capabilities to minimize damage from data exposure.
-
-## Step 1: Monitoring Scope Configuration
-1. Define target platforms for monitoring:
-   - Major social networks
-   - Industry forums and communities
-   - Code repositories
-   - Paste sites and document sharing platforms
-   - News and media outlets
-2. Configure monitoring parameters
-3. Set up authentication and API connections
-
-## Step 2: Detection Pattern Development
-1. Create comprehensive signature libraries:
-   - Company-specific identifiers
-   - Document watermarks and footers
-   - Source code patterns
-   - Product identifiers
-   - Customer data patterns
-2. Implement fuzzy matching algorithms
-3. Build contextual pattern recognition
-
-## Step 3: Risk Detection Engine
-1. Design tiered detection approach:
-   - Basic pattern matching
-   - Contextual analysis
-   - Natural language understanding
-   - Image recognition
-   - Intent classification
-2. Implement confidence scoring
-3. Create false positive filtering
-
-## Step 4: Alert Management System
-1. Build multi-level alerting:
-   - Severity classification
-   - Risk categorization
-   - Escalation paths
-   - Response suggestions
-   - Evidence capture
-2. Implement notification workflows
-3. Create case management capabilities
-
-## Step 5: Investigation Interface
-1. Design investigation workspace:
-   - Content visualization
-   - Historical context
-   - Similar incidents
-   - Source analysis
-   - Impact assessment
-2. Implement evidence collection
-3. Build response action tracking
-
-## Step 6: Remediation Workflow
-1. Create playbook-driven response:
-   - Takedown requests
-   - Legal notifications
-   - Platform reporting
-   - Public relations coordination
-   - Internal system verification
-2. Implement response tracking
-3. Build effectiveness measurement
-
-## Step 7: Employee Monitoring Guidelines
-1. Develop ethical monitoring framework:
-   - Scope limitations
-   - Privacy considerations
-   - Permitted use cases
-   - Prohibited activities
-   - Employee notification
-2. Create policy documentation
-3. Implement compliance safeguards
-
-## Step 8: Threat Intelligence Integration
-1. Design intelligence feedback loops:
-   - Incident pattern analysis
-   - Threat actor identification
-   - Method evolution tracking
-   - Risk prediction modeling
-   - Preventive control suggestions
-2. Create trend reporting
-3. Build risk forecasting capabilities
-
-## Maintenance & Optimization
-1. Regularly update detection patterns
-2. Refine false positive filtering
-3. Expand platform coverage
-4. Optimize performance for real-time detection
-
-## Best Practices
-- Focus on high-risk information types
-- Balance comprehensiveness with precision
-- Ensure proper legal review of monitoring practices
-- Document incident response for compliance evidence`,
-    exampleScenarios: [
-      {
-        title: "Inadvertent Code Exposure",
-        description: "A technology company implemented the solution to monitor for source code leaks. The system detected proprietary code snippets posted on a developer forum by an employee seeking help, allowing for immediate removal before competitors discovered it."
-      },
-      {
-        title: "Customer Data Protection",
-        description: "A financial services firm used the monitoring system to identify a screenshot of customer information posted on social media by an employee showing their workspace. The early detection enabled prompt removal and targeted training."
-      }
-    ],
-    toolConnections: [
-      {
-        tool: "Microsoft Sentinel",
-        description: "Integrates with Microsoft Sentinel to correlate social media risks with other security threats"
-      },
-      {
-        tool: "Microsoft Defender for Cloud Apps",
-        description: "Connects with Microsoft Defender for Cloud Apps to extend monitoring to cloud-shared content"
-      },
-      {
-        tool: "Microsoft Purview Communication Compliance",
-        description: "Uses Microsoft Purview Communication Compliance for ethical monitoring of employee communications"
-      }
-    ]
-  },
-  {
-    id: 114,
-    name: "Data Retention Scheduler",
-    description: "Generates and enforces customized data retention schedules across systems",
-    category: "data-management",
-    serviceLines: ["TAX", "ASR", "IFS"],
-    icon: Clock,
-    priority: "medium",
-    phase: "Phase 2",
-    complexity: "Medium",
-    crossServiceValue: "High",
-    keyBenefit: "100% documentation of retention decisions",
-    implementationPlan: {
-      msCopilot: "Generate retention period recommendations based on data types and regulations",
-      powerAutomate: "Create automated retention enforcement workflows",
-      powerApps: "Build a retention schedule management and exception system",
-      copilotStudio: "Develop a retention policy advisor for data owners",
-      powerBI: "Track retention compliance and data lifecycle metrics"
-    },
-    detailedImplementationGuide: `# Data Retention Scheduler Implementation Guide
-
-## Overview
-This solution automates the creation, management, and enforcement of data retention schedules across the organization. It balances regulatory requirements, business needs, and data minimization principles to ensure appropriate lifecycle management of information assets.
-
-## Step 1: Regulatory Requirement Mapping
-1. Create comprehensive retention library:
-   - Industry-specific regulations
-   - Geographic requirements
-   - Cross-sector obligations
-   - Internal policies
-   - Contractual obligations
-2. Map requirements to data categories
-3. Identify conflicts and determine precedence
-
-## Step 2: Business Need Assessment
-1. Design business value framework:
-   - Operational necessity periods
-   - Legal defense considerations
-   - Historical value assessment
-   - Analytics requirements
-   - Knowledge management needs
-2. Implement business justification workflows
-3. Create value decay modeling
-
-## Step 3: Retention Schedule Generation
-1. Build recommendation engine for:
-   - Minimum retention periods
-   - Maximum retention limits
-   - Conditional retention rules
-   - Event-based triggers
-   - Exception categories
-2. Implement schedule optimization
-3. Create approval workflows
-
-## Step 4: System Integration
-1. Develop connectors for:
-   - Document management systems
-   - Email and collaboration platforms
-   - Database systems
-   - File shares and storage
-   - Archive systems
-2. Build retention metadata tagging
-3. Create schedule distribution mechanisms
-
-## Step 5: Enforcement Automation
-1. Design lifecycle action workflows:
-   - Review notifications
-   - Archive transfers
-   - Anonymization processes
-   - Deletion actions
-   - Exception handling
-2. Implement approval checkpoints
-3. Build completion verification
-
-## Step 6: Exception Management
-1. Create exception request system:
-   - Legal hold integration
-   - Business justification paths
-   - Temporary extensions
-   - Permanent exceptions
-   - Approval routing
-2. Implement exception documentation
-3. Build regular review triggers
-
-## Step 7: Compliance Documentation
-1. Design comprehensive retention evidence:
-   - Schedule justification
-   - Implementation verification
-   - Exception documentation
-   - Completion certificates
-   - Destruction logs
-2. Create audit-ready reporting
-3. Implement version control for schedule changes
-
-## Step 8: Analytics and Optimization
-1. Build retention intelligence:
-   - Storage reduction metrics
-   - Compliance improvement tracking
-   - Risk reduction measurement
-   - Cost impact analysis
-   - Process efficiency metrics
-2. Create trend analysis
-3. Implement continuous improvement recommendations
-
-## Maintenance & Optimization
-1. Regularly update regulatory requirements
-2. Review business value assessments
-3. Optimize integration performance
-4. Expand system coverage
-
-## Best Practices
-- Document retention decisions and justifications
-- Implement consistent metadata for retention
-- Create clear ownership for retention decisions
-- Balance minimization with legitimate needs`,
-    exampleScenarios: [
-      {
-        title: "Financial Records Management",
-        description: "A financial institution implemented the solution to manage retention of transaction records. The system automatically determined appropriate retention periods based on transaction types, jurisdictions, and account status, then enforced consistent retention across all systems."
-      },
-      {
-        title: "Healthcare Information Lifecycle",
-        description: "A healthcare provider used the system to manage patient records retention. The automated scheduler correctly applied longer retention periods for pediatric records while ensuring timely review of records eligible for destruction, reducing storage costs while maintaining compliance."
-      }
-    ],
-    toolConnections: [
-      {
-        tool: "Microsoft Purview Records Management",
-        description: "Integrates with Microsoft Purview Records Management for retention labeling and disposition processes"
-      },
-      {
-        tool: "Microsoft Syntex",
-        description: "Uses Microsoft Syntex for intelligent content analysis to determine appropriate retention periods"
-      },
-      {
-        tool: "SharePoint Retention Policies",
-        description: "Leverages SharePoint retention policies for document-level retention enforcement"
-      }
-    ]
-  },
-  {
-    id: 115,
-    name: "AI-Powered Data Classification Engine",
-    description: "Automatically categorizes and labels data based on content and context",
-    category: "data-management",
-    serviceLines: ["TAX", "ASR", "DEALS", "IFS"],
-    icon: BookOpen,
-    priority: "high",
-    phase: "Phase 1",
-    complexity: "High",
-    crossServiceValue: "High",
-    keyBenefit: "95% accuracy in sensitive data identification",
-    implementationPlan: {
-      msCopilot: "Develop and refine classification rules based on content analysis",
-      powerAutomate: "Create workflows to apply protection based on classification",
-      powerApps: "Build a classification management and exception handling system",
-      copilotStudio: "Create a classification assistant to guide users",
-      powerBI: "Visualize classification coverage and protection metrics"
-    },
-    detailedImplementationGuide: `# AI-Powered Data Classification Engine Implementation Guide
-
-## Overview
-This solution uses artificial intelligence to automatically analyze, categorize, and label data across the organization based on content, context, and metadata. It enables appropriate protection, governance, and lifecycle management for all information assets.
-
-## Step 1: Classification Taxonomy Development
-1. Create multi-dimensional classification framework:
-   - Sensitivity levels (Public, Internal, Confidential, Restricted)
-   - Content categories (Financial, HR, Customer, Intellectual Property)
-   - Regulatory relevance (GDPR, HIPAA, PCI, etc.)
-   - Business value tiers (Critical, High, Medium, Low)
-2. Develop category definitions and examples
-3. Create classification visualization scheme
-
-## Step 2: Training Data Preparation
-1. Build comprehensive training datasets:
-   - Labeled document examples
-   - Structured data samples
-   - Email and communication examples
-   - Code and technical content
-   - Media and image samples
-2. Implement quality control process
-3. Create cross-validation sets
-
-## Step 3: AI Model Development
-1. Design multi-technique approach:
-   - Pattern recognition
-   - Natural language processing
-   - Document understanding
-   - Image content analysis
-   - Context evaluation
-2. Implement confidence scoring
-3. Build model performance monitoring
-
-## Step 4: Classification Engine Configuration
-1. Create processing workflows for:
-   - Document repositories
-   - Email systems
-   - Database content
-   - File shares
-   - Cloud storage
-2. Implement batch and real-time processing
-3. Build incremental scanning capabilities
-
-## Step 5: Human Review System
-1. Design review interface for:
-   - Low-confidence classifications
-   - Random quality assurance
-   - Exception handling
-   - Model improvement feedback
-   - New pattern submission
-2. Create review workflow routing
-3. Build feedback integration
-
-## Step 6: Protection Action Framework
-1. Develop policy-driven protection:
-   - Access control adjustment
-   - Encryption application
-   - Watermarking and labeling
-   - Usage restriction enforcement
-   - Monitoring level assignment
-2. Implement automated protection application
-3. Create exception handling
-
-## Step 7: User Experience Integration
-1. Build seamless user touchpoints:
-   - Classification indicators
-   - Override capabilities
-   - Justification workflows
-   - Education messages
-   - Guided remediation
-2. Implement minimal friction design
-3. Create personalized guidance
-
-## Step 8: Analytics and Reporting
-1. Design comprehensive intelligence:
-   - Classification coverage
-   - Protection effectiveness
-   - User behavior metrics
-   - Risk reduction measurement
-   - Compliance improvement tracking
-2. Create trend analysis reporting
-3. Build executive dashboards
-
-## Maintenance & Optimization
-1. Regularly retrain models with new data
-2. Refine classification rules
-3. Optimize processing performance
-4. Expand coverage to new repositories
-
-## Best Practices
-- Start with high-risk data repositories
-- Balance automation with appropriate human oversight
-- Provide clear remediation guidance to users
-- Document classification decisions for compliance evidence`,
-    exampleScenarios: [
-      {
-        title: "Enterprise Content Management",
-        description: "A large corporation implemented the solution across their document management system. The AI automatically classified over 3 million documents, identifying 150,000 improperly secured documents containing sensitive information, which were then automatically protected."
-      },
-      {
-        title: "Research Data Protection",
-        description: "A pharmaceutical company used the system to classify research data. The AI correctly identified combinations of seemingly innocuous data elements that together could reveal confidential research directions, applying appropriate protections before external sharing."
-      }
-    ],
-    toolConnections: [
-      {
-        tool: "Microsoft Purview Information Protection",
-        description: "Integrates with Microsoft Purview Information Protection to apply sensitivity labels based on classification"
-      },
-      {
-        tool: "Microsoft Syntex",
-        description: "Leverages Microsoft Syntex's advanced document understanding for enhanced classification accuracy"
-      },
-      {
-        tool: "Microsoft Defender for Cloud Apps",
-        description: "Connects with Microsoft Defender for Cloud Apps to extend classification to cloud applications"
-      }
-    ]
-  }
-];
-
+    crossServiceValue
