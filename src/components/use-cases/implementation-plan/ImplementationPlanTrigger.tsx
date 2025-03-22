@@ -1,24 +1,22 @@
 
 import { ReactNode } from "react";
 import { UseCase } from "../data/types";
-import { DialogTrigger } from "@/components/ui/dialog";
 
 interface ImplementationPlanTriggerProps {
   useCase: UseCase;
   children?: ReactNode;
+  onClick: () => void;
   asChild?: boolean;
 }
 
-const ImplementationPlanTrigger = ({ useCase, children, asChild = true }: ImplementationPlanTriggerProps) => {
+const ImplementationPlanTrigger = ({ useCase, children, onClick, asChild = true }: ImplementationPlanTriggerProps) => {
   const hasImplementationPlan = useCase.implementationPlan && 
     Object.values(useCase.implementationPlan).some(value => value);
 
   return (
-    <DialogTrigger asChild={asChild}>
+    <div onClick={onClick} className="cursor-pointer">
       {children ? (
-        <div className="cursor-pointer">
-          {children}
-        </div>
+        children
       ) : (
         <button 
           className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none"
@@ -28,7 +26,7 @@ const ImplementationPlanTrigger = ({ useCase, children, asChild = true }: Implem
             : "Create Implementation Plan"}
         </button>
       )}
-    </DialogTrigger>
+    </div>
   );
 };
 

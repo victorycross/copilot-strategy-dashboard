@@ -1,6 +1,6 @@
 
 import { UseCase } from "./data/types";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import ImplementationPlanContent from "./implementation-plan/ImplementationPlanContent";
 import PlanActionFooter from "./PlanActionFooter";
 
@@ -28,6 +28,7 @@ const ImplementationPlanDetail = ({
             useCase={useCase} 
             onUseCaseUpdate={(updatedUseCase) => {
               // This will be handled by the parent
+              console.log("UseCase updated in detail view", updatedUseCase);
             }}
           />
           

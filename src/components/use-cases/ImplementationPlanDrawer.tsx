@@ -8,7 +8,6 @@ import { ReactNode, useState } from "react";
 import PlanActionFooter from "./PlanActionFooter";
 import { UseCase } from "./data/types";
 import ImplementationPlanContent from "./implementation-plan/ImplementationPlanContent";
-import ImplementationPlanTrigger from "./implementation-plan/ImplementationPlanTrigger";
 
 interface ImplementationPlanProps {
   useCase: UseCase;
@@ -18,6 +17,7 @@ interface ImplementationPlanProps {
 
 const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: ImplementationPlanProps) => {
   const [localUseCase, setLocalUseCase] = useState(useCase);
+  const [open, setOpen] = useState(false);
   
   if (!localUseCase.implementationPlan) {
     // Create a default implementation plan if it doesn't exist
@@ -37,15 +37,16 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
     }
   };
 
-  const handleClose = (open: boolean) => {
-    if (!open) {
+  const handleClose = (isOpen: boolean) => {
+    setOpen(isOpen);
+    if (!isOpen) {
       // This will trigger when the drawer is closed
       console.log("Drawer closed");
     }
   };
   
   return (
-    <Drawer onOpenChange={handleClose}>
+    <Drawer open={open} onOpenChange={handleClose}>
       <DrawerTrigger asChild>
         {children ? (
           <div className="cursor-pointer">
@@ -62,7 +63,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
 
       <DrawerContent className="max-h-[85vh]">
         <div className="mx-auto w-full max-w-[800px] p-6">
-          <h2 className="text-xl font-semibold mb-2">Implementation Plan: {localUseCase.name}</h2>
+          <h2 className="text-xl font-semibold mb-2 text-primary">Implementation Plan: {localUseCase.name}</h2>
           <p className="text-muted-foreground mb-6">
             How to implement this use case using Microsoft technologies
           </p>
@@ -76,6 +77,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
             <PlanActionFooter 
               useCase={localUseCase} 
               onUseCaseUpdate={onUseCaseUpdate}
+              onClose={() => handleClose(false)}
             />
           </div>
         </div>
