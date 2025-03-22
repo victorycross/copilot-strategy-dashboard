@@ -1,9 +1,8 @@
-
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ToolSection from "./ToolSection";
 import { UseCase } from "../data/types";
-import { ensureObjectFormat } from "../ConnectionUtils";
+import { ensureObjectFormat } from "./ConnectionUtils";
 
 interface ImplementationPlanContentProps {
   useCase: UseCase;
