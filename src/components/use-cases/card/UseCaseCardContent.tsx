@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { CardContent } from "@/components/ui/card";
 import EditableField from "../EditableField";
 import ServiceLines from "./ServiceLines";
@@ -14,16 +14,19 @@ interface UseCaseCardContentProps {
   useCase: UseCase;
   onFieldUpdate: (field: string, value: string) => void;
   onUseCaseUpdate: (updatedUseCase: any) => void;
+  openDrawer: boolean;
+  setOpenDrawer: (open: boolean) => void;
+  handleOpenDrawer: () => void;
 }
 
 const UseCaseCardContent = ({
   useCase,
   onFieldUpdate,
-  onUseCaseUpdate
+  onUseCaseUpdate,
+  openDrawer,
+  setOpenDrawer,
+  handleOpenDrawer
 }: UseCaseCardContentProps) => {
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [localUseCase, setLocalUseCase] = useState(useCase);
-  
   // Options for editable fields
   const complexityOptions = ["Low", "Medium", "High"];
   const valueOptions = ["Low", "Medium", "High"];
@@ -32,28 +35,8 @@ const UseCaseCardContent = ({
   // Determine if the card has an implementation plan
   const hasImplementationPlan = !!useCase.implementationPlan;
 
-  // Handle opening the drawer
-  const handleOpenDrawer = () => {
-    // Initialize implementation plan if it doesn't exist
-    if (!localUseCase.implementationPlan) {
-      setLocalUseCase({
-        ...localUseCase,
-        implementationPlan: {
-          msCopilot: "",
-          powerAutomate: "",
-          powerApps: "",
-          copilotStudio: "",
-          powerBI: "",
-          sharePoint: ""
-        }
-      });
-    }
-    setOpenDrawer(true);
-  };
-
   // Handle updating the use case from the implementation plan
   const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
-    setLocalUseCase(updatedUseCase);
     onUseCaseUpdate(updatedUseCase);
     toast.success("Implementation plan updated");
   };
@@ -106,19 +89,19 @@ const UseCaseCardContent = ({
       <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
         <DrawerContent className="max-h-[85vh]">
           <div className="mx-auto w-full max-w-[800px] p-6">
-            <h2 className="text-xl font-semibold mb-2 text-primary">Implementation Plan: {localUseCase.name}</h2>
+            <h2 className="text-xl font-semibold mb-2 text-primary">Implementation Plan: {useCase.name}</h2>
             <p className="text-muted-foreground mb-6">
               How to implement this use case using Microsoft technologies
             </p>
             
             <ImplementationPlanContent 
-              useCase={localUseCase} 
+              useCase={useCase} 
               onUseCaseUpdate={handleUseCaseUpdate}
             />
             
             <div className="mt-6">
               <PlanActionFooter 
-                useCase={localUseCase}
+                useCase={useCase}
                 onUseCaseUpdate={onUseCaseUpdate}
                 onClose={() => setOpenDrawer(false)}
               />

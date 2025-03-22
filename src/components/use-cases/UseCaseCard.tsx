@@ -25,12 +25,34 @@ const UseCaseCard = ({
   
   // Local state for the use case data
   const [localUseCase, setLocalUseCase] = useState(useCase);
+  // State for drawer
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   // Handle field updates
   const handleFieldUpdate = (field: string, value: string) => {
     const updatedUseCase = { ...localUseCase, [field]: value };
     setLocalUseCase(updatedUseCase);
     onUseCaseUpdate(updatedUseCase);
+  };
+  
+  // Handle opening the drawer
+  const handleOpenDrawer = () => {
+    // Initialize implementation plan if it doesn't exist
+    if (!localUseCase.implementationPlan) {
+      const updatedUseCase = {
+        ...localUseCase,
+        implementationPlan: {
+          msCopilot: "",
+          powerAutomate: "",
+          powerApps: "",
+          copilotStudio: "",
+          powerBI: "",
+          sharePoint: ""
+        }
+      };
+      setLocalUseCase(updatedUseCase);
+    }
+    setOpenDrawer(true);
   };
   
   return (
@@ -49,6 +71,9 @@ const UseCaseCard = ({
           useCase={localUseCase}
           onFieldUpdate={handleFieldUpdate}
           onUseCaseUpdate={onUseCaseUpdate}
+          openDrawer={openDrawer}
+          setOpenDrawer={setOpenDrawer}
+          handleOpenDrawer={handleOpenDrawer}
         />
       </Card>
     </motion.div>
