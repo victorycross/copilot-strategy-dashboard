@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { UseCase } from "./data/types";
-import UseCaseCardHeader from "./card/UseCaseCardHeader";
-import UseCaseCardContent from "./card/UseCaseCardContent";
+import { UseCaseCardHeader, UseCaseCardContent } from "./card";
 import { itemVariants } from "./card/animations";
 
 interface UseCaseCardProps {
@@ -51,8 +50,15 @@ const UseCaseCard = ({
         }
       };
       setLocalUseCase(updatedUseCase);
+      onUseCaseUpdate(updatedUseCase);
     }
     setOpenDrawer(true);
+  };
+
+  // Handle updating the use case from the implementation plan
+  const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
+    setLocalUseCase(updatedUseCase);
+    onUseCaseUpdate(updatedUseCase);
   };
   
   return (
@@ -70,7 +76,7 @@ const UseCaseCard = ({
         <UseCaseCardContent 
           useCase={localUseCase}
           onFieldUpdate={handleFieldUpdate}
-          onUseCaseUpdate={onUseCaseUpdate}
+          onUseCaseUpdate={handleUseCaseUpdate}
           openDrawer={openDrawer}
           setOpenDrawer={setOpenDrawer}
           handleOpenDrawer={handleOpenDrawer}

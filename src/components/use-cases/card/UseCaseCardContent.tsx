@@ -13,7 +13,7 @@ import { toast } from "sonner";
 interface UseCaseCardContentProps {
   useCase: UseCase;
   onFieldUpdate: (field: string, value: string) => void;
-  onUseCaseUpdate: (updatedUseCase: any) => void;
+  onUseCaseUpdate: (updatedUseCase: UseCase) => void;
   openDrawer: boolean;
   setOpenDrawer: (open: boolean) => void;
   handleOpenDrawer: () => void;
@@ -34,12 +34,6 @@ const UseCaseCardContent = ({
   
   // Determine if the card has an implementation plan
   const hasImplementationPlan = !!useCase.implementationPlan;
-
-  // Handle updating the use case from the implementation plan
-  const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
-    onUseCaseUpdate(updatedUseCase);
-    toast.success("Implementation plan updated");
-  };
 
   return (
     <CardContent>
@@ -96,7 +90,7 @@ const UseCaseCardContent = ({
             
             <ImplementationPlanContent 
               useCase={useCase} 
-              onUseCaseUpdate={handleUseCaseUpdate}
+              onUseCaseUpdate={onUseCaseUpdate}
             />
             
             <div className="mt-6">
