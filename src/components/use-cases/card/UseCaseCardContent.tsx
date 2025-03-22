@@ -5,6 +5,7 @@ import EditableField from "../EditableField";
 import ServiceLines from "./ServiceLines";
 import ImplementationPlanDrawer from "../ImplementationPlanDrawer";
 import { UseCase } from "../data/types";
+import { Button } from "@/components/ui/button";
 
 interface UseCaseCardContentProps {
   useCase: UseCase;
@@ -64,9 +65,12 @@ const UseCaseCardContent = ({
           useCase={useCase}
           onUseCaseUpdate={onUseCaseUpdate}
         >
-          <button className="w-full text-sm py-2 px-4 rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none">
+          <Button 
+            variant="default" 
+            className="w-full text-sm"
+          >
             {hasImplementationPlan ? "View Implementation Plan" : "Create Implementation Plan"}
-          </button>
+          </Button>
         </ImplementationPlanDrawer>
       </div>
     </CardContent>

@@ -18,6 +18,7 @@ const UseCaseCardHeader = ({
 }: UseCaseCardHeaderProps) => {
   const Icon = useCase.icon;
   const hasImplementationPlan = !!useCase.implementationPlan;
+
   const phaseOptions = ["Phase 1", "Phase 2", "Phase 3"];
 
   return (
@@ -39,7 +40,7 @@ const UseCaseCardHeader = ({
                 });
               }}
             >
-              <CardTitle className="text-base cursor-pointer hover:text-primary hover:underline">
+              <CardTitle className="text-base cursor-pointer text-primary hover:text-primary/80 hover:underline transition-colors">
                 {useCase.name}
               </CardTitle>
             </ImplementationPlanDrawer>

@@ -19,7 +19,7 @@ const ImplementationPlanDetail = ({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className="max-h-[85vh]">
         <div className="mx-auto w-full max-w-[800px] p-6">
-          <h2 className="text-xl font-semibold mb-2">Implementation Plan: {useCase.name}</h2>
+          <h2 className="text-xl font-semibold mb-2 text-primary">Implementation Plan: {useCase.name}</h2>
           <p className="text-muted-foreground mb-6">
             How to implement this use case using Microsoft technologies
           </p>

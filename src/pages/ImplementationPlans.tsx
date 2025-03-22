@@ -89,7 +89,10 @@ const ImplementationPlans = () => {
                   return (
                     <TableRow key={useCase.id}>
                       <TableCell className="font-medium">
-                        {useCase.name}
+                        <span className="text-primary hover:text-primary/80 hover:underline cursor-pointer" 
+                              onClick={() => handleViewPlan(useCase)}>
+                          {useCase.name}
+                        </span>
                       </TableCell>
                       <TableCell className="max-w-[300px] truncate">
                         {useCase.description}
@@ -120,7 +123,7 @@ const ImplementationPlans = () => {
                       <TableCell>{useCase.phase}</TableCell>
                       <TableCell className="text-right space-x-2">
                         <Button
-                          variant="outline"
+                          variant="default"
                           size="sm"
                           onClick={() => handleViewPlan(useCase)}
                         >
