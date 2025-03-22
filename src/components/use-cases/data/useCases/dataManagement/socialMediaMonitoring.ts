@@ -13,11 +13,12 @@ export const socialMediaMonitoring: UseCase = {
   phase: "Phase 2",
   complexity: "Medium",
   crossServiceValue: "Medium",
+  keyBenefit: "70% reduction in undetected data exposure incidents",
   implementationPlan: {
-    msCopilot: "Analyze social media content for potential data leaks",
-    powerAutomate: "Create automated alerts for detected disclosures",
-    powerApps: "Build monitoring dashboard with risk scoring",
-    copilotStudio: "Design conversational risk assessment bot",
-    powerBI: "Visualize social media exposure metrics"
+    msCopilot: "Analyze social media data for potential leaks and unauthorized disclosures",
+    powerAutomate: "Schedule regular social media monitoring",
+    powerApps: "Create a social media monitoring dashboard",
+    copilotStudio: "Develop a social media monitoring assistant",
+    powerBI: "Visualize social media monitoring metrics"
   }
 };
