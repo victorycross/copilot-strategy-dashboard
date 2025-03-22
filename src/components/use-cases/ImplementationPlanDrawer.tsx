@@ -1,3 +1,4 @@
+
 import { 
   Dialog,
   DialogContent,
@@ -10,16 +11,15 @@ import {
 import { ReactNode, useState } from "react";
 import TechnologySection from "./TechnologySection";
 import PlanActionFooter from "./PlanActionFooter";
-import { UseCase, ToolImplementation, ToolConnection } from "./data/types";
-import {
-  MsCopilotIcon,
-  PowerAutomateIcon,
-  PowerAppsIcon,
-  CopilotStudioIcon,
-  PowerBIIcon
-} from "./icons/TechnologyIcons";
+import { UseCase } from "./data/types";
 import { toast } from "sonner";
-import { X } from "lucide-react";
+import { tools } from "./implementation-plan/ToolMetadata";
+import { 
+  getStringValue, 
+  getConnections, 
+  getDetailedInstructions, 
+  ensureObjectFormat 
+} from "./implementation-plan/ConnectionUtils";
 
 interface ImplementationPlanProps {
   useCase: UseCase;
@@ -41,51 +41,9 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
     };
   }
 
-  // Helper function to extract string value from either string or ToolImplementation
-  const getStringValue = (value: string | ToolImplementation | undefined): string => {
-    if (!value) return "";
-    if (typeof value === 'string') return value;
-    return value.summary || "";
-  };
-
-  // Helper function to get connections array or create an empty array
-  const getConnections = (toolKey: string): ToolConnection[] => {
-    const implementation = localUseCase.implementationPlan?.[toolKey];
-    if (typeof implementation === 'object' && implementation?.connections) {
-      return implementation.connections;
-    }
-    return [];
-  };
-
-  // Helper function to get detailed instructions
-  const getDetailedInstructions = (toolKey: string): string => {
-    const implementation = localUseCase.implementationPlan?.[toolKey];
-    if (typeof implementation === 'object' && implementation?.detailedInstructions) {
-      return implementation.detailedInstructions;
-    }
-    return "";
-  };
-
-  // Convert a string implementation to object format if needed
-  const ensureObjectFormat = (toolKey: string): ToolImplementation => {
-    const currentValue = localUseCase.implementationPlan?.[toolKey];
-    
-    // If it's already an object, return it
-    if (typeof currentValue === 'object' && currentValue) {
-      return currentValue;
-    }
-    
-    // Otherwise create a new object with the string as summary
-    return {
-      summary: typeof currentValue === 'string' ? currentValue : "",
-      connections: [],
-      detailedInstructions: ""
-    };
-  };
-
   const handlePlanUpdate = (field: string, value: string) => {
     // Convert to object format if it's not already
-    const updatedImplementation = ensureObjectFormat(field);
+    const updatedImplementation = ensureObjectFormat(field, localUseCase.implementationPlan);
     updatedImplementation.summary = value;
     
     const updatedUseCase = { 
@@ -105,7 +63,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
 
   const handleConnectionUpdate = (sourceToolKey: string, targetToolKey: string, description: string) => {
     // Get current implementation in object format
-    const implementation = ensureObjectFormat(sourceToolKey);
+    const implementation = ensureObjectFormat(sourceToolKey, localUseCase.implementationPlan);
     
     // Find if this connection already exists
     const existingConnectionIndex = implementation.connections?.findIndex(
@@ -162,7 +120,7 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
 
   const handleDetailedInstructionsUpdate = (toolKey: string, instructions: string) => {
     // Get current implementation in object format
-    const implementation = ensureObjectFormat(toolKey);
+    const implementation = ensureObjectFormat(toolKey, localUseCase.implementationPlan);
     
     // Update detailed instructions
     implementation.detailedInstructions = instructions;
@@ -188,16 +146,6 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
       console.log("Dialog closed");
     }
   };
-  
-  // Tool metadata for rendering
-  const tools = [
-    { key: 'msCopilot', title: 'Microsoft Copilot', icon: <MsCopilotIcon />, colorClass: 'text-blue-500' },
-    { key: 'powerAutomate', title: 'Power Automate', icon: <PowerAutomateIcon />, colorClass: 'text-purple-500' },
-    { key: 'powerApps', title: 'Power Apps', icon: <PowerAppsIcon />, colorClass: 'text-green-500' },
-    { key: 'copilotStudio', title: 'Copilot Studio', icon: <CopilotStudioIcon />, colorClass: 'text-yellow-500' },
-    { key: 'powerBI', title: 'Power BI', icon: <PowerBIIcon />, colorClass: 'text-red-500' },
-    { key: 'sharePoint', title: 'SharePoint', icon: null, colorClass: 'text-green-600' }
-  ];
   
   return (
     <Dialog onOpenChange={handleClose}>
@@ -234,12 +182,12 @@ const ImplementationPlanDrawer = ({ useCase, children, onUseCaseUpdate }: Implem
               colorClass={tool.colorClass}
               value={getStringValue(localUseCase.implementationPlan?.[tool.key])}
               onValueChange={(value) => handlePlanUpdate(tool.key, value)}
-              connections={getConnections(tool.key)}
+              connections={getConnections(tool.key, localUseCase.implementationPlan)}
               availableTargets={tools.filter(t => t.key !== tool.key).map(t => ({ key: t.key, title: t.title }))}
               onConnectionUpdate={(targetTool, description) => 
                 handleConnectionUpdate(tool.key, targetTool, description)
               }
-              detailedInstructions={getDetailedInstructions(tool.key)}
+              detailedInstructions={getDetailedInstructions(tool.key, localUseCase.implementationPlan)}
               onDetailedInstructionsChange={(instructions) => 
                 handleDetailedInstructionsUpdate(tool.key, instructions)
               }
