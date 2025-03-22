@@ -5,7 +5,6 @@ import { Card } from "@/components/ui/card";
 import { UseCase } from "./data/types";
 import { UseCaseCardHeader, UseCaseCardContent } from "./card";
 import { itemVariants } from "./card/animations";
-import { toast } from "sonner";
 
 interface UseCaseCardProps {
   useCase: UseCase;
@@ -25,8 +24,6 @@ const UseCaseCard = ({
   
   // Local state for the use case data
   const [localUseCase, setLocalUseCase] = useState<UseCase>(useCase);
-  // State for drawer
-  const [openDrawer, setOpenDrawer] = useState(false);
 
   // Update local state when props change
   useEffect(() => {
@@ -40,32 +37,10 @@ const UseCaseCard = ({
     onUseCaseUpdate(updatedUseCase);
   };
   
-  // Handle opening the drawer
-  const handleOpenDrawer = () => {
-    // Initialize implementation plan if it doesn't exist
-    if (!localUseCase.implementationPlan) {
-      const updatedUseCase = {
-        ...localUseCase,
-        implementationPlan: {
-          msCopilot: "",
-          powerAutomate: "",
-          powerApps: "",
-          copilotStudio: "",
-          powerBI: "",
-          sharePoint: ""
-        }
-      };
-      setLocalUseCase(updatedUseCase);
-      onUseCaseUpdate(updatedUseCase);
-    }
-    setOpenDrawer(true);
-  };
-
   // Handle updating the use case from the implementation plan
   const handleUseCaseUpdate = (updatedUseCase: UseCase) => {
     setLocalUseCase(updatedUseCase);
     onUseCaseUpdate(updatedUseCase);
-    toast.success(`Updated implementation plan for ${updatedUseCase.name}`);
   };
   
   return (
@@ -84,9 +59,6 @@ const UseCaseCard = ({
           useCase={localUseCase}
           onFieldUpdate={handleFieldUpdate}
           onUseCaseUpdate={handleUseCaseUpdate}
-          openDrawer={openDrawer}
-          setOpenDrawer={setOpenDrawer}
-          handleOpenDrawer={handleOpenDrawer}
           priorityBadgeClass={priorityBadgeClass}
         />
       </Card>

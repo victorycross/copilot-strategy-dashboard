@@ -1,21 +1,16 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { CardContent } from "@/components/ui/card";
 import EditableField from "../EditableField";
 import ServiceLines from "./ServiceLines";
 import { UseCase } from "../data/types";
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent } from "@/components/ui/drawer";
-import ImplementationPlanContent from "../implementation-plan/ImplementationPlanContent";
-import PlanActionFooter from "../PlanActionFooter";
+import ImplementationPlanDialog from "../implementation-plan/ImplementationPlanDialog";
 
 interface UseCaseCardContentProps {
   useCase: UseCase;
   onFieldUpdate: (field: string, value: string) => void;
   onUseCaseUpdate: (updatedUseCase: UseCase) => void;
-  openDrawer: boolean;
-  setOpenDrawer: (open: boolean) => void;
-  handleOpenDrawer: () => void;
   priorityBadgeClass: string;
 }
 
@@ -23,9 +18,6 @@ const UseCaseCardContent = ({
   useCase,
   onFieldUpdate,
   onUseCaseUpdate,
-  openDrawer,
-  setOpenDrawer,
-  handleOpenDrawer,
   priorityBadgeClass
 }: UseCaseCardContentProps) => {
   // Options for editable fields
@@ -33,8 +25,16 @@ const UseCaseCardContent = ({
   const valueOptions = ["Low", "Medium", "High"];
   const priorityOptions = ["low", "medium", "high", "strategic"];
   
+  // State for the dialog
+  const [dialogOpen, setDialogOpen] = useState(false);
+  
   // Determine if the card has an implementation plan
   const hasImplementationPlan = !!useCase.implementationPlan;
+
+  // Handle opening the implementation plan dialog
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
 
   return (
     <CardContent>
@@ -74,36 +74,19 @@ const UseCaseCardContent = ({
         <Button 
           variant="default" 
           className="w-full text-sm bg-primary text-primary-foreground hover:bg-primary/90"
-          onClick={handleOpenDrawer}
+          onClick={handleOpenDialog}
         >
           {hasImplementationPlan ? "View Implementation Plan" : "Create Implementation Plan"}
         </Button>
       </div>
       
-      {/* Implementation Plan Drawer */}
-      <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
-        <DrawerContent className="max-h-[85vh]">
-          <div className="mx-auto w-full max-w-[800px] p-6">
-            <h2 className="text-xl font-semibold mb-2 text-primary">Implementation Plan: {useCase.name}</h2>
-            <p className="text-muted-foreground mb-6">
-              How to implement this use case using Microsoft technologies
-            </p>
-            
-            <ImplementationPlanContent 
-              useCase={useCase} 
-              onUseCaseUpdate={onUseCaseUpdate}
-            />
-            
-            <div className="mt-6">
-              <PlanActionFooter 
-                useCase={useCase}
-                onUseCaseUpdate={onUseCaseUpdate}
-                onClose={() => setOpenDrawer(false)}
-              />
-            </div>
-          </div>
-        </DrawerContent>
-      </Drawer>
+      {/* Implementation Plan Dialog */}
+      <ImplementationPlanDialog
+        useCase={useCase}
+        onUseCaseUpdate={onUseCaseUpdate}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </CardContent>
   );
 };
