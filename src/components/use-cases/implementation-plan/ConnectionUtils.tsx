@@ -1,4 +1,3 @@
-
 import { ToolImplementation, ToolConnection, ImplementationPlan } from "../data/types";
 
 // Helper function to extract string value from either string or ToolImplementation

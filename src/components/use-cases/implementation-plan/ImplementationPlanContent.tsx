@@ -2,12 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { UseCase } from "../data/types";
 import { tools } from "./ToolMetadata";
-import TechnologySectionList from "./TechnologySectionList";
-import { 
-  handlePlanUpdate,
-  handleConnectionUpdate,
-  handleDetailedInstructionsUpdate
-} from "./PlanUpdateHandlers";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ensureObjectFormat } from "./ConnectionUtils";
+import ToolSection from "./ToolSection";
 
 interface ImplementationPlanContentProps {
   useCase: UseCase;
@@ -45,58 +42,98 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
     }
   }, [localUseCase, onUseCaseUpdate]);
 
-  // Wrapper functions that update both local state and call the parent update callback
-  const onPlanUpdate = (field: string, value: string) => {
-    try {
-      const updated = handlePlanUpdate(field, value, localUseCase);
-      console.log(`Updated plan for ${field}:`, updated.implementationPlan);
-      setLocalUseCase(updated);
-      onUseCaseUpdate(updated);
-    } catch (error) {
-      console.error(`Error updating plan for ${field}:`, error);
+  // Handle updating a specific tool
+  const handleToolUpdate = (toolKey: string, value: any) => {
+    if (!localUseCase.implementationPlan) {
+      console.error("Implementation plan is missing");
+      return;
     }
-  };
-
-  const onConnectionUpdate = (sourceToolKey: string, targetToolKey: string, description: string) => {
+    
     try {
-      const updated = handleConnectionUpdate(
-        sourceToolKey, 
-        targetToolKey, 
-        description, 
-        localUseCase
-      );
-      console.log(`Updated connection from ${sourceToolKey} to ${targetToolKey}:`, updated.implementationPlan);
-      setLocalUseCase(updated);
-      onUseCaseUpdate(updated);
+      const updatedImplementationPlan = {
+        ...localUseCase.implementationPlan,
+        [toolKey]: value
+      };
+      
+      const updatedUseCase = {
+        ...localUseCase,
+        implementationPlan: updatedImplementationPlan
+      };
+      
+      console.log(`Updated plan for ${toolKey}:`, updatedImplementationPlan[toolKey]);
+      setLocalUseCase(updatedUseCase);
+      onUseCaseUpdate(updatedUseCase);
     } catch (error) {
-      console.error(`Error updating connection from ${sourceToolKey} to ${targetToolKey}:`, error);
-    }
-  };
-
-  const onDetailedInstructionsUpdate = (toolKey: string, instructions: string) => {
-    try {
-      const updated = handleDetailedInstructionsUpdate(
-        toolKey, 
-        instructions, 
-        localUseCase
-      );
-      console.log(`Updated instructions for ${toolKey}:`, updated.implementationPlan);
-      setLocalUseCase(updated);
-      onUseCaseUpdate(updated);
-    } catch (error) {
-      console.error(`Error updating detailed instructions for ${toolKey}:`, error);
+      console.error(`Error updating plan for ${toolKey}:`, error);
     }
   };
 
   return (
     <div className="space-y-6">
-      <TechnologySectionList 
-        useCase={localUseCase}
-        tools={tools}
-        onPlanUpdate={onPlanUpdate}
-        onConnectionUpdate={onConnectionUpdate}
-        onDetailedInstructionsUpdate={onDetailedInstructionsUpdate}
-      />
+      <Tabs defaultValue="msCopilot" className="w-full">
+        <TabsList className="grid grid-cols-3 lg:grid-cols-6 h-auto">
+          <TabsTrigger value="msCopilot" className="text-xs">Copilot for M365</TabsTrigger>
+          <TabsTrigger value="powerAutomate" className="text-xs">Power Automate</TabsTrigger>
+          <TabsTrigger value="powerApps" className="text-xs">Power Apps</TabsTrigger>
+          <TabsTrigger value="copilotStudio" className="text-xs">Copilot Studio</TabsTrigger>
+          <TabsTrigger value="powerBI" className="text-xs">Power BI</TabsTrigger>
+          <TabsTrigger value="sharePoint" className="text-xs">SharePoint</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="msCopilot">
+          <ToolSection
+            toolKey="msCopilot"
+            toolName="Copilot for M365"
+            implementation={ensureObjectFormat("msCopilot", localUseCase.implementationPlan)}
+            onUpdate={(value) => handleToolUpdate("msCopilot", value)}
+          />
+        </TabsContent>
+        
+        <TabsContent value="powerAutomate">
+          <ToolSection
+            toolKey="powerAutomate"
+            toolName="Power Automate"
+            implementation={ensureObjectFormat("powerAutomate", localUseCase.implementationPlan)}
+            onUpdate={(value) => handleToolUpdate("powerAutomate", value)}
+          />
+        </TabsContent>
+        
+        <TabsContent value="powerApps">
+          <ToolSection
+            toolKey="powerApps"
+            toolName="Power Apps"
+            implementation={ensureObjectFormat("powerApps", localUseCase.implementationPlan)}
+            onUpdate={(value) => handleToolUpdate("powerApps", value)}
+          />
+        </TabsContent>
+        
+        <TabsContent value="copilotStudio">
+          <ToolSection
+            toolKey="copilotStudio"
+            toolName="Copilot Studio"
+            implementation={ensureObjectFormat("copilotStudio", localUseCase.implementationPlan)}
+            onUpdate={(value) => handleToolUpdate("copilotStudio", value)}
+          />
+        </TabsContent>
+        
+        <TabsContent value="powerBI">
+          <ToolSection
+            toolKey="powerBI"
+            toolName="Power BI"
+            implementation={ensureObjectFormat("powerBI", localUseCase.implementationPlan)}
+            onUpdate={(value) => handleToolUpdate("powerBI", value)}
+          />
+        </TabsContent>
+        
+        <TabsContent value="sharePoint">
+          <ToolSection
+            toolKey="sharePoint"
+            toolName="SharePoint"
+            implementation={ensureObjectFormat("sharePoint", localUseCase.implementationPlan)}
+            onUpdate={(value) => handleToolUpdate("sharePoint", value)}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
