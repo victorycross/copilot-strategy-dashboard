@@ -24,6 +24,7 @@ const UseCaseCard = ({
   
   // Local state for the use case data
   const [localUseCase, setLocalUseCase] = useState<UseCase>(useCase);
+  const [implementationPlanOpen, setImplementationPlanOpen] = useState(false);
 
   // Update local state when props change
   useEffect(() => {
@@ -60,6 +61,8 @@ const UseCaseCard = ({
           onFieldUpdate={handleFieldUpdate}
           onUseCaseUpdate={handleUseCaseUpdate}
           priorityBadgeClass={priorityBadgeClass}
+          implementationPlanOpen={implementationPlanOpen}
+          setImplementationPlanOpen={setImplementationPlanOpen}
         />
       </Card>
     </motion.div>

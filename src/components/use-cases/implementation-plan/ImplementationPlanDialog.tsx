@@ -31,11 +31,19 @@ const ImplementationPlanDialog = ({
   onOpenChange
 }: ImplementationPlanDialogProps) => {
   const [localUseCase, setLocalUseCase] = useState<UseCase>(useCase);
+  const [internalOpen, setInternalOpen] = useState<boolean>(open || false);
   
   // Update local state when props change
   useEffect(() => {
     setLocalUseCase(useCase);
   }, [useCase]);
+  
+  // Update internal open state when prop changes
+  useEffect(() => {
+    if (open !== undefined) {
+      setInternalOpen(open);
+    }
+  }, [open]);
   
   // Initialize implementation plan if it doesn't exist
   useEffect(() => {
@@ -66,14 +74,15 @@ const ImplementationPlanDialog = ({
     }
   };
 
-  const handleClose = () => {
+  const handleOpenChange = (newOpen: boolean) => {
+    setInternalOpen(newOpen);
     if (onOpenChange) {
-      onOpenChange(false);
+      onOpenChange(newOpen);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={internalOpen} onOpenChange={handleOpenChange}>
       {children && (
         <DialogTrigger asChild>
           {children}
@@ -98,7 +107,7 @@ const ImplementationPlanDialog = ({
           <PlanActionFooter
             useCase={localUseCase}
             onUseCaseUpdate={onUseCaseUpdate}
-            onClose={handleClose}
+            onClose={() => handleOpenChange(false)}
           />
         </DialogFooter>
       </DialogContent>

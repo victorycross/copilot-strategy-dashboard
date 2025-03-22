@@ -41,6 +41,7 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
       };
       setLocalUseCase(initializedUseCase);
       onUseCaseUpdate(initializedUseCase);
+      console.log("Initialized implementation plan:", initializedUseCase.implementationPlan);
     }
   }, [localUseCase, onUseCaseUpdate]);
 
@@ -48,6 +49,7 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
   const onPlanUpdate = (field: string, value: string) => {
     try {
       const updated = handlePlanUpdate(field, value, localUseCase);
+      console.log(`Updated plan for ${field}:`, updated.implementationPlan);
       setLocalUseCase(updated);
       onUseCaseUpdate(updated);
     } catch (error) {
@@ -63,6 +65,7 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
         description, 
         localUseCase
       );
+      console.log(`Updated connection from ${sourceToolKey} to ${targetToolKey}:`, updated.implementationPlan);
       setLocalUseCase(updated);
       onUseCaseUpdate(updated);
     } catch (error) {
@@ -77,6 +80,7 @@ const ImplementationPlanContent: React.FC<ImplementationPlanContentProps> = ({
         instructions, 
         localUseCase
       );
+      console.log(`Updated instructions for ${toolKey}:`, updated.implementationPlan);
       setLocalUseCase(updated);
       onUseCaseUpdate(updated);
     } catch (error) {

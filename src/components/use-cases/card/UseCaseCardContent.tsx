@@ -12,28 +12,30 @@ interface UseCaseCardContentProps {
   onFieldUpdate: (field: string, value: string) => void;
   onUseCaseUpdate: (updatedUseCase: UseCase) => void;
   priorityBadgeClass: string;
+  implementationPlanOpen?: boolean;
+  setImplementationPlanOpen?: (open: boolean) => void;
 }
 
 const UseCaseCardContent = ({
   useCase,
   onFieldUpdate,
   onUseCaseUpdate,
-  priorityBadgeClass
+  priorityBadgeClass,
+  implementationPlanOpen = false,
+  setImplementationPlanOpen = () => {}
 }: UseCaseCardContentProps) => {
   // Options for editable fields
   const complexityOptions = ["Low", "Medium", "High"];
   const valueOptions = ["Low", "Medium", "High"];
   const priorityOptions = ["low", "medium", "high", "strategic"];
   
-  // State for the dialog
-  const [dialogOpen, setDialogOpen] = useState(false);
-  
   // Determine if the card has an implementation plan
   const hasImplementationPlan = !!useCase.implementationPlan;
 
   // Handle opening the implementation plan dialog
   const handleOpenDialog = () => {
-    setDialogOpen(true);
+    console.log("Opening implementation plan dialog");
+    setImplementationPlanOpen(true);
   };
 
   return (
@@ -84,8 +86,8 @@ const UseCaseCardContent = ({
       <ImplementationPlanDialog
         useCase={useCase}
         onUseCaseUpdate={onUseCaseUpdate}
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
+        open={implementationPlanOpen}
+        onOpenChange={setImplementationPlanOpen}
       />
     </CardContent>
   );

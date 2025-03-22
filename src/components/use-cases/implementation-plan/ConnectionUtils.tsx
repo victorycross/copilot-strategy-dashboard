@@ -1,3 +1,4 @@
+
 import { ToolImplementation, ToolConnection, ImplementationPlan } from "../data/types";
 
 // Helper function to extract string value from either string or ToolImplementation
@@ -15,8 +16,8 @@ export const getConnections = (
   if (!implementationPlan) return [];
   
   const implementation = implementationPlan[toolKey as keyof ImplementationPlan];
-  if (typeof implementation === 'object' && implementation?.connections) {
-    return implementation.connections;
+  if (typeof implementation === 'object' && implementation !== null && 'connections' in implementation) {
+    return implementation.connections || [];
   }
   return [];
 };
@@ -29,8 +30,8 @@ export const getDetailedInstructions = (
   if (!implementationPlan) return "";
   
   const implementation = implementationPlan[toolKey as keyof ImplementationPlan];
-  if (typeof implementation === 'object' && implementation?.detailedInstructions) {
-    return implementation.detailedInstructions;
+  if (typeof implementation === 'object' && implementation !== null && 'detailedInstructions' in implementation) {
+    return implementation.detailedInstructions || "";
   }
   return "";
 };
@@ -51,10 +52,10 @@ export const ensureObjectFormat = (
   const currentValue = implementationPlan[toolKey as keyof ImplementationPlan];
   
   // If it's already an object, return it
-  if (typeof currentValue === 'object' && currentValue) {
+  if (typeof currentValue === 'object' && currentValue !== null) {
     return {
       summary: currentValue.summary || "",
-      connections: currentValue.connections || [],
+      connections: Array.isArray(currentValue.connections) ? currentValue.connections : [],
       detailedInstructions: currentValue.detailedInstructions || ""
     };
   }
