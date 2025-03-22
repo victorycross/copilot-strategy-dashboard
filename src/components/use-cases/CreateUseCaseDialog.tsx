@@ -31,6 +31,38 @@ const CreateUseCaseDialog = ({ onUseCaseCreate }: CreateUseCaseDialogProps) => {
     priority: "medium",
     serviceLines: ["Digital & App Innovation"],
     keyBenefit: "",
+    implementationPlan: {
+      msCopilot: {
+        summary: "",
+        connections: [],
+        detailedInstructions: ""
+      },
+      powerAutomate: {
+        summary: "",
+        connections: [],
+        detailedInstructions: ""
+      },
+      powerApps: {
+        summary: "",
+        connections: [],
+        detailedInstructions: ""
+      },
+      copilotStudio: {
+        summary: "",
+        connections: [],
+        detailedInstructions: ""
+      },
+      powerBI: {
+        summary: "",
+        connections: [],
+        detailedInstructions: ""
+      },
+      sharePoint: {
+        summary: "",
+        connections: [],
+        detailedInstructions: ""
+      }
+    }
   });
 
   const handleCreateUseCase = () => {
@@ -59,6 +91,38 @@ const CreateUseCaseDialog = ({ onUseCaseCreate }: CreateUseCaseDialogProps) => {
       priority: "medium",
       serviceLines: ["Digital & App Innovation"],
       keyBenefit: "",
+      implementationPlan: {
+        msCopilot: {
+          summary: "",
+          connections: [],
+          detailedInstructions: ""
+        },
+        powerAutomate: {
+          summary: "",
+          connections: [],
+          detailedInstructions: ""
+        },
+        powerApps: {
+          summary: "",
+          connections: [],
+          detailedInstructions: ""
+        },
+        copilotStudio: {
+          summary: "",
+          connections: [],
+          detailedInstructions: ""
+        },
+        powerBI: {
+          summary: "",
+          connections: [],
+          detailedInstructions: ""
+        },
+        sharePoint: {
+          summary: "",
+          connections: [],
+          detailedInstructions: ""
+        }
+      }
     });
   };
 

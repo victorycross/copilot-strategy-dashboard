@@ -27,13 +27,14 @@ import {
 import { categories } from "@/components/use-cases/data/categories";
 import ImplementationPlanDetail from "@/components/use-cases/ImplementationPlanDetail";
 import { UseCase } from "@/components/use-cases/data/types";
+import { useUseCaseManager } from "@/hooks/useUseCaseManager";
 
 const ImplementationPlans = () => {
-  // Filter use cases that have implementation plans
-  const useCasesWithPlans = useCases.filter(
-    (useCase) =>
-      useCase.implementationPlan &&
-      Object.values(useCase.implementationPlan).some((value) => value)
+  const { useCases: allUseCases } = useUseCaseManager();
+  
+  // Filter use cases that have implementation plans (including empty ones)
+  const useCasesWithPlans = allUseCases.filter(
+    (useCase) => useCase.implementationPlan !== undefined
   );
 
   const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
