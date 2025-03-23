@@ -5,7 +5,7 @@ import EditableField from "../EditableField";
 import ServiceLines from "./ServiceLines";
 import { UseCase } from "../data/types";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { ImplementationPlanDialog } from "../implementation-plan";
 
 interface UseCaseCardContentProps {
   useCase: UseCase;
@@ -20,33 +20,11 @@ const UseCaseCardContent = ({
   onUseCaseUpdate,
   priorityBadgeClass,
 }: UseCaseCardContentProps) => {
-  const navigate = useNavigate();
-  
   // Options for editable fields
   const complexityOptions = ["Low", "Medium", "High"];
   const valueOptions = ["Low", "Medium", "High"];
   const priorityOptions = ["low", "medium", "high", "strategic"];
   
-  // Handle navigation to implementation plan page
-  const handleViewImplementationPlan = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log("Navigating to implementation plan for use case:", useCase.id, useCase.name);
-    
-    // Ensure the use case has an implementation plan object, even if empty
-    if (!useCase.implementationPlan) {
-      console.log("Initializing empty implementation plan before navigation");
-      const updatedUseCase = {
-        ...useCase,
-        implementationPlan: {}
-      };
-      onUseCaseUpdate(updatedUseCase);
-    }
-    
-    // Navigate to the implementation plans page with the use case ID in the URL
-    navigate(`/implementation-plans?useCaseId=${useCase.id}`);
-  };
-
   return (
     <CardContent>
       <p className="text-sm text-muted-foreground mb-3">{useCase.description}</p>
@@ -82,13 +60,17 @@ const UseCaseCardContent = ({
       </div>
       
       <div className="mt-4">
-        <Button 
-          variant="default" 
-          className="w-full text-sm bg-primary text-primary-foreground hover:bg-primary/90"
-          onClick={handleViewImplementationPlan}
+        <ImplementationPlanDialog 
+          useCase={useCase}
+          onUseCaseUpdate={onUseCaseUpdate}
         >
-          View Implementation Plan
-        </Button>
+          <Button 
+            variant="default" 
+            className="w-full text-sm bg-primary text-primary-foreground hover:bg-primary/90"
+          >
+            {useCase.implementationPlan ? "View Implementation Plan" : "Create Implementation Plan"}
+          </Button>
+        </ImplementationPlanDialog>
       </div>
     </CardContent>
   );
